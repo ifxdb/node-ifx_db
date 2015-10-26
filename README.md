@@ -1,47 +1,90 @@
-node-ifx_db
------------
+ifx_db: IBM Informix native NodeJS driver
+-----------------------------------------
 
 An asynchronous/synchronous interface for node.js to IBM Informix.
 
 install
---------
+-------
 
 ```bash
 npm install ifx_db
 ```
 
-Note: To use ifx_db@1.0.0 on 64bit Windows system, you should install node v0.12.4.  
-Prior to the NodeJS driver install please install Informix Client SDK 410xC2 or higher.  
-Then set the CSDK_HOME environment variable pointing to Informix Client SDK installation.  
-CSDK_HOME=/work/MyCsdk410xC5
+Note:  
+The ifx_db@1.0.0 driver has supported with NodeJS v0.12.x.  engine  
+The driver installation or runtime has not tested against nodejs-v4.x.x engine.  
+  
+Unix/Linux (non Windows) platforms:  
+CSDK_HOME environment variable must be set on the shell that you are trying to issue installation command.  
+The CSDK_HOME should point to a valid Informix Client SDK distribution with same bit architecture as the NodeJS engine.  
+export CSDK_HOME=/work/csdk410x5  
 
 
-Local Build 
------------
+
+Local Build Prerequisite 
+------------------------
 * **Informix Client SDK 410 xC2 or above**
-* **nan**
 * **Node-gyp**
 * **Python 2.7.x  (3.x is not supported yet)**
 
-nan will get installed as part of node-ifx_db  
 https://www.python.org/   
 npm install -g node-gyp  
 
+Local Linux Build 
+--------------------
+FYI:  
+make sure bit architecture matches for all binary components  
+If you are using 64bit nodejs make sure you are using 64bit Informix Client-SDK as well.
+  
+\#Complile time environment setting  
+export CSDK_HOME=/work/csdk410x5  
+export PATH=/work/nodejs/bin:$PATH  
 
-Local Build on Windows
+\#Runtime environment setting  
+export INFORMIXDIR=${CSDK_HOME}  
+export LD_LIBRARY_PATH=${INFORMIXDIR}/lib/esql:${INFORMIXDIR}/lib/cli  
+
+\#local build  
+\#cd ifx_db package directory, say:   
+cd /work/user1/node_modules/ifx_db  
+  
+rm -rf ./build  
+node-gyp configure -v  
+node-gyp build -v  
+  
+check the build output, if all right then the driver binary is    
+./build/Release/ifx_node_bind.node
+  
+To run your nodejs JavaScript program  
+cd /work/user1  
+node SampleApp1.js
+
+Local Windows Build 
 ----------------------
+FYI:  
+make sure bit architecture matches for all binary components  
+If you are using 64bit nodejs make sure you are using 64bit Informix Client-SDK as well.
+
 Set CSDK_HOME environment variable pointing to Informix Client SDK installation.  
 CSDK_HOME=C:\MyCsdk410xC5
 
-if you are using the existing Visual Studio 2015 Solution then please set NODE_GYP_HOME as well  
-NODE_GYP_HOME environment variable should point to node-gyp install location.  
-NODE_GYP_HOME=C:\Users\user1\.node-gyp\0.12.6
+Build node.lib:  
+The node.lib is needed for compiling native addon,  
+one of the way to get node.lib is to build it from NodeJS source (you may either try Node-gyp).  
+https://github.com/joyent/node/wiki/installation#installing-on-windows  
+Download NodeJS source and do a local build.  
 
-Command line build 
-------------------
+Build ifx_db native addon module:  
+set NODE_SRC pointing to NodeJS source  
+SET NODE_SRC=C:\njs\Src126  
+Yo u may use the Visual Studio 2015 Solution to build from source  
+  
+or  
+
+\#Command line build  
 node-gyp configure  
 node-gyp build  
-node-gyp build --debug  
+  
 
 
 Connection String
@@ -545,15 +588,8 @@ ibmdb.open(cn, function(err,conn) {
 
 ### Pool
 
-node-ifx_db reuses node-odbc pool. 
-The node-odbc `Pool` is a rudimentary connection pool which will attempt to have
-database connections ready and waiting for you when you call the `open` method.
+Rudimentary support, rework in progress...... 
 
-If you use a `Pool` instance, any connection that you close will cause another
-connection to be opened for that same connection string. That connection will
-be used the next time you call `Pool.open()` for the same connection string.
-
-This should probably be changed.
 
 #### .open(connectionString, callback)
 
@@ -621,12 +657,8 @@ flag `DEBUG` to the defines section of the `binding.gyp` file and then execute
 ```
 ### Unicode
 
-By default, UNICODE suppport is enabled. This should provide the most accurate
-way to get Unicode strings submitted to your database. For best results, you 
-may want to put your Unicode string into bound parameters. 
+The driver has support for UTF8 strings
 
-However, if you experience issues or you think that submitting UTF8 strings will
-work better or faster, you can remove the `UNICODE` define in `binding.gyp`
 
 ```javascript
 <snip>
@@ -648,7 +680,7 @@ execute the ODBC functions on a separate thread, uses libeio for its thread
 pool. This thread pool by default is limited to 4 threads.
 
 This means that if you have long running queries spread across multiple 
-instances of ibmdb.Database() or using odbc.Pool(), you will only be able to 
+instances of ifx_db.Database() or using odbc.Pool(), you will only be able to 
 have 4 concurrent queries.
 
 You can increase the thread pool size by using @developmentseed's [node-eio]
@@ -668,7 +700,7 @@ eio.setMinParallel(threadCount);
 contributors
 ------
 * IBM
-* Sathyanesh Krishnan
+* Sathyanesh Krishnan (msatyan@gmail.com)
 * Dan VerWeire (dverweire@gmail.com)
 * Lee Smith (notwink@gmail.com)
 * Bruno Bigras

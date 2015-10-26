@@ -20,7 +20,7 @@
 
       'defines' : 
       [
-        'UNICODE',
+        #'UNICODE',
         'ODBC64'
       ],
 
@@ -38,14 +38,7 @@
         {
           'conditions' : 
           [
-            [ 'IS_DOWNLOADED == "true" ', 
-            {
-                'ldflags' : 
-                [
-                    "-Wl,-R,'<(ORIGIN_LIB_PATH)' "
-                ],
-            }
-            ]
+
           ],
 
 
@@ -74,14 +67,6 @@
         {
           'conditions' : 
           [
-            [ 'IS_DOWNLOADED == "true" ', 
-            {
-                'ldflags' : 
-                [
-                    "-Wl,-R,'<(ORIGIN_LIB_PATH)' "
-                ],
-            }
-            ]
           ], 
                  
           'libraries' : 
@@ -172,14 +157,6 @@
         {
           'conditions' : 
           [
-            [ 'IS_DOWNLOADED == "true" ', 
-            {
-                'ldflags' : 
-                [
-                    "-Wl,-R,'<(ORIGIN_LIB_PATH)' "
-                ],
-            }
-            ]
           ],    
           'libraries' : 
           [
@@ -202,14 +179,6 @@
         {
           'conditions' : 
           [
-            [ 'IS_DOWNLOADED == "true" ', 
-            {
-                'ldflags' : 
-                [
-                    "-Wl,-R,'<(ORIGIN_LIB_PATH)' "
-                ],
-            }
-            ]
           ],        
           'libraries' : 
           [

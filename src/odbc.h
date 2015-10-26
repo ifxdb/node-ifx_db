@@ -28,15 +28,8 @@
 #ifdef dynodbc
 #include "dynodbc.h"
 #else
-//SAT TODO: 
+//SAT TODO:
 #include <infxcli.h>
-//#ifdef DD_DM
-//#include "sql.h"
-//#include "sqlext.h"
-//#else
-//#include <infxcli.h>
-//#endif
-
 #endif
 
 using namespace v8;
@@ -52,20 +45,20 @@ using namespace node;
 #define SQL_DESTROY 9999
 
 // SAT
-#ifdef UNICODE 
+#ifdef UNICODE
 #define _T(c) L##c
-#else 
+#else
 #define _T(c) c
 #endif
 
 // SAT
 #ifdef UNICODE
-#define _tcslen wcslen 
+#define _tcslen wcslen
 #else
 #define _tcslen strlen
 #endif
 
-typedef struct 
+typedef struct
 {
   unsigned char *name;
   unsigned char *type_name;
@@ -74,24 +67,24 @@ typedef struct
   SQLUSMALLINT index;
 } Column;
 
-typedef struct 
+typedef struct
 {
   SQLSMALLINT  c_type;
   SQLSMALLINT  type;
   SQLLEN       size;
   void        *buffer;
-  SQLLEN       buffer_length;    
+  SQLLEN       buffer_length;
   SQLLEN       length;
   SQLSMALLINT  decimals;
 } Parameter;
 
-class ODBC : public node::ObjectWrap 
+class ODBC : public node::ObjectWrap
 {
   public:
     static Persistent<Function> constructor;
     static uv_mutex_t g_odbcMutex;
     static uv_async_t g_async;
-    
+
     static void Init(v8::Handle<Object> exports);
     static Column* GetColumns(SQLHSTMT hStmt, short* colCount);
     static void FreeColumns(Column* columns, short* colCount);
@@ -107,9 +100,9 @@ class ODBC : public node::ObjectWrap
     static Handle<Value> LoadODBCLibrary(const Arguments& args);
 #endif
     static Parameter* GetParametersFromArray (Local<Array> values, int* paramCount);
-    
+
     void Free();
-    
+
   protected:
     ODBC() {}
 
@@ -121,19 +114,19 @@ class ODBC : public node::ObjectWrap
     static NAN_METHOD(CreateConnection);
     static void UV_CreateConnection(uv_work_t* work_req);
     static void UV_AfterCreateConnection(uv_work_t* work_req, int status);
-    
+
     static void WatcherCallback(uv_async_t* w, int revents);
-    
+
     //sync methods
     static NAN_METHOD(CreateConnectionSync);
-    
+
     ODBC *self(void) { return this; }
 
   protected:
     HENV m_hEnv;
 };
 
-struct create_connection_work_data 
+struct create_connection_work_data
 {
   NanCallback* cb;
   ODBC *dbo;
@@ -141,7 +134,7 @@ struct create_connection_work_data
   int result;
 };
 
-struct open_request 
+struct open_request
 {
   Persistent<Function> cb;
   ODBC *dbo;
@@ -149,14 +142,14 @@ struct open_request
   char connection[1];
 };
 
-struct close_request 
+struct close_request
 {
   Persistent<Function> cb;
   ODBC *dbo;
   int result;
 };
 
-struct query_request 
+struct query_request
 {
   Persistent<Function> cb;
   ODBC *dbo;
@@ -242,7 +235,7 @@ struct query_request
   if (args.Length() <= (I) || !args[I]->IsBoolean())                    \
     return NanThrowTypeError("Argument " #I " must be a boolean");      \
   Local<Boolean> VAR = (args[I]->ToBoolean());
-  
+
 #define REQ_EXT_ARG(I, VAR)                                             \
   if (args.Length() <= (I) || !args[I]->IsExternal())                   \
     return NanThrowTypeError("Argument " #I " invalid");                \

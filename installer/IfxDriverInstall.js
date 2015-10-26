@@ -2,6 +2,9 @@
 var fs = require('fs');
 //var url = require('url');
 var os = require('os');
+var platform = os.platform();
+var arch = os.arch();
+
 var path = require('path');
 var exec = require('child_process').exec;
 var msg_CSDK_HOME_not_correct = 'The CSDK_HOME environment veriable is not set to the correct directory. Please check .....';
@@ -10,17 +13,10 @@ var msg_CSDK_HOME_not_correct = 'The CSDK_HOME environment veriable is not set t
 var CURRENT_DIR = process.cwd();
 
 
-//Function to download file using HTTP.get
+// Function to download file using HTTP.get
 function IfxNodeJsInstall(file_url)
 {
-    var readStream;
-    var writeStream;
-    var platform = os.platform();
-    var arch = os.arch();
     var installerfileURL;
-
-    var fstream = require('fstream');
-    var unzip = require('unzip');
 
     var CSDK_HOME = null;
     var iS_CSDK_HOME_Valid = true;
@@ -30,6 +26,8 @@ function IfxNodeJsInstall(file_url)
 
         if (arch == 'x64')
         {
+            UnZipBuildFile();
+/*
             var BUILD_FILE = path.resolve(CURRENT_DIR, 'bin/Win64_build.zip');
             readStream = fs.createReadStream(BUILD_FILE);
             writeStream = fstream.Writer(CURRENT_DIR);
@@ -40,6 +38,7 @@ function IfxNodeJsInstall(file_url)
               {
                   RemoveBuildArchive();
               });
+*/
         }
         else
         {
@@ -100,32 +99,29 @@ function IfxNodeJsInstall(file_url)
                 }
                 else
                 {
-                    console.log('Please install Informix Client SDK prior to installing Informix NodeJS.');
-                    console.log('Please set CSDK_HOME environment variable pointing to Client SDK installation.');
-                    process.exit(1);
+                    if (UnZipBuildFile() == false)
+                    {
+                        console.log('Please install Informix Client SDK prior to installing Informix NodeJS.');
+                        console.log('Please set CSDK_HOME environment variable pointing to Client SDK installation.');
+                        process.exit(1);
+                    }
                 }
             }
         }
     }
     else
     {
-        console.log('Error: Please set CSDK_HOME environment variable');
-        iS_CSDK_HOME_Valid = false;
-        process.exit(1);
+        if (UnZipBuildFile() == false)
+        {
+            console.log('Error: Please set CSDK_HOME environment variable');
+            iS_CSDK_HOME_Valid = false;
+            process.exit(1);
+        }
     }
 
     function buildBinary(isDownloaded)
     {
-        var buildString = "node-gyp configure build --CSDK_HOME=$CSDK_HOME ";
-
-        if (isDownloaded)
-        {
-            buildString = buildString + " --IS_DOWNLOADED=true";
-        }
-        else
-        {
-            buildString = buildString + " --IS_DOWNLOADED=false";
-        }
+        var buildString = "node-gyp configure build";
 
         var childProcess = exec(buildString, function (error, stdout, stderr)
         {
@@ -138,6 +134,40 @@ function IfxNodeJsInstall(file_url)
         });
     }
 
+    function UnZipBuildFile()
+    {
+        var build_file = undefined;
+
+        //build_file = 'Win64_build.zip';
+        if (platform == 'win32' && arch == 'x64')
+        {
+            build_file = 'Win64_build.zip';
+        }
+        else if (platform == 'linux' && arch == 'x64')
+        {
+            build_file = 'Linux64_build.zip';
+        }
+
+        if (build_file == undefined)
+        {
+            return (false);
+        }
+
+        var fstream = require('fstream');
+        var unzip = require('unzip');
+        var BUILD_FILE = path.resolve(CURRENT_DIR, 'bin/' + build_file);
+        var readStream = fs.createReadStream(BUILD_FILE);
+        var writeStream = fstream.Writer(CURRENT_DIR);
+
+        readStream
+          .pipe(unzip.Parse())
+          .pipe(writeStream).on("unpipe", function ()
+          {
+              RemoveBuildArchive();
+          });
+
+        return (true);
+    }
 
     function RemoveBuildArchive()
     {
@@ -177,7 +207,7 @@ function IfxNodeJsInstall(file_url)
         }
         fs.rmdirSync(dir);
     };
-	
+
 };
 
 IfxNodeJsInstall();

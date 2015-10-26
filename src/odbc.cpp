@@ -58,12 +58,7 @@ void ODBC::Init(v8::Handle<Object> exports)
     Local<ObjectTemplate> instance_template = constructor_template->InstanceTemplate();
     instance_template->SetInternalFieldCount(1);
 
-    // Constants
-#if (NODE_MODULE_VERSION < NODE_0_12_MODULE_VERSION)
 
-#else
-
-#endif
     PropertyAttribute constant_attributes = static_cast<PropertyAttribute>(ReadOnly | DontDelete);
     constructor_template->Set(NanNew<String>("SQL_CLOSE"), NanNew<Number>(SQL_CLOSE), constant_attributes);
     constructor_template->Set(NanNew<String>("SQL_DROP"), NanNew<Number>(SQL_DROP), constant_attributes);
@@ -79,26 +74,9 @@ void ODBC::Init(v8::Handle<Object> exports)
 
     // Attach the Database Constructor to the target object
     NanAssignPersistent(constructor, constructor_template->GetFunction());
-    exports->Set(NanNew("ODBC"),
-        constructor_template->GetFunction());
+    exports->Set(NanNew("ODBC"),  constructor_template->GetFunction());
 
-#if NODE_VERSION_AT_LEAST(0, 7, 9)
-    // Initialize uv_async so that we can prevent node from exiting
-    //uv_async_init( uv_default_loop(),
-    //               &ODBC::g_async,
-    //               ODBC::WatcherCallback);
-
-    // Not sure if the init automatically calls uv_ref() because there is weird
-    // behavior going on. When ODBC::Init is called which initializes the 
-    // uv_async_t g_async above, there seems to be a ref which will keep it alive
-    // but we only want this available so that we can uv_ref() later on when
-    // we have a connection.
-    // so to work around this, I am possibly mistakenly calling uv_unref() once
-    // so that there are no references on the loop.
-    //uv_unref((uv_handle_t *)&ODBC::g_async);
-#endif
-
-  // Initialize the cross platform mutex provided by libuv
+    // Initialize the cross platform mutex provided by libuv
     uv_mutex_init(&ODBC::g_odbcMutex);
 }
 
@@ -394,7 +372,7 @@ Handle<Value> ODBC::GetColumnValue(SQLHSTMT hStmt, Column column,
     //reset the buffer
     buffer[0] = '\0';
 
-    //TODO: SQLGetData can supposedly return multiple chunks, need to do this to 
+    //TODO: SQLGetData can supposedly return multiple chunks, need to do this to
     //retrieve large fields
     int ret;
     DEBUG_PRINTF("Column Type : %i\t%i\t%i\t%i\n", column.type, SQL_DATETIME, SQL_TIMESTAMP, SQL_TYPE_TIME);
@@ -476,7 +454,7 @@ Handle<Value> ODBC::GetColumnValue(SQLHSTMT hStmt, Column column,
     case SQL_DATETIME:
     case SQL_TIMESTAMP:
     {
-        //I am not sure if this is locale-safe or cross database safe, but it 
+        //I am not sure if this is locale-safe or cross database safe, but it
         //works for me on MSSQL
 #ifdef _WIN32
         struct tm timeInfo = {};
@@ -501,8 +479,8 @@ Handle<Value> ODBC::GetColumnValue(SQLHSTMT hStmt, Column column,
         {
             strptime((char *)buffer, "%Y-%m-%d %H:%M:%S", &timeInfo);
 
-            //a negative value means that mktime() should use timezone information 
-            //and system databases to attempt to determine whether DST is in effect 
+            //a negative value means that mktime() should use timezone information
+            //and system databases to attempt to determine whether DST is in effect
             //at the specified time.
             timeInfo.tm_isdst = -1;
 
@@ -551,8 +529,8 @@ Handle<Value> ODBC::GetColumnValue(SQLHSTMT hStmt, Column column,
             timeInfo.tm_min = odbcTime.minute;
             timeInfo.tm_sec = odbcTime.second;
 
-            //a negative value means that mktime() should use timezone information 
-            //and system databases to attempt to determine whether DST is in effect 
+            //a negative value means that mktime() should use timezone information
+            //and system databases to attempt to determine whether DST is in effect
             //at the specified time.
             timeInfo.tm_isdst = -1;
 #ifdef TIMEGM
@@ -562,13 +540,13 @@ Handle<Value> ODBC::GetColumnValue(SQLHSTMT hStmt, Column column,
             return NanEscapeScope(NanNew<Date>((double(timelocal(&timeInfo)) * 1000)
                 + (odbcTime.fraction / 1000000)));
 #endif
-            //return Date::New((double(timegm(&timeInfo)) * 1000) 
+            //return Date::New((double(timegm(&timeInfo)) * 1000)
             //                  + (odbcTime.fraction / 1000000));
         }
 #endif
     } break;
     case SQL_BIT:
-        //again, i'm not sure if this is cross database safe, but it works for 
+        //again, i'm not sure if this is cross database safe, but it works for
         //MSSQL
         ret = SQLGetData(
             hStmt,
@@ -631,20 +609,12 @@ Handle<Value> ODBC::GetColumnValue(SQLHSTMT hStmt, Column column,
                 if (count == 0)
                 {
                     //no concatenation required, this is our first pass
-#ifdef UNICODE
-                    str = NanNew((uint16_t*)buffer);
-#else
                     str = NanNew((char *)buffer);
-#endif
                 }
                 else
                 {
                     //we need to concatenate
-#ifdef UNICODE
-                    str = String::Concat(str, NanNew((uint16_t*)buffer));
-#else
                     str = String::Concat(str, NanNew((char *)buffer));
-#endif
                 }
 
                 count += 1;
@@ -660,7 +630,7 @@ Handle<Value> ODBC::GetColumnValue(SQLHSTMT hStmt, Column column,
                 assert(ret != SQL_INVALID_HANDLE);
 
                 //Not sure if throwing here will work out well for us but we can try
-                //since we should have a valid handle and the error is something we 
+                //since we should have a valid handle and the error is something we
                 //can look into
                 NanThrowError(ODBC::GetSQLError(
                     SQL_HANDLE_STMT,
@@ -691,13 +661,8 @@ Local<Object> ODBC::GetRecordTuple(SQLHSTMT hStmt, Column* columns,
 
     for (int i = 0; i < *colCount; i++)
     {
-#ifdef UNICODE
-        tuple->Set(NanNew((uint16_t *)columns[i].name),
-            GetColumnValue(hStmt, columns[i], buffer, bufferLength));
-#else
         tuple->Set(NanNew((const char *)columns[i].name),
             GetColumnValue(hStmt, columns[i], buffer, bufferLength));
-#endif
     }
 
     return NanEscapeScope(tuple);
@@ -753,22 +718,14 @@ Parameter* ODBC::GetParametersFromArray(Local<Array> values, int *paramCount)
             int length = string->Length();
 
             params[i].c_type = SQL_C_TCHAR;
-#ifdef UNICODE
-            params[i].type = (length >= 8000) ? SQL_WLONGVARCHAR : SQL_WVARCHAR;
-            params[i].buffer_length = (length * sizeof(uint16_t)) + sizeof(uint16_t);
-#else
+
             params[i].type = (length >= 8000) ? SQL_LONGVARCHAR : SQL_VARCHAR;
             params[i].buffer_length = string->Utf8Length() + 1;
-#endif
             params[i].buffer = malloc(params[i].buffer_length);
             params[i].size = params[i].buffer_length;
             params[i].length = SQL_NTS;//params[i].buffer_length;
 
-#ifdef UNICODE
-            string->Write((uint16_t *)params[i].buffer);
-#else
             string->WriteUtf8((char *)params[i].buffer);
-#endif
 
             DEBUG_PRINTF("ODBC::GetParametersFromArray - IsString(): params[%i] "
                 "c_type=%i type=%i buffer_length=%i size=%i length=%i "
@@ -897,7 +854,7 @@ Local<Object> ODBC::GetSQLError(SQLSMALLINT handleType, SQLHANDLE handle, char* 
 
     Local<Object> objError = NanNew<Object>();
 
-    SQLINTEGER i = 0;
+    SQLSMALLINT i = 0;
     SQLINTEGER native;
 
     SQLSMALLINT len;
@@ -928,9 +885,9 @@ Local<Object> ODBC::GetSQLError(SQLSMALLINT handleType, SQLHANDLE handle, char* 
             handleType,
             handle,
             i + 1,
-            (SQLTCHAR *)errorSQLState,
+            (SQLCHAR *)errorSQLState,
             &native,
-            (SQLTCHAR *)errorMessage,
+            (SQLCHAR *)errorMessage,
             sizeof(errorMessage),
             &len);
 
@@ -941,15 +898,10 @@ Local<Object> ODBC::GetSQLError(SQLSMALLINT handleType, SQLHANDLE handle, char* 
             DEBUG_TPRINTF(SQL_T("ODBC::GetSQLError : errorMessage=%s, errorSQLState=%s\n"), errorMessage, errorSQLState);
 
             objError->Set(NanNew("error"), NanNew(message));
-#ifdef UNICODE
-            objError->SetPrototype(Exception::Error(NanNew((uint16_t *)errorMessage)));
-            objError->Set(NanNew("message"), NanNew((uint16_t *)errorMessage));
-            objError->Set(NanNew("state"), NanNew((uint16_t *)errorSQLState));
-#else
+
             objError->SetPrototype(Exception::Error(NanNew(errorMessage)));
             objError->Set(NanNew("message"), NanNew(errorMessage));
             objError->Set(NanNew("state"), NanNew(errorSQLState));
-#endif
         }
         else if (ret == SQL_NO_DATA)
         {

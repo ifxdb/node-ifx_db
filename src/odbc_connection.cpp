@@ -89,6 +89,7 @@ ODBCConnection::~ODBCConnection()
     this->Free();
 }
 
+
 void ODBCConnection::Free()
 {
     DEBUG_PRINTF("ODBCConnection::Free\n");
@@ -107,11 +108,11 @@ void ODBCConnection::Free()
     }
 }
 
-SQLTCHAR *GetDriverTag()
+TCHAR *GetDriverTag()
 {
-    static SQLTCHAR *DriverTag = (sizeof(void *) == 8) ?
+    static TCHAR *DriverTag = (TCHAR *) (   (sizeof(void *) == 8) ?
         (_T("DRIVER={IBM INFORMIX ODBC DRIVER (64-bit)};")) :
-        (_T("DRIVER={IBM INFORMIX ODBC DRIVER};"));
+        (_T("DRIVER={IBM INFORMIX ODBC DRIVER};"))   );
 
     return(DriverTag);
 }
@@ -218,14 +219,9 @@ NAN_METHOD(ODBCConnection::Open)
 
     data->connectionLength = connection->Length() + 1;
 
-    //copy the connection string to the work data  
-#ifdef UNICODE
-    data->connection = (uint16_t *)malloc(sizeof(uint16_t) * data->connectionLength);
-    connection->Write((uint16_t*)data->connection);
-#else
+    //copy the connection string to the work data
     data->connection = (char *)malloc(sizeof(char) * data->connectionLength);
     connection->WriteUtf8((char*)data->connection);
-#endif
 
     data->cb = new NanCallback(cb);
     data->conn = conn;
@@ -256,27 +252,27 @@ void ODBCConnection::UV_Open(uv_work_t* req)
 
     int timeOut = self->connectTimeout;
 
-    
-    //"DRIVER={IBM INFORMIX ODBC DRIVER (64-bit)};SERVER=ids0;DATABASE=ids0db1;HOST=lxvm-l170.ibm.com;PROTOCOL=onsoctcp;SERVICE=5550;UID=informix;PWD=xyz;"
-    unsigned char StackBuff[512];
-    SQLTCHAR *DriverTag = GetDriverTag();
 
-    const     unsigned DriverTagLen = (unsigned) (_tcslen(DriverTag) * sizeof(SQLTCHAR));
-    unsigned  ConnectionLengthIn    = (unsigned) ((data->connectionLength + 4)*sizeof(SQLTCHAR));
-    SQLTCHAR* ConnectionString      = (SQLTCHAR*)StackBuff;
-    SQLTCHAR* ConnectionStringDyna  = NULL;
+    //"DRIVER={IBM INFORMIX ODBC DRIVER (64-bit)};SERVER=ids0;DATABASE=ids0db1;HOST=lxvm-l170.ibm.com;PROTOCOL=onsoctcp;SERVICE=5550;UID=informix;PWD=xyz;"
+    unsigned char StackBuff[1024];
+    TCHAR *DriverTag = GetDriverTag();
+
+    const     unsigned DriverTagLen = (unsigned) (_tcslen(DriverTag) * sizeof(TCHAR));
+    unsigned  ConnectionLengthIn    = (unsigned) ((data->connectionLength + 4)*sizeof(TCHAR));
+    TCHAR* ConnectionString      = (TCHAR*)StackBuff;
+    TCHAR* ConnectionStringDyna  = NULL;
 
     if (sizeof(StackBuff) < (ConnectionLengthIn + DriverTagLen))
     {
-        //Usage of stack memory to minimize fragmentation in case of frequent connections. 
-        ConnectionStringDyna = (SQLTCHAR*)malloc((ConnectionLengthIn + DriverTagLen));
+        //Usage of stack memory to minimize fragmentation in case of frequent connections.
+        ConnectionStringDyna = (TCHAR*)malloc((ConnectionLengthIn + DriverTagLen));
         ConnectionString = ConnectionStringDyna;
     }
 
     // Memory size has already calculated in bytes.
     memset( (void*)ConnectionString, 0, (ConnectionLengthIn + DriverTagLen) );
     memcpy( (void*)ConnectionString, DriverTag, (DriverTagLen) );
-    memcpy( (void*)( (unsigned char *)ConnectionString + DriverTagLen), (SQLTCHAR*)data->connection, ConnectionLengthIn);
+    memcpy( (void*)( (unsigned char *)ConnectionString + DriverTagLen), (void *)(data->connection), ConnectionLengthIn);
 
     if (timeOut > 0)
     {
@@ -294,6 +290,7 @@ void ODBCConnection::UV_Open(uv_work_t* req)
         self->m_hDBC,                   //ConnectionHandle
         NULL,                           //WindowHandle
         (SQLTCHAR*)ConnectionString,    //InConnectionString
+        //(SQLCHAR *)ConnectionString,    //InConnectionString  sat1
         SQL_NTS,                        //StringLength1 or SQL_NTS
         NULL,                           //OutConnectionString
         0,                              //BufferLength - in characters
@@ -407,31 +404,27 @@ NAN_METHOD(ODBCConnection::OpenSync)
 
     int timeOut = conn->connectTimeout;
 
-    unsigned char StackBuff[512];
-    SQLTCHAR *DriverTag = GetDriverTag();
+    unsigned char StackBuff[1024];
+    TCHAR *DriverTag = GetDriverTag();
 
     const     unsigned DriverTagLen = (unsigned)(_tcslen(DriverTag) * sizeof(SQLTCHAR));
     unsigned  ConnectionLengthIn = (unsigned)((connection->Length() + 4)*sizeof(SQLTCHAR));
-    
-    SQLTCHAR* ConnectionString = (SQLTCHAR*)StackBuff;
-    SQLTCHAR* ConnectionStringDyna = NULL;
+
+    TCHAR* ConnectionString = (TCHAR*)StackBuff;
+    TCHAR* ConnectionStringDyna = NULL;
 
     if (sizeof(StackBuff) < (ConnectionLengthIn + DriverTagLen))
     {
-        //Usage of stack memory to minimize fragmentation in case of frequent connections. 
-        ConnectionStringDyna = (SQLTCHAR*)malloc((ConnectionLengthIn + DriverTagLen));
+        //Usage of stack memory to minimize fragmentation in case of frequent connections.
+        ConnectionStringDyna = (TCHAR*)malloc((ConnectionLengthIn + DriverTagLen));
         ConnectionString = ConnectionStringDyna;
     }
-    
+
     // Memory size has already calculated in bytes.
     memset((void*)ConnectionString, 0, (ConnectionLengthIn + DriverTagLen));
     memcpy((void*)ConnectionString, DriverTag, (DriverTagLen));
-    
-#ifdef UNICODE
-    connection->Write( (uint16_t*) ((unsigned char *)ConnectionString + DriverTagLen) );
-#else
+
     connection->WriteUtf8( (char*) ((unsigned char *)ConnectionString + DriverTagLen) );
-#endif
 
 
     if (timeOut > 0)
@@ -891,15 +884,9 @@ NAN_METHOD(ODBCConnection::Query)
     data->cb = new NanCallback(cb);
     data->sqlLen = sql->Length();
 
-#ifdef UNICODE
-    data->sqlSize = (data->sqlLen * sizeof(uint16_t)) + sizeof(uint16_t);
-    data->sql = (uint16_t *)malloc(data->sqlSize);
-    sql->Write((uint16_t *)data->sql);
-#else
     data->sqlSize = sql->Utf8Length() + 1;
     data->sql = (char *)malloc(data->sqlSize);
     sql->WriteUtf8((char *)data->sql);
-#endif
 
     DEBUG_PRINTF("ODBCConnection::Query : sqlLen=%i, sqlSize=%i, sql=%s\n",
         data->sqlLen, data->sqlSize, (char*)data->sql);
@@ -947,7 +934,7 @@ void ODBCConnection::UV_Query(uv_work_t* req)
     }
     else
     {
-        // prepare statement, bind parameters and execute statement 
+        // prepare statement, bind parameters and execute statement
         ret = SQLPrepare(
             data->hSTMT,
             (SQLTCHAR *)data->sql,
@@ -1100,11 +1087,7 @@ NAN_METHOD(ODBCConnection::QuerySync)
     DEBUG_PRINTF("ODBCConnection::QuerySync\n");
     NanScope();
 
-#ifdef UNICODE
-    String::Value* sql;
-#else
     String::Utf8Value* sql;
-#endif
 
     ODBCConnection* conn = ObjectWrap::Unwrap<ODBCConnection>(args.Holder());
 
@@ -1129,11 +1112,7 @@ NAN_METHOD(ODBCConnection::QuerySync)
             return NanThrowTypeError("ODBCConnection::QuerySync(): Argument 1 must be an Array.");
         }
 
-#ifdef UNICODE
-        sql = new String::Value(args[0]->ToString());
-#else
         sql = new String::Utf8Value(args[0]->ToString());
-#endif
 
         params = ODBC::GetParametersFromArray(
             Local<Array>::Cast(args[1]),
@@ -1147,11 +1126,7 @@ NAN_METHOD(ODBCConnection::QuerySync)
         if (args[0]->IsString())
         {
             //handle Query("sql")
-#ifdef UNICODE
-            sql = new String::Value(args[0]->ToString());
-#else
             sql = new String::Utf8Value(args[0]->ToString());
-#endif
 
             paramCount = 0;
         }
@@ -1167,19 +1142,12 @@ NAN_METHOD(ODBCConnection::QuerySync)
             Local<String> optionSqlKey = NanNew<String>(OPTION_SQL);
             if (obj->Has(optionSqlKey) && obj->Get(optionSqlKey)->IsString())
             {
-#ifdef UNICODE
-                sql = new String::Value(obj->Get(optionSqlKey)->ToString());
-#else
-                sql = new String::Utf8Value(obj->Get(OPTION_SQL)->ToString());
-#endif
+                // sql = new String::Utf8Value(obj->Get(OPTION_SQL)->ToString());  //sat2
+                sql = new String::Utf8Value(obj->Get(optionSqlKey)->ToString());
             }
             else
             {
-#ifdef UNICODE
-                sql = new String::Value(NanNew(""));
-#else
                 sql = new String::Utf8Value(NanNew(""));
-#endif
             }
 
             Local<String> optionParamsKey = NanNew(OPTION_PARAMS);
@@ -1374,46 +1342,26 @@ NAN_METHOD(ODBCConnection::Tables)
 
     if (!catalog->Equals(NanNew("null")))
     {
-#ifdef UNICODE
-        data->catalog = (uint16_t *)malloc((catalog->Length() * sizeof(uint16_t)) + sizeof(uint16_t));
-        catalog->Write((uint16_t *)data->catalog);
-#else
         data->catalog = (char *)malloc(catalog->Length() + 1);
         catalog->WriteUtf8((char *)data->catalog);
-#endif
     }
 
     if (!schema->Equals(NanNew("null")))
     {
-#ifdef UNICODE
-        data->schema = (uint16_t *)malloc((schema->Length() * sizeof(uint16_t)) + sizeof(uint16_t));
-        schema->Write((uint16_t *)data->schema);
-#else
         data->schema = (char *)malloc(schema->Length() + 1);
         schema->WriteUtf8((char *)data->schema);
-#endif
     }
 
     if (!table->Equals(NanNew("null")))
     {
-#ifdef UNICODE
-        data->table = (uint16_t *)malloc((table->Length() * sizeof(uint16_t)) + sizeof(uint16_t));
-        table->Write((uint16_t *)data->table);
-#else
         data->table = (char *)malloc(table->Length() + 1);
         table->WriteUtf8((char *)data->table);
-#endif
     }
 
     if (!type->Equals(NanNew("null")))
     {
-#ifdef UNICODE
-        data->type = (uint16_t *)malloc((type->Length() * sizeof(uint16_t)) + sizeof(uint16_t));
-        type->Write((uint16_t *)data->type);
-#else
         data->type = (char *)malloc(type->Length() + 1);
         type->WriteUtf8((char *)data->type);
-#endif
     }
 
     data->conn = conn;
@@ -1492,46 +1440,26 @@ NAN_METHOD(ODBCConnection::Columns)
 
     if (!catalog->Equals(NanNew("null")))
     {
-#ifdef UNICODE
-        data->catalog = (uint16_t *)malloc((catalog->Length() * sizeof(uint16_t)) + sizeof(uint16_t));
-        catalog->Write((uint16_t *)data->catalog);
-#else
         data->catalog = (char *)malloc(catalog->Length() + 1);
         catalog->WriteUtf8((char *)data->catalog);
-#endif
     }
 
     if (!schema->Equals(NanNew("null")))
     {
-#ifdef UNICODE
-        data->schema = (uint16_t *)malloc((schema->Length() * sizeof(uint16_t)) + sizeof(uint16_t));
-        schema->Write((uint16_t *)data->schema);
-#else
         data->schema = (char *)malloc(schema->Length() + 1);
         schema->WriteUtf8((char *)data->schema);
-#endif
     }
 
     if (!table->Equals(NanNew("null")))
     {
-#ifdef UNICODE
-        data->table = (uint16_t *)malloc((table->Length() * sizeof(uint16_t)) + sizeof(uint16_t));
-        table->Write((uint16_t *)data->table);
-#else
         data->table = (char *)malloc(table->Length() + 1);
         table->WriteUtf8((char *)data->table);
-#endif
     }
 
     if (!column->Equals(NanNew("null")))
     {
-#ifdef UNICODE
-        data->column = (uint16_t *)malloc((column->Length() * sizeof(uint16_t)) + sizeof(uint16_t));
-        column->Write((uint16_t *)data->column);
-#else
         data->column = (char *)malloc(column->Length() + 1);
         column->WriteUtf8((char *)data->column);
-#endif
     }
 
     data->conn = conn;
