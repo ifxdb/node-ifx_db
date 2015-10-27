@@ -1,60 +1,44 @@
 {
   "name": "ifx_db",
   "description": "IBM Informix bindings for node",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "lib/odbc.js",
   "homepage": "https://github.com/ifxdb/node-ifx_db",
-
-  "repository":
-  {
+  "repository": {
     "type": "git",
     "url": "git://github.com/ifxdb/node-ifx_db.git"
   },
-
-  "bugs":
-  {
+  "bugs": {
     "url": "https://github.com/ifxdb/node-ifx_db/issues"
   },
-
-  "contributors":
-  [
+  "contributors": [
     "IBM Informix"
   ],
-
-  "directories":
-  {
+  "directories": {
     "example": "examples",
     "test": "test"
   },
-
-  "engines":
-  {
+  "engines": {
     "node": ">=0.12.4"
   },
-  "scripts":
-  {
+  "scripts": {
     "install": "node installer/IfxDriverInstall.js",
     "test": "cd test && node SampleApp1.js norun"
   },
-
-  "dependencies":
-  {
+  "dependencies": {
     "bindings": "~1.0.0",
     "nan": "~1.8.4",
     "unzip": "~0.1.11",
     "tar.gz": "~0.1.1",
-    "fstream": "~1.0.7"    
+    "fstream": "~1.0.7"
   },
-
-  "keywords":
-  [
+  "keywords": [
     "node",
     "odbc",
     "IBM",
     "Informix",
     "driver"
   ],
-
   "author": "IBM Informix",
   "license": "MIT"
 }
