@@ -1,7 +1,7 @@
 {
   "name": "ifx_db",
   "description": "IBM Informix bindings for node",
-  "version": "1.0.1",
+  "version": "4.0.1",
   "main": "lib/odbc.js",
   "homepage": "https://github.com/ifxdb/node-ifx_db",
   "repository": {
@@ -12,14 +12,15 @@
     "url": "https://github.com/ifxdb/node-ifx_db/issues"
   },
   "contributors": [
-    "IBM Informix"
+    "IBM Informix",
+    "Sathyanesh Krishnan"
   ],
   "directories": {
     "example": "examples",
     "test": "test"
   },
   "engines": {
-    "node": ">=0.12.4"
+	"node": ">=0.8.0"
   },
   "scripts": {
     "install": "node installer/IfxDriverInstall.js",
@@ -27,7 +28,7 @@
   },
   "dependencies": {
     "bindings": "~1.0.0",
-    "nan": "~1.8.4",
+    "nan": "~2.2.0",
     "unzip": "~0.1.11",
     "tar.gz": "~0.1.1",
     "fstream": "~1.0.7"
@@ -39,6 +40,6 @@
     "Informix",
     "driver"
   ],
-  "author": "IBM Informix",
+  "author": "Sathyanesh Krishnan",
   "license": "MIT"
 }

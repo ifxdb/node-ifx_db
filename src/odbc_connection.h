@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2015, Sathyanesh Krishnan<msatyan@gmail.com>
+  Copyright (c) 2016, Sathyanesh Krishnan<msatyan@gmail.com>
   Copyright (c) 2013, Dan VerWeire<dverweire@gmail.com>
   Copyright (c) 2010, Lee Smith<notwink@gmail.com>
 
@@ -21,13 +21,12 @@
 
 #include <nan.h>
 
-class ODBCConnection : public node::ObjectWrap 
-{
+class ODBCConnection : public Nan::ObjectWrap {
   public:
-   static Persistent<String> OPTION_SQL;
-   static Persistent<String> OPTION_PARAMS;
-   static Persistent<String> OPTION_NORESULTS;
-   static Persistent<Function> constructor;
+   static Nan::Persistent<String> OPTION_SQL;
+   static Nan::Persistent<String> OPTION_PARAMS;
+   static Nan::Persistent<String> OPTION_NORESULTS;
+   static Nan::Persistent<Function> constructor;
    
    static void Init(v8::Handle<Object> exports);
    
@@ -36,8 +35,8 @@ class ODBCConnection : public node::ObjectWrap
   protected:
     ODBCConnection() {};
     
-    explicit ODBCConnection(HENV hENV, HDBC hDBC): 
-      ObjectWrap(),
+    explicit ODBCConnection(SQLHENV hENV, SQLHDBC hDBC): 
+      Nan::ObjectWrap(),
       m_hENV(hENV),
       m_hDBC(hDBC) {};
      
@@ -93,9 +92,8 @@ class ODBCConnection : public node::ObjectWrap
     static NAN_METHOD(BeginTransactionSync);
     static NAN_METHOD(EndTransactionSync);
     
-    struct Fetch_Request 
-    {
-      NanCallback* callback;
+    struct Fetch_Request {
+      Nan::Callback* callback;
       ODBCConnection *objResult;
       SQLRETURN result;
     };
@@ -103,8 +101,8 @@ class ODBCConnection : public node::ObjectWrap
     ODBCConnection *self(void) { return this; }
 
   protected:
-    HENV m_hENV;
-    HDBC m_hDBC;
+    SQLHENV m_hENV;
+    SQLHDBC m_hDBC;
     SQLUSMALLINT canHaveMoreResults;
     bool connected;
     int statements;
@@ -112,19 +110,17 @@ class ODBCConnection : public node::ObjectWrap
 	SQLUINTEGER loginTimeout;
 };
 
-struct create_statement_work_data 
-{
-  NanCallback* cb;
+struct create_statement_work_data {
+  Nan::Callback* cb;
   ODBCConnection *conn;
-  HSTMT hSTMT;
+  SQLHSTMT hSTMT;
   int result;
 };
 
-struct query_work_data 
-{
-  NanCallback* cb;
+struct query_work_data {
+  Nan::Callback* cb;
   ODBCConnection *conn;
-  HSTMT hSTMT;
+  SQLHSTMT hSTMT;
   
   Parameter *params;
   int paramCount;
@@ -144,18 +140,16 @@ struct query_work_data
   int result;
 };
 
-struct open_connection_work_data 
-{
-  NanCallback* cb;
+struct open_connection_work_data {
+  Nan::Callback* cb;
   ODBCConnection *conn;
   int result;
   int connectionLength;
   void* connection;
 };
 
-struct close_connection_work_data 
-{
-  NanCallback* cb;
+struct close_connection_work_data {
+  Nan::Callback* cb;
   ODBCConnection *conn;
   int result;
 };

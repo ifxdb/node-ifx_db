@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2015, Sathyanesh Krishnan<msatyan@gmail.com>
+  Copyright (c) 2016, Sathyanesh Krishnan<msatyan@gmail.com>
   Copyright (c) 2013, Dan VerWeire<dverweire@gmail.com>
 
   Permission to use, copy, modify, and/or distribute this software for any
@@ -20,10 +20,9 @@
 
 #include <nan.h>
 
-class ODBCStatement : public node::ObjectWrap 
-{
+class ODBCStatement : public Nan::ObjectWrap {
   public:
-   static Persistent<Function> constructor;
+   static Nan::Persistent<Function> constructor;
    static void Init(v8::Handle<Object> exports);
    
    void Free();
@@ -31,8 +30,8 @@ class ODBCStatement : public node::ObjectWrap
   protected:
     ODBCStatement() {};
     
-    explicit ODBCStatement(HENV hENV, HDBC hDBC, HSTMT hSTMT): 
-      ObjectWrap(),
+    explicit ODBCStatement(SQLHENV hENV, SQLHDBC hDBC, SQLHSTMT hSTMT): 
+      Nan::ObjectWrap(),
       m_hENV(hENV),
       m_hDBC(hDBC),
       m_hSTMT(hSTMT) {};
@@ -71,9 +70,8 @@ class ODBCStatement : public node::ObjectWrap
     static NAN_METHOD(PrepareSync);
     static NAN_METHOD(BindSync);
     
-    struct Fetch_Request 
-    {
-      NanCallback* callback;
+    struct Fetch_Request {
+      Nan::Callback* callback;
       ODBCStatement *objResult;
       SQLRETURN result;
     };
@@ -81,9 +79,9 @@ class ODBCStatement : public node::ObjectWrap
     ODBCStatement *self(void) { return this; }
 
   protected:
-    HENV m_hENV;
-    HDBC m_hDBC;
-    HSTMT m_hSTMT;
+    SQLHENV m_hENV;
+    SQLHDBC m_hDBC;
+    SQLHSTMT m_hSTMT;
     
     Parameter *params;
     int paramCount;
@@ -94,34 +92,30 @@ class ODBCStatement : public node::ObjectWrap
     short colCount;
 };
 
-struct execute_direct_work_data 
-{
-  NanCallback* cb;
+struct execute_direct_work_data {
+  Nan::Callback* cb;
   ODBCStatement *stmt;
   int result;
   void *sql;
   int sqlLen;
 };
 
-struct execute_work_data 
-{
-  NanCallback* cb;
+struct execute_work_data {
+  Nan::Callback* cb;
   ODBCStatement *stmt;
   int result;
 };
 
-struct prepare_work_data 
-{
-  NanCallback* cb;
+struct prepare_work_data {
+  Nan::Callback* cb;
   ODBCStatement *stmt;
   int result;
   void *sql;
   int sqlLen;
 };
 
-struct bind_work_data 
-{
-  NanCallback* cb;
+struct bind_work_data {
+  Nan::Callback* cb;
   ODBCStatement *stmt;
   int result;
 };

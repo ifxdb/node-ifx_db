@@ -1,7 +1,3 @@
-//{
-//#define dynodbc
-//}
-
 #ifdef dynodbc
 
 #include "dynodbc.h"
@@ -32,8 +28,7 @@ void* LoadSharedLibrary(char *pcDllname, int iMode = 2)
   sDllName += ".so";
   void* handle = dlopen(sDllName.c_str(),iMode);
   
-  if (!handle) 
-  {
+  if (!handle) {
     printf("node-odbc: error loading ODBC library: %s\n", dlerror());
   }
   
@@ -47,8 +42,7 @@ void* GetFunction(void *Lib, char *Fnname)
   return (void*)GetProcAddress((HINSTANCE)Lib,Fnname);
 #elif defined(__GNUC__) // GNU compiler
   void * tmp = dlsym(Lib, Fnname);
-  if (!tmp) 
-  {
+  if (!tmp) {
     printf("node-odbc: error loading function: %s\n", Fnname);
   }
   return tmp;

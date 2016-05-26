@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2015, Sathyanesh Krishnan<msatyan@gmail.com>
+  Copyright (c) 2016, Sathyanesh Krishnan<msatyan@gmail.com>
   Copyright (c) 2013, Dan VerWeire<dverweire@gmail.com>
 
   Permission to use, copy, modify, and/or distribute this software for any
@@ -20,11 +20,10 @@
 
 #include <nan.h>
 
-class ODBCResult : public node::ObjectWrap 
-{
+class ODBCResult : public Nan::ObjectWrap {
   public:
-   static Persistent<String> OPTION_FETCH_MODE;
-   static Persistent<Function> constructor;
+   static Nan::Persistent<String> OPTION_FETCH_MODE;
+   static Nan::Persistent<Function> constructor;
    static void Init(v8::Handle<Object> exports);
    
    void Free();
@@ -32,8 +31,8 @@ class ODBCResult : public node::ObjectWrap
   protected:
     ODBCResult() {};
     
-    explicit ODBCResult(HENV hENV, HDBC hDBC, HSTMT hSTMT, bool canFreeHandle): 
-      ObjectWrap(),
+    explicit ODBCResult(SQLHENV hENV, SQLHDBC hDBC, SQLHSTMT hSTMT, bool canFreeHandle): 
+      Nan::ObjectWrap(),
       m_hENV(hENV),
       m_hDBC(hDBC),
       m_hSTMT(hSTMT),
@@ -64,25 +63,24 @@ class ODBCResult : public node::ObjectWrap
     static NAN_GETTER(FetchModeGetter);
     static NAN_SETTER(FetchModeSetter);
     
-    struct fetch_work_data 
-    {
-      NanCallback* cb;
+    struct fetch_work_data {
+      Nan::Callback* cb;
       ODBCResult *objResult;
       SQLRETURN result;
       
       int fetchMode;
       int count;
       int errorCount;
-      Persistent<Array> rows;
-      Persistent<Object> objError;
+      Nan::Persistent<Array> rows;
+      Nan::Persistent<Value> objError;
     };
     
     ODBCResult *self(void) { return this; }
 
   protected:
-    HENV m_hENV;
-    HDBC m_hDBC;
-    HSTMT m_hSTMT;
+    SQLHENV m_hENV;
+    SQLHDBC m_hDBC;
+    SQLHSTMT m_hSTMT;
     bool m_canFreeHandle;
     int m_fetchMode;
     
