@@ -11,8 +11,7 @@ npm install ifx_db
 ```
 
 Note:  
-The ifx_db@1.0.0 driver has supported with NodeJS v0.12.x.  engine  
-The driver installation or runtime has not tested against nodejs-v4.x.x engine.  
+The current version of Informix native node driver (ifx_db@4.0.3) is being compiled with Node.JS v4.4.5 LTS libraries. The driver is expected to work node.js version 4x.  
   
 Unix/Linux (non Windows) platforms:  
 CSDK_HOME environment variable must be set on the shell that you are trying to issue installation command.  
@@ -76,7 +75,7 @@ Download NodeJS source and do a local build.
 
 Build ifx_db native addon module:  
 set NODE_SRC pointing to NodeJS source  
-SET NODE_SRC=C:\njs\Src126  
+SET NODE_SRC=C:\njs\Src445  
 Yo u may use the Visual Studio 2015 Solution to build from source  
   
 or  
