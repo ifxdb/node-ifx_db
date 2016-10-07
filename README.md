@@ -12,6 +12,7 @@ Eg:
 SET CSDK_HOME=C:\mycsdk  
 or  
 export CSDK_HOME=/work/mycsdk  
+  
 npm install ifx_db
 ```
 
