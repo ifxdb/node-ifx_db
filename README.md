@@ -7,11 +7,16 @@ install
 -------
 
 ```bash
+SET ENV FOR CSDK_HOME to CSDK install location  
+Eg:  
+SET CSDK_HOME=C:\mycsdk  
+or  
+export CSDK_HOME=/work/mycsdk  
 npm install ifx_db
 ```
 
 Note:  
-The current version of Informix native node driver (ifx_db@4.0.3) is being compiled with Node.JS v4.4.5 LTS libraries. The driver is expected to work node.js version 4x.  
+The current version of Informix native node driver (ifx_db@4.0.3) is being compiled with Node.JS v4.4.5 LTS libraries. The driver is expected to work node.js version 4x.   
   
 Unix/Linux (non Windows) platforms:  
 CSDK_HOME environment variable must be set on the shell that you are trying to issue installation command.  
