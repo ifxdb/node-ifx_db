@@ -558,7 +558,7 @@ Handle<Value> ODBC::GetColumnValue( SQLHSTMT hStmt, Column column,
                 // If SQLGetData is called more than one time in a row for a column containing fixed-length data, 
                 // it returns SQL_NO_DATA for all calls after the first.
 
-                // break;
+                break;
             }
 
           }
