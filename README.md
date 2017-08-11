@@ -22,8 +22,7 @@ export CSDK_HOME=/work/mycsdk
 npm install ifx_db
 ```
 
-Note:  
-The current version of Informix native node driver (ifx_db@4.0.3) is being compiled with Node.JS v4.4.5 LTS libraries. The driver is expected to work node.js version 4x.   
+**Note:** The current version of Informix native node driver (ifx_db@4.0.3) is being compiled with Node.JS v4.4.5 LTS libraries. The driver is expected to work node.js version 4x.   
   
 ### Unix/Linux (non Windows) platforms:  
 **CSDK_HOME** environment variable must be set on the shell that you are trying to issue installation command.  
@@ -42,7 +41,7 @@ Local Build Prerequisite
 https://www.python.org/   
 npm install -g node-gyp  
 
-Local Linux Build 
+## Local Linux Build 
 --------------------
 FYI:  
 make sure bit architecture matches for all binary components  
@@ -58,7 +57,7 @@ export INFORMIXDIR=${CSDK_HOME}
 export LD_LIBRARY_PATH=${INFORMIXDIR}/lib/esql:${INFORMIXDIR}/lib/cli  
 ```
 
-### local build 
+### fire the build 
 ```bash 
 # cd ifx_db package directory, say:   
 cd /work/user1/node_modules/ifx_db  
@@ -104,19 +103,12 @@ The node.lib is needed for compiling native addon, this library will get build i
 FYI: The node.lib can also be obtained either from Node-gyp, it is up to you to choose one of the approach.  
 
 
-### Set ENVs
-Say you have extracted NodeJS sourct at C:\njs\Src6112  
-Infomrix CSDK at c:\Informix
-
-```bat
-SET CSDK_HOME=c:\Informix
-SET NODE_SRC=C:\njs\Src6112
-```
-
 ### Open VS 2015 x64 cmd
 ```bat
+# Say you have extracted NodeJS sourct at C:\njs\Src6112  
 cd C:\njs\Src6112
 
+SET NODE_SRC=C:\njs\Src6112
 vcbuild.bat nosign debug x64
 
 FYI:
@@ -144,6 +136,9 @@ npm install nan
 # Open VS 2015 x64 cmd
 # Switch NodeJS to picket from the newly build location
 SET PATH=C:\njs\Src6112\Debug;C:\njs\Src6112\deps\npm\bin\node-gyp-bin;%PATH%
+
+# Say you have installed Infomrix CSDK at c:\Informix
+# Say you have extracted NodeJS sourct at C:\njs\Src6112 
 SET CSDK_HOME=c:\Informix
 SET NODE_SRC=C:\njs\Src6112
 
@@ -161,11 +156,10 @@ C:\njs\node-ifx_db\IfxNodeJsVS2015.sln
 If no build error then the driver binaries will be at 
 C:\njs\node-ifx_db\build\Debug
 ```
-
   
 
 
-Connection String
+## Connection String
 -----------------
 
 ```javascript
@@ -176,7 +170,7 @@ var ConnectionString = "SERVER=<IDS ServerName>;DATABASE=<dbname>;HOST=<myhost>;
 
 
 
-Example
+## Example
 -------
 
 ```javascript
