@@ -95,13 +95,13 @@ C:\Dev\nodejs\
 
 ### Build NodeJS from its source
 ##### Why do we build nodejs from its source? 
-The node.lib is needed for compiling native addon, this library will get build if we build nodejs from its source.  
+The **node.lib** is needed for compiling native addon, this library will get build if we build nodejs from its source.  
 FYI: The node.lib can also be obtained either from Node-gyp, it is up to you to choose one of the approach.  
 
 
 ### Open VS 2015 x64 cmd
 ```bat
-# Say you have extracted NodeJS sourct at C:\njs\Src6112  
+# Say you have extracted NodeJS sourct at **C:\njs\Src6112**
 cd C:\njs\Src6112
 
 SET NODE_SRC=C:\njs\Src6112
