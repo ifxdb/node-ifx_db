@@ -3,6 +3,12 @@ ifx_db: IBM Informix native NodeJS driver
 
 An asynchronous/synchronous interface for node.js to IBM Informix.
 
+
+### FYI: 
+* [Breaking changes between v4 LTS and v6 LTS](https://github.com/nodejs/node/wiki/Breaking-changes-between-v4-LTS-and-v6-LTS)
+* [Node.js community wiki](https://github.com/nodejs/node/wiki)
+
+
 install
 -------
 
@@ -19,11 +25,12 @@ npm install ifx_db
 Note:  
 The current version of Informix native node driver (ifx_db@4.0.3) is being compiled with Node.JS v4.4.5 LTS libraries. The driver is expected to work node.js version 4x.   
   
-Unix/Linux (non Windows) platforms:  
-CSDK_HOME environment variable must be set on the shell that you are trying to issue installation command.  
+### Unix/Linux (non Windows) platforms:  
+**CSDK_HOME** environment variable must be set on the shell that you are trying to issue installation command.  
 The CSDK_HOME should point to a valid Informix Client SDK distribution with same bit architecture as the NodeJS engine.  
-export CSDK_HOME=/work/csdk410x5  
-
+```bash
+export CSDK_HOME=/work/informix  
+```
 
 
 Local Build Prerequisite 
@@ -40,55 +47,121 @@ Local Linux Build
 FYI:  
 make sure bit architecture matches for all binary components  
 If you are using 64bit nodejs make sure you are using 64bit Informix Client-SDK as well.
-  
-\#Complile time environment setting  
-export CSDK_HOME=/work/csdk410x5  
+
+```bash  
+# Complile time environment setting  
+export CSDK_HOME=/work/informix  
 export PATH=/work/nodejs/bin:$PATH  
 
-\#Runtime environment setting  
+# Runtime environment setting  
 export INFORMIXDIR=${CSDK_HOME}  
 export LD_LIBRARY_PATH=${INFORMIXDIR}/lib/esql:${INFORMIXDIR}/lib/cli  
+```
 
-\#local build  
-\#cd ifx_db package directory, say:   
+### local build 
+```bash 
+# cd ifx_db package directory, say:   
 cd /work/user1/node_modules/ifx_db  
   
 rm -rf ./build  
 node-gyp configure -v  
 node-gyp build -v  
-  
-check the build output, if all right then the driver binary is    
+```
+
+#### check the build output, if all right then the driver binary is    
+```bash
 ./build/Release/ifx_node_bind.node
   
-To run your nodejs JavaScript program  
+# To run your nodejs JavaScript program  
 cd /work/user1  
 node SampleApp1.js
+```
 
-Local Windows Build 
-----------------------
-FYI:  
-make sure bit architecture matches for all binary components  
-If you are using 64bit nodejs make sure you are using 64bit Informix Client-SDK as well.
+## Windows Build
+* Build Nodejs from its source 
+* Build Informix Nodejs driver 
 
-Set CSDK_HOME environment variable pointing to Informix Client SDK installation.  
-CSDK_HOME=C:\MyCsdk410xC5
+FYI: make sure bit architecture matches for all binary components  
+If you are using 64bit nodejs make sure you are using 64bit Informix Client-SDK as well.  
 
-Build node.lib:  
-The node.lib is needed for compiling native addon,  
-one of the way to get node.lib is to build it from NodeJS source (you may either try Node-gyp).  
-https://github.com/joyent/node/wiki/installation#installing-on-windows  
-Download NodeJS source and do a local build.  
 
-Build ifx_db native addon module:  
-set NODE_SRC pointing to NodeJS source  
-SET NODE_SRC=C:\njs\Src445  
-Yo u may use the Visual Studio 2015 Solution to build from source  
-  
-or  
+### Prerequisite :
+* Git  
+* NodeJS
+* NPM
+* Python     (2.7.x (3.x is not supported yet))
+* Node-gyp   (npm install -g node-gyp)
+* NAN        (npm install -g nan)
+* Informix Client SDK 410 xC2 or above
 
-\#Command line build  
-node-gyp configure  
-node-gyp build  
+
+### Node Install
+C:\Dev\nodejs\
+
+### Build NodeJS from its source
+##### Why do we build nodejs from its source? 
+The node.lib is needed for compiling native addon, this library will get build if we build nodejs from its source.  
+FYI: The node.lib can also be obtained either from Node-gyp, it is up to you to choose one of the approach.  
+
+
+### Set ENVs
+Say you have extracted NodeJS sourct at C:\njs\Src6112  
+Infomrix CSDK at c:\Informix
+
+```bat
+SET CSDK_HOME=c:\Informix
+SET NODE_SRC=C:\njs\Src6112
+```
+
+### Open VS 2015 x64 cmd
+```bat
+cd C:\njs\Src6112
+
+vcbuild.bat nosign debug x64
+
+FYI:
+vcbuild.bat nosign release x64 : Build in release mode in 64-bit computers
+vcbuild.bat nosign debug x64   : Build in debug mode for 64-bit computers
+vcbuild.bat nosign release     : Build in release mode in 32-bit computers
+vcbuild.bat clean              : Clean Project
+```
+
+
+### Build the Informix nodejs driver 
+
+#### clone the driver 
+```bat
+cd C:\njs
+git clone https://github.com/ifxdb/node-ifx_db.git
+
+cd C:\njs\node-ifx_db
+npm install nan
+```
+
+
+#### Fire the build 
+```bat
+# Open VS 2015 x64 cmd
+# Switch NodeJS to picket from the newly build location
+SET PATH=C:\njs\Src6112\Debug;C:\njs\Src6112\deps\npm\bin\node-gyp-bin;%PATH%
+SET CSDK_HOME=c:\Informix
+SET NODE_SRC=C:\njs\Src6112
+
+# Command line build
+cd C:\njs\node-ifx_db
+node-gyp configure
+node-gyp build
+
+#FYI: You may use the Visual Studio 2015 Solution to build from source
+C:\njs\node-ifx_db\IfxNodeJsVS2015.sln
+```
+
+### Driver binaries
+```
+If no build error then the driver binaries will be at 
+C:\njs\node-ifx_db\build\Debug
+```
+
   
 
 
