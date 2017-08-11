@@ -9,15 +9,12 @@ An asynchronous/synchronous interface for node.js to IBM Informix.
 * [Node.js community wiki](https://github.com/nodejs/node/wiki)
 
 
-install
--------
+## install
+----------
 
 ```bash
-SET ENV FOR CSDK_HOME to CSDK install location  
-Eg:  
-SET CSDK_HOME=C:\mycsdk  
-or  
-export CSDK_HOME=/work/mycsdk  
+# SET ENV FOR CSDK_HOME to CSDK install location  
+export CSDK_HOME=/work/informix  
   
 npm install ifx_db
 ```
@@ -31,21 +28,20 @@ The CSDK_HOME should point to a valid Informix Client SDK distribution with same
 export CSDK_HOME=/work/informix  
 ```
 
-
-Local Build Prerequisite 
-------------------------
-* **Informix Client SDK 410 xC2 or above**
-* **Node-gyp**
-* **Python 2.7.x  (3.x is not supported yet)**
-
-https://www.python.org/   
-npm install -g node-gyp  
-
 ## Local Linux Build 
 --------------------
-FYI:  
-make sure bit architecture matches for all binary components  
+**FYI:** make sure bit architecture matches for all binary components  
 If you are using 64bit nodejs make sure you are using 64bit Informix Client-SDK as well.
+
+### Prerequisite :
+* Git  
+* NodeJS
+* NPM
+* Python     (2.7.x (3.x is not supported yet))
+* Node-gyp   (npm install -g node-gyp)
+* NAN        (npm install -g nan)
+* Informix Client SDK 410 xC2 or above
+
 
 ```bash  
 # Complile time environment setting  
