@@ -122,8 +122,6 @@ vcbuild.bat clean              : Clean Project
 cd C:\njs
 git clone https://github.com/ifxdb/node-ifx_db.git
 
-cd C:\njs\node-ifx_db
-npm install nan
 ```
 
 
@@ -143,7 +141,11 @@ cd C:\njs\node-ifx_db
 node-gyp configure
 node-gyp build
 
-#FYI: You may use the Visual Studio 2015 Solution to build from source
+#FYI: 
+node-gyp build  --debug
+node-gyp build  --release
+
+Alternative build: you may use the Visual Studio 2015 Solution to build from source
 C:\njs\node-ifx_db\IfxNodeJsVS2015.sln
 ```
 
@@ -706,63 +708,6 @@ pool.open(cn, function (err, db) {
 		console.log("all connections in the pool are closed");
 	});
 });
-```
-build options
--------------
-
-### Debug
-
-If you would like to enable debugging messages to be displayed you can add the 
-flag `DEBUG` to the defines section of the `binding.gyp` file and then execute 
-`node-gyp rebuild`.
-
-```javascript
-<snip>
-'defines' : [
-  "DEBUG"
-],
-<snip>
-```
-### Unicode
-
-The driver has support for UTF8 strings
-
-
-```javascript
-<snip>
-'defines' : [
-  "UNICODE"
-],
-<snip>
-```
-
-
-
-
-tips
-----
-### Using node < v0.10 on Linux
-
-Be aware that through node v0.9 the uv_queue_work function, which is used to 
-execute the ODBC functions on a separate thread, uses libeio for its thread 
-pool. This thread pool by default is limited to 4 threads.
-
-This means that if you have long running queries spread across multiple 
-instances of ifx_db.Database() or using odbc.Pool(), you will only be able to 
-have 4 concurrent queries.
-
-You can increase the thread pool size by using @developmentseed's [node-eio]
-(https://github.com/developmentseed/node-eio).
-
-#### install: 
-```bash
-npm install eio
-```
-
-#### usage:
-```javascript
-var eio = require('eio'); 
-eio.setMinParallel(threadCount);
 ```
 
 contributors
