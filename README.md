@@ -5,7 +5,7 @@ An asynchronous/synchronous interface for node.js to IBM Informix.
 
 
 ### FYI: 
-* [Breaking changes between v4 LTS and v6 LTS](https://github.com/nodejs/node/wiki/Breaking-changes-between-v4-LTS-and-v6-LTS)
+* [Breaking NodeJS changes between v4 LTS and v6 LTS](https://github.com/nodejs/node/wiki/Breaking-changes-between-v4-LTS-and-v6-LTS)
 * [Node.js community wiki](https://github.com/nodejs/node/wiki)
 
 
