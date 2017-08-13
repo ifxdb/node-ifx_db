@@ -12,39 +12,25 @@ var msg_CSDK_HOME_not_correct = 'The CSDK_HOME environment veriable is not set t
 //var installerURL = 'http://public.dhe.ibm.com/ibmdl/export/pub/software/data/db2/drivers/odbc_cli/';
 var CURRENT_DIR = process.cwd();
 
-
-// Function to download file using HTTP.get
 function IfxNodeJsInstall(file_url)
 {
-    var installerfileURL;
-
     var CSDK_HOME = null;
     var iS_CSDK_HOME_Valid = true;
 
-    if (platform == 'win32')
+    // Check prebuilt binaries available, if so install it with that
+    var PreBuiltFound = UnZipPreBuilts();
+    if (PreBuiltFound == true )
     {
+        return(true);
+    }
 
-        if (arch == 'x64')
-        {
-            UnZipBuildFile();
-/*
-            var BUILD_FILE = path.resolve(CURRENT_DIR, 'bin/Win64_build.zip');
-            readStream = fs.createReadStream(BUILD_FILE);
-            writeStream = fstream.Writer(CURRENT_DIR);
-
-            readStream
-              .pipe(unzip.Parse())
-              .pipe(writeStream).on("unpipe", function ()
-              {
-                  RemoveBuildArchive();
-              });
-*/
-        }
-        else
-        {
-            console.log('Windows 32 bit not supported. Please use an x64 architecture.');
-            return;
-        }
+    //Pre-built binaries are not available for this platform. 
+    if (PreBuiltFound == false )
+    {
+        console.log('No prebuilt binaries available for platform=' + 
+                                platform + 'with architecture='+ arch);
+        console.log('You may try local build steps to build the driver on this platform')
+        //return(false);
     }
 
 
@@ -87,7 +73,7 @@ function IfxNodeJsInstall(file_url)
             if (platform == 'linux' || (platform == 'darwin' && arch == 'x64'))
             {
                 RemoveBuildArchive();
-                buildBinary(false);
+                buildBinary();
             }
             else
             {
@@ -95,11 +81,11 @@ function IfxNodeJsInstall(file_url)
                 {
                     console.log('Building binaries for node-ifx_db. This platform is not completely supported, you might encounter errors.');
                     console.log('In such cases please open an issue on our repository, http://github.com/ifx_db/node-ifx_db.');
-                    buildBinary(false);
+                    buildBinary();
                 }
                 else
                 {
-                    if (UnZipBuildFile() == false)
+                    if (UnZipPreBuilts() == false)
                     {
                         console.log('Please install Informix Client SDK prior to installing Informix NodeJS.');
                         console.log('Please set CSDK_HOME environment variable pointing to Client SDK installation.');
@@ -111,15 +97,12 @@ function IfxNodeJsInstall(file_url)
     }
     else
     {
-        if (UnZipBuildFile() == false)
-        {
-            console.log('Error: Please set CSDK_HOME environment variable');
-            iS_CSDK_HOME_Valid = false;
-            process.exit(1);
-        }
+        console.log('Error: Please set CSDK_HOME environment variable');
+        iS_CSDK_HOME_Valid = false;
+        process.exit(1);
     }
 
-    function buildBinary(isDownloaded)
+    function buildBinary()
     {
         var buildString = "node-gyp configure build";
 
@@ -134,28 +117,41 @@ function IfxNodeJsInstall(file_url)
         });
     }
 
-    function UnZipBuildFile()
+    function UnZipPreBuilts()
     {
-        var build_file = undefined;
+        var PlatformDir = undefined;
 
-        //build_file = 'Win64_build.zip';
-        if (platform == 'win32' && arch == 'x64')
+        if (platform == 'win32')
         {
-            build_file = 'Win64_build.zip';
+            if (arch == 'x64')
+            {
+                PlatformDir = 'Win64';
+            }
         }
-        else if (platform == 'linux' && arch == 'x64')
-        {
-            build_file = 'Linux64_build.zip';
-        }
+        // if (platform == 'linux' )
+        // {
+        //     if (arch == 'x64')
+        //     {
+        //         PlatformDir = 'Linux64';
+        //     }
+        //     if (arch == 'arm64')
+        //     {
+        //         PlatformDir = 'Arm64';
+        //     }           
+        // }        
 
-        if (build_file == undefined)
+        if( PlatformDir == undefined)
         {
             return (false);
         }
 
         var fstream = require('fstream');
         var unzip = require('unzip');
-        var BUILD_FILE = path.resolve(CURRENT_DIR, 'bin/' + build_file);
+
+        // var BUILD_FILE = path.resolve(CURRENT_DIR, 'bin/' + build_file);
+        var BUILD_FILE = path.resolve(CURRENT_DIR, 
+            'prebuilt/' + PlatformDir + '/' + 'build.zip');
+        
         var readStream = fs.createReadStream(BUILD_FILE);
         var writeStream = fstream.Writer(CURRENT_DIR);
 
@@ -171,7 +167,15 @@ function IfxNodeJsInstall(file_url)
 
     function RemoveBuildArchive()
     {
-        var PathBinDir = path.resolve(CURRENT_DIR, 'bin');
+        // Set to false if we decided to remomve pre-built
+        var DoNotRemoveBuildArchive = true;
+        if( DoNotRemoveBuildArchive == true)
+        {
+            // Let us not remove build archive
+            return;
+        }
+
+        var PathBinDir = path.resolve(CURRENT_DIR, 'prebuilt');
         fs.exists(PathBinDir, function (exists)
         {
             if (exists)
