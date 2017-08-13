@@ -105,7 +105,7 @@ FYI: The node.lib can also be obtained either from Node-gyp, it is up to you to 
 cd C:\njs\Src6112
 
 SET NODE_SRC=C:\njs\Src6112
-vcbuild.bat nosign debug x64
+vcbuild.bat nosign release x64
 
 FYI:
 vcbuild.bat nosign release x64 : Build in release mode in 64-bit computers
@@ -117,27 +117,31 @@ vcbuild.bat clean              : Clean Project
 
 ### Build the Informix nodejs driver 
 
-#### clone the driver 
+#### clone the driver source code
 ```bat
-cd C:\njs
+cd C:\work
 git clone https://github.com/ifxdb/node-ifx_db.git
-
+cd C:\work\node-ifx_db
 ```
 
+#### Set env for the build 
+* **c:\Informix** is the location where Informix CSDK installed 
+* **C:\njs\Src6112** is the nodejs source that you have completed the build 
+``` bat
+#Open VS 2015 x64 cmd
 
-#### Fire the build 
-```bat
-# Open VS 2015 x64 cmd
-# Switch NodeJS to picket from the newly build location
+#Switch NodeJS to picket from the newly build location
 SET PATH=C:\njs\Src6112\Debug;C:\njs\Src6112\deps\npm\bin\node-gyp-bin;%PATH%
+or (depens on your nodejs build)
+SET PATH=C:\njs\Src6112\Release;C:\njs\Src6112\deps\npm\bin\node-gyp-bin;%PATH%
 
-# Say you have installed Infomrix CSDK at c:\Informix
-# Say you have extracted NodeJS sourct at C:\njs\Src6112 
 SET CSDK_HOME=c:\Informix
 SET NODE_SRC=C:\njs\Src6112
+```
 
-# Command line build
-cd C:\njs\node-ifx_db
+#### Fire the driver build 
+```bat
+cd C:\work\node-ifx_db
 node-gyp configure
 node-gyp build
 
@@ -146,15 +150,26 @@ node-gyp build  --debug
 node-gyp build  --release
 
 Alternative build: you may use the Visual Studio 2015 Solution to build from source
-C:\njs\node-ifx_db\IfxNodeJsVS2015.sln
+C:\work\node-ifx_db\IfxNodeJsVS2015.sln
 ```
 
 ### Driver binaries
 ```
 If no build error then the driver binaries will be at 
-C:\njs\node-ifx_db\build\Debug
+C:\work\node-ifx_db\build\Debug
 ```
-  
+
+#### [FYI: node-gyp build helps](https://github.com/nodejs/node-gyp)
+| **Command**   | **Description**
+|:--------------|:---------------------------------------------------------------
+| `help`        | Shows the help dialog
+| `build`       | Invokes `make`/`msbuild.exe` and builds the native addon
+| `clean`       | Removes the `build` directory if it exists
+| `configure`   | Generates project build files for the current platform
+| `rebuild`     | Runs `clean`, `configure` and `build` all in a row
+| `install`     | Installs node header files for the given version
+| `list`        | Lists the currently installed node header versions
+| `remove`      | Removes the node header files for the given version
 
 
 ## Connection String
