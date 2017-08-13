@@ -48,7 +48,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(NODE_SRC)\src;$(NODE_SRC)\deps\v8\include;$(NODE_SRC)\deps\uv\include;.\node_modules\nan;$(CSDK_HOME)\incl\cli;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(NODE_SRC)\src;$(NODE_SRC)\deps\v8\include;$(NODE_SRC)\deps\uv\include;$(NODE_SRC)\test\gc\node_modules\nan;$(CSDK_HOME)\incl\cli;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <BufferSecurityCheck>true</BufferSecurityCheck>
       <CompileAsWinRT>false</CompileAsWinRT>
@@ -78,13 +78,13 @@
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>$(NODE_SRC)\src;$(NODE_SRC)\deps\uv\include;$(NODE_SRC)\deps\v8\include;.\node_modules\nan;$(CSDK_HOME)\incl\cli;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(NODE_SRC)\src;$(NODE_SRC)\deps\uv\include;$(NODE_SRC)\deps\v8\include;$(NODE_SRC)\test\gc\node_modules\nan;$(CSDK_HOME)\incl\cli;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;BUILDING_V8_SHARED=1;BUILDING_UV_SHARED=1;ODBC64;BUILDING_NODE_EXTENSION;DEBUG;_DEBUG;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(NODE_SRC)\src;$(NODE_SRC)\deps\v8\include;$(NODE_SRC)\deps\uv\include;.\node_modules\nan;$(CSDK_HOME)\incl\cli;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(NODE_SRC)\src;$(NODE_SRC)\deps\v8\include;$(NODE_SRC)\deps\uv\include;$(NODE_SRC)\test\gc\node_modules\nan;$(CSDK_HOME)\incl\cli;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <BufferSecurityCheck>true</BufferSecurityCheck>
       <CompileAsWinRT>false</CompileAsWinRT>
@@ -125,7 +125,7 @@
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>$(NODE_SRC)\src;$(NODE_SRC)\deps\uv\include;$(NODE_SRC)\deps\v8\include;.\node_modules\nan;$(CSDK_HOME)\incl\cli;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(NODE_SRC)\src;$(NODE_SRC)\deps\uv\include;$(NODE_SRC)\deps\v8\include;$(NODE_SRC)\test\gc\node_modules\nan;$(CSDK_HOME)\incl\cli;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;BUILDING_V8_SHARED=1;BUILDING_UV_SHARED=1;ODBC64;BUILDING_NODE_EXTENSION;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
   </ItemDefinitionGroup>

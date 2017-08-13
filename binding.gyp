@@ -15,7 +15,7 @@
 
       'include_dirs': 
       [
-        "<!(node -e \"require('nan')\")"
+        #"<!(node -e \"require('nan')\")"
       ],
 
       'defines' : 
@@ -126,7 +126,8 @@
 
           'include_dirs': 
           [
-            '$(CSDK_HOME)/incl/cli'
+            '$(CSDK_HOME)/incl/cli;',
+            '$(NODE_SRC)/test/gc/node_modules/nan'     
           ],
         }
         ],
@@ -147,7 +148,8 @@
 
           'include_dirs': 
           [
-            '$(CSDK_HOME)/incl/cli',
+            '$(CSDK_HOME)/incl/cli;',
+            '$(NODE_SRC)/test/gc/node_modules/nan'
           ],
         }
         ],

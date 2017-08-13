@@ -1,7 +1,14 @@
 
 #vs Code IDE configuration files
-#.vscode
+.vscode
+.vs
+*.VC.db
+
 
 **/*.map
 **/node_modules
+
+build
+
+
 
