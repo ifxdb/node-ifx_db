@@ -91,7 +91,10 @@ function ifx_db_OpenSync(ConStr)
 
 function main_func()
 {
-    var ConnectionString = "SERVER=ids0;DATABASE=ids0db1;HOST=blue.ibm.com;PROTOCOL=onsoctcp;SERVICE=5550;UID=informix;PWD=xxxx;";
+    // In case of connection problem first check whether the server is 
+    // really listening to the port on the right IP.
+    // netstat -a | findstr  9088
+    var ConnectionString = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;UID=informix;PWD=xxxxx;";
 
     if (process.argv.length == 3 && process.argv[2] == "norun")
     {
@@ -107,7 +110,7 @@ function main_func()
     //Synchronous Execution
     ifx_db_OpenSync(ConnectionString);
 
-    //Asynchronous Execution
+    // Asynchronous Execution
     ifx_db_Open(ConnectionString);
 }
 
