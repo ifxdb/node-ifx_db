@@ -128,17 +128,17 @@ function IfxNodeJsInstall(file_url)
                 PlatformDir = 'Win64';
             }
         }
-        // if (platform == 'linux' )
-        // {
-        //     if (arch == 'x64')
-        //     {
-        //         PlatformDir = 'Linux64';
-        //     }
-        //     if (arch == 'arm64')
-        //     {
-        //         PlatformDir = 'Arm64';
-        //     }           
-        // }        
+        if (platform == 'linux' )
+        {
+            if (arch == 'x64')
+            {
+                PlatformDir = 'Linux64';
+            }
+            // if (arch == 'arm64')
+            // {
+            //     PlatformDir = 'Arm64';
+            // }           
+        }        
 
         if( PlatformDir == undefined)
         {
