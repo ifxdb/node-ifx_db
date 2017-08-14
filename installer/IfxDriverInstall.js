@@ -155,12 +155,9 @@ function IfxNodeJsInstall(file_url)
         var readStream = fs.createReadStream(BUILD_FILE);
         var writeStream = fstream.Writer(CURRENT_DIR);
 
-        readStream
-          .pipe(unzip.Parse())
-          .pipe(writeStream).on("unpipe", function ()
-          {
-              RemoveBuildArchive();
-          });
+        readStream.pipe( unzip.Parse() )
+            .pipe( writeStream )
+            .on( "unpipe", function() { RemoveBuildArchive(); } );
 
         return (true);
     }
