@@ -1,4 +1,4 @@
-## IBM Informix native NodeJS driver
+## Informix native Node.js driver
 ------------------------------------
 Informix native Node.js driver is a high performance driver with asynchronous/synchronous interface for node.js database applications working with Informix. Feel free to make contribution to help community. 
 
@@ -6,7 +6,7 @@ Informix native Node.js driver is a high performance driver with asynchronous/sy
 ## install
 ----------
 The driver has a prebuilt binary for 64bit version of Linux and Windows (soon ARM too), all other platform you may perform a local build. The current version of Informix native node driver (ifx_db@6.0.6) is being compiled with Node.js v6.11.x LTS libraries. The driver is expected to work node.js version 6x.   
-**FYI:** Informix Client SDK 410 xC2 or above is needed the driver to connect to the database.
+**FYI**: Informix Client SDK 410 xC2 or above is needed the driver to connect to the database.
 
 ```bash
 npm install ifx_db
