@@ -6,17 +6,40 @@
 |:-------------|:-------------------|:----------------------------------------
 | `Win64`      | node-v6.11.2       | 685ef0f84d3954ba1c7a0377a36908c4
 | `Arm64`      | node-v6.11.2       | 
-| `Linux64`    | node-v6.11.2       | 59b543dea0c08e0c29eb46fd769c5b5d
+| `Linux64`    | node-v6.11.2       | 6901472318b1b3173f8633b5f402daf4
 
 
-###  Checking Hash 
-#### Linux
-```
-cd /work/dev/node-ifx_db/
+ 
+#### Prepare Linux64 prebuild binary 
+```bash
+git clone https://github.com/ifxdb/node-ifx_db.git
+
+cd node-ifx_db
+npm install
+
+rm -rf ./build  
+node-gyp configure -v  
+node-gyp build -v  
+
+rm ./build/binding.Makefile  
+rm ./build/config.gypi  
+rm ./build/ifx_node_bind.target.mk  
+rm ./build/Makefile 
+rm -rf ./build/Release/.deps
+rm -rf ./build/Release/obj.target
+
 zip -r build.zip ./build
 
-md5sum build.zip
-59b543dea0c08e0c29eb46fd769c5b5d  build.zip
+rm ./prebuilt/Linux64/build.zip
+mv build.zip ./prebuilt/Linux64/build.zip
+```
+
+###  Checking Hash
+```
+md5sum ./prebuilt/Linux64/build.zip
+6901472318b1b3173f8633b5f402daf4  ./prebuilt/Linux64/build.zip
+
+update the Hash and Checkin the repo
 ```
 
 #### Windows Built in tools for checking Hash value
