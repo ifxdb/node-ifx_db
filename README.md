@@ -1,5 +1,5 @@
-ifx_db: IBM Informix native NodeJS driver
------------------------------------------
+## IBM Informix native NodeJS driver
+------------------------------------
 Informix native Node.js driver is a high performance driver with asynchronous/synchronous interface for node.js database applications working with Informix. Feel free to make contribution to help community. 
 
 
@@ -43,7 +43,7 @@ export INFORMIXDIR=${CSDK_HOME}
 export LD_LIBRARY_PATH=${INFORMIXDIR}/lib/esql:${INFORMIXDIR}/lib/cli  
 ```
 
-### fire the build 
+### Fire the build 
 ```bash 
 git clone https://github.com/ifxdb/node-ifx_db.git
 
@@ -65,8 +65,8 @@ node-gyp build -v
 cd ..
 #rm -rf node_modules
 mkdir  node_modules
-cd node_modules
-ln -s ../node-ifx_db ./ifx_db
+cd     node_modules
+ln -s  ../node-ifx_db ./ifx_db
 cd ..
 cp node-ifx_db/SampleApp1.js .
 
@@ -92,9 +92,6 @@ If you are using 64bit nodejs make sure you are using 64bit Informix Client-SDK 
 * NAN        (npm install -g nan)
 * Informix Client SDK 410 xC2 or above
 
-
-### Node Install
-C:\Dev\nodejs\
 
 ### Build NodeJS from its source
 ##### Why do we build nodejs from its source? 
