@@ -15,7 +15,7 @@
 git clone https://github.com/ifxdb/node-ifx_db.git
 
 cd node-ifx_db
-npm install
+npm update
 
 rm -rf ./build  
 node-gyp configure -v  
@@ -70,7 +70,7 @@ certutil -hashfile build.zip MD5
 ---
 
 
-### The prebuilt operations in nutshell 
+### The prebuilt install operations in nutshell 
 ```bash
 # Let us assume you plan to clone the driver code at /work/dev/t1
 # rm -rf /work/dev/t1
@@ -86,7 +86,7 @@ cd /work/dev/t1/node_modules
 git clone https://github.com/ifxdb/node-ifx_db.git
 
 cd /work/dev/t1/node_modules/node-ifx_db
-git checkout PreBuiltBin
+#git checkout PreBuiltBin
 # rm -rf ./.git
 
 cd /work/dev/t1/node_modules/
