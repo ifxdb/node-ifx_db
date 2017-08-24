@@ -1,7 +1,7 @@
 {
   "name": "ifx_db",
   "description": "IBM Informix bindings for node",
-  "version": "4.0.2",
+  "version": "6.0.0",
   "main": "lib/odbc.js",
   "homepage": "https://github.com/ifxdb/node-ifx_db",
   "repository": {
@@ -27,10 +27,10 @@
     "test": "cd test && node SampleApp1.js norun"
   },
   "dependencies": {
-    "bindings": "~1.0.0",
-    "nan": "~2.2.0",
+    "bindings": "~1.3.0",
+    "nan": "~2.6.0",
     "unzip": "~0.1.11",
-    "fstream": "~1.0.7"
+    "fstream": "~1.0.11"
   },
   "keywords": [
     "node",
