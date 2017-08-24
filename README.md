@@ -1,34 +1,25 @@
-ifx_db: IBM Informix native NodeJS driver
------------------------------------------
-
-An asynchronous/synchronous interface for node.js to IBM Informix.
-
-
-### FYI: 
-* [Breaking NodeJS changes between v4 LTS and v6 LTS](https://github.com/nodejs/node/wiki/Breaking-changes-between-v4-LTS-and-v6-LTS)
-* [Node.js community wiki](https://github.com/nodejs/node/wiki)
+## Informix native Node.js driver
+------------------------------------
+Informix native Node.js driver is a high performance driver with asynchronous/synchronous interface for node.js database applications working with Informix. Feel free to make contribution to help community. 
 
 
 ## install
 ----------
+The driver has a prebuilt binary for 64bit version of Linux and Windows (soon ARM too), all other platform you may perform a local build. The current version of Informix native node driver (ifx_db@6.0.6) is being compiled with Node.js v6.11.x LTS libraries. The driver is expected to work node.js version 6x.   
+**FYI**: Informix Client SDK 410 xC2 or above is needed the driver to connect to the database.
 
 ```bash
-# SET ENV FOR CSDK_HOME to CSDK install location  
-export CSDK_HOME=/work/informix  
-  
 npm install ifx_db
 ```
 
-**Note:** The current version of Informix native node driver (ifx_db@4.0.3) is being compiled with Node.JS v4.4.5 LTS libraries. The driver is expected to work node.js version 4x.   
-  
-### Unix/Linux (non Windows) platforms:  
-**CSDK_HOME** environment variable must be set on the shell that you are trying to issue installation command.  
-The CSDK_HOME should point to a valid Informix Client SDK distribution with same bit architecture as the NodeJS engine.  
-```bash
-export CSDK_HOME=/work/informix  
-```
+### FYI: 
+* [Node.js breaking changes between v4 LTS and v6 LTS](https://github.com/nodejs/node/wiki/Breaking-changes-between-v4-LTS-and-v6-LTS)
+* [Node.js community wiki](https://github.com/nodejs/node/wiki)
 
-## Local Linux Build 
+
+
+
+## Local Linux Build (or any non Windows platforms)
 --------------------
 **FYI:** make sure bit architecture matches for all binary components  
 If you are using 64bit nodejs make sure you are using 64bit Informix Client-SDK as well.
@@ -53,24 +44,37 @@ export INFORMIXDIR=${CSDK_HOME}
 export LD_LIBRARY_PATH=${INFORMIXDIR}/lib/esql:${INFORMIXDIR}/lib/cli  
 ```
 
-### fire the build 
+### Fire the build 
 ```bash 
-# cd ifx_db package directory, say:   
-cd /work/user1/node_modules/ifx_db  
-  
+git clone https://github.com/ifxdb/node-ifx_db.git
+
+cd node-ifx_db
+npm update
+
 rm -rf ./build  
 node-gyp configure -v  
-node-gyp build -v  
+node-gyp build -v 
 ```
 
 #### check the build output, if all right then the driver binary is    
 ```bash
 ./build/Release/ifx_node_bind.node
-  
-# To run your nodejs JavaScript program  
-cd /work/user1  
+```
+
+### Quick Test 
+```bash
+cd ..
+#rm -rf node_modules
+mkdir  node_modules
+cd     node_modules
+ln -s  ../node-ifx_db ./ifx_db
+cd ..
+cp node-ifx_db/SampleApp1.js .
+
+# edit connection informaton and then run
 node SampleApp1.js
 ```
+
 
 ## Windows Build
 * Build Nodejs from its source 
@@ -90,9 +94,6 @@ If you are using 64bit nodejs make sure you are using 64bit Informix Client-SDK 
 * Informix Client SDK 410 xC2 or above
 
 
-### Node Install
-C:\Dev\nodejs\
-
 ### Build NodeJS from its source
 ##### Why do we build nodejs from its source? 
 The **node.lib** is needed for compiling native addon, this library will get build if we build nodejs from its source.  
@@ -105,7 +106,7 @@ FYI: The node.lib can also be obtained either from Node-gyp, it is up to you to 
 cd C:\njs\Src6112
 
 SET NODE_SRC=C:\njs\Src6112
-vcbuild.bat nosign debug x64
+vcbuild.bat nosign release x64
 
 FYI:
 vcbuild.bat nosign release x64 : Build in release mode in 64-bit computers
@@ -117,27 +118,31 @@ vcbuild.bat clean              : Clean Project
 
 ### Build the Informix nodejs driver 
 
-#### clone the driver 
+#### clone the driver source code
 ```bat
-cd C:\njs
+cd C:\work
 git clone https://github.com/ifxdb/node-ifx_db.git
-
+cd C:\work\node-ifx_db
 ```
 
+#### Set env for the build 
+* **c:\Informix** is the location where Informix CSDK installed 
+* **C:\njs\Src6112** is the nodejs source that you have completed the build 
+``` bat
+#Open VS 2015 x64 cmd
 
-#### Fire the build 
-```bat
-# Open VS 2015 x64 cmd
-# Switch NodeJS to picket from the newly build location
+#Switch NodeJS to picket from the newly build location
 SET PATH=C:\njs\Src6112\Debug;C:\njs\Src6112\deps\npm\bin\node-gyp-bin;%PATH%
+or (depens on your nodejs build)
+SET PATH=C:\njs\Src6112\Release;C:\njs\Src6112\deps\npm\bin\node-gyp-bin;%PATH%
 
-# Say you have installed Infomrix CSDK at c:\Informix
-# Say you have extracted NodeJS sourct at C:\njs\Src6112 
 SET CSDK_HOME=c:\Informix
 SET NODE_SRC=C:\njs\Src6112
+```
 
-# Command line build
-cd C:\njs\node-ifx_db
+#### Fire the driver build 
+```bat
+cd C:\work\node-ifx_db
 node-gyp configure
 node-gyp build
 
@@ -146,15 +151,26 @@ node-gyp build  --debug
 node-gyp build  --release
 
 Alternative build: you may use the Visual Studio 2015 Solution to build from source
-C:\njs\node-ifx_db\IfxNodeJsVS2015.sln
+C:\work\node-ifx_db\IfxNodeJsVS2015.sln
 ```
 
 ### Driver binaries
 ```
 If no build error then the driver binaries will be at 
-C:\njs\node-ifx_db\build\Debug
+C:\work\node-ifx_db\build\Debug
 ```
-  
+
+#### [FYI: node-gyp build helps](https://github.com/nodejs/node-gyp)
+| **Command**   | **Description**
+|:--------------|:---------------------------------------------------------------
+| `help`        | Shows the help dialog
+| `build`       | Invokes `make`/`msbuild.exe` and builds the native addon
+| `clean`       | Removes the `build` directory if it exists
+| `configure`   | Generates project build files for the current platform
+| `rebuild`     | Runs `clean`, `configure` and `build` all in a row
+| `install`     | Installs node header files for the given version
+| `list`        | Lists the currently installed node header versions
+| `remove`      | Removes the node header files for the given version
 
 
 ## Connection String
