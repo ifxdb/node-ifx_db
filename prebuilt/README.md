@@ -34,13 +34,28 @@ rm ./prebuilt/Linux64/build.zip
 mv build.zip ./prebuilt/Linux64/build.zip
 ```
 
+### Quick Test 
+```
+cd ..
+rm -rf node_modules
+mkdir  node_modules
+cd node_modules
+ln -s ../node-ifx_db ./ifx_db
+cd ..
+cp node-ifx_db/SampleApp1.js .
+node SampleApp1.js
+```
+
 ###  Checking Hash
 ```
+cd cd node-ifx_db
 md5sum ./prebuilt/Linux64/build.zip
 6901472318b1b3173f8633b5f402daf4  ./prebuilt/Linux64/build.zip
 
 update the Hash and Checkin the repo
 ```
+
+
 
 #### Windows Built in tools for checking Hash value
 * [PowerShell.Utility](https://docs.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Utility/Get-FileHash?view=powershell-5.1)
