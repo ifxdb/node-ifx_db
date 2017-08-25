@@ -42,7 +42,7 @@ mkdir  node_modules
 cd node_modules
 ln -s ../node-ifx_db ./ifx_db
 cd ..
-cp node-ifx_db/SampleApp1.js .
+cp node-ifx_db/test/SampleApp1.js .
 node SampleApp1.js
 ```
 

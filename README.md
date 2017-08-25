@@ -5,12 +5,13 @@ Informix native Node.js driver is a high performance driver with asynchronous/sy
 
 ## install
 ----------
-The driver has a prebuilt binary for 64bit version of Linux and Windows (soon ARM too), all other platform you may perform a local build. The current version of Informix native node driver (ifx_db@6.0.6) is being compiled with Node.js v6.11.x LTS libraries. The driver is expected to work node.js version 6x.   
-**FYI**: Informix Client SDK 410 xC2 or above is needed the driver to connect to the database.
-
 ```bash
 npm install ifx_db
 ```
+
+The driver has a prebuilt binary for 64bit version of Linux and Windows (soon ARM too), all other platform you may perform a local build. The current version of Informix native node driver (ifx_db@6.0.6) is being compiled with Node.js v6.11.x LTS libraries. The driver is expected to work node.js version 6x.   
+**FYI**: Informix Client SDK 410 xC2 or above is needed the driver to connect to the database.
+
 
 ### FYI: 
 * [Node.js breaking changes between v4 LTS and v6 LTS](https://github.com/nodejs/node/wiki/Breaking-changes-between-v4-LTS-and-v6-LTS)
@@ -19,15 +20,14 @@ npm install ifx_db
 
 
 
-## Local Linux Build (or any non Windows platforms)
---------------------
+## Linux Build
+--------------
 **FYI:** make sure bit architecture matches for all binary components  
 If you are using 64bit nodejs make sure you are using 64bit Informix Client-SDK as well.
 
 ### Prerequisite :
 * Git  
 * NodeJS
-* NPM
 * Python     (2.7.x (3.x is not supported yet))
 * Node-gyp   (npm install -g node-gyp)
 * NAN        (npm install -g nan)
@@ -67,9 +67,9 @@ cd ..
 #rm -rf node_modules
 mkdir  node_modules
 cd     node_modules
-ln -s  ../node-ifx_db ./ifx_db
+ln -s  ../node-ifx_db  ./ifx_db
 cd ..
-cp node-ifx_db/SampleApp1.js .
+cp node-ifx_db/test/SampleApp1.js .
 
 # edit connection informaton and then run
 node SampleApp1.js
@@ -77,6 +77,7 @@ node SampleApp1.js
 
 
 ## Windows Build
+----------------
 * Build Nodejs from its source 
 * Build Informix Nodejs driver 
 
@@ -87,20 +88,18 @@ If you are using 64bit nodejs make sure you are using 64bit Informix Client-SDK 
 ### Prerequisite :
 * Git  
 * NodeJS
-* NPM
 * Python     (2.7.x (3.x is not supported yet))
 * Node-gyp   (npm install -g node-gyp)
 * NAN        (npm install -g nan)
 * Informix Client SDK 410 xC2 or above
 
 
-### Build NodeJS from its source
-##### Why do we build nodejs from its source? 
-The **node.lib** is needed for compiling native addon, this library will get build if we build nodejs from its source.  
-FYI: The node.lib can also be obtained either from Node-gyp, it is up to you to choose one of the approach.  
+#### Build node.js from its source
+The **node.lib** is needed for compiling native addon, One of the ways to get this library is to build node.js from its source.  
+FYI: The node.lib can also be obtained from Node-gyp too, it is up to you to choose one of the approach.  
 
 
-### Open VS 2015 x64 cmd
+#### Open VS 2015 x64 cmd
 ```bat
 # Say you have extracted NodeJS sourct at **C:\njs\Src6112**
 cd C:\njs\Src6112
@@ -116,7 +115,7 @@ vcbuild.bat clean              : Clean Project
 ```
 
 
-### Build the Informix nodejs driver 
+### Build the Informix node.js driver 
 
 #### clone the driver source code
 ```bat
@@ -174,7 +173,7 @@ C:\work\node-ifx_db\build\Debug
 
 
 ## Connection String
------------------
+--------------------
 
 ```javascript
 var dbobj = require('ifx_db');
@@ -193,36 +192,36 @@ var dbobj = require('ifx_db');
 
 function DirExec( conn, ErrIgn, sql )
 {
-	try
-	{
-		var result = conn.querySync( sql );
-		console.log( sql  );
-	}
-    catch (e) 
-	{
-		console.log( "--- " + sql  );
-		if( ErrIgn != 1 )
-		{
-			console.log(e);
-			console.log();
-		}
+  try
+  {
+    var result = conn.querySync( sql );
+    console.log( sql  );
+  }
+  catch (e) 
+  {
+    console.log( "--- " + sql  );
+    if( ErrIgn != 1 )
+    {
+      console.log(e);
+      console.log();
     }
+  }
 }
 
 function DoSomeWork(err, conn)
 {
-    if (err) 
-	{
-        return console.log(err);
-    }
-	
-	DirExec( conn, 1, "drop table t1" );
-	DirExec( conn, 0, "create table t1 ( c1 int, c2 char(20) ) " );
-	DirExec( conn, 0, "insert into t1 values( 1, 'val-1' )" );
-	DirExec( conn, 0, "insert into t1 values( 2, 'val-2' )" );
-	DirExec( conn, 0, "insert into t1 values( 3, 'val-3' )" );
-	DirExec( conn, 0, "insert into t1 values( 4, 'val-4' )" );
-	DirExec( conn, 0, "insert into t1 values( 5, 'val-5' )" );
+  if (err) 
+  {
+    return console.log(err);
+  }
+  
+  DirExec( conn, 1, "drop table t1" );
+  DirExec( conn, 0, "create table t1 ( c1 int, c2 char(20) ) " );
+  DirExec( conn, 0, "insert into t1 values( 1, 'val-1' )" );
+  DirExec( conn, 0, "insert into t1 values( 2, 'val-2' )" );
+  DirExec( conn, 0, "insert into t1 values( 3, 'val-3' )" );
+  DirExec( conn, 0, "insert into t1 values( 4, 'val-4' )" );
+  DirExec( conn, 0, "insert into t1 values( 5, 'val-5' )" );
   
   console.log(" --- SELECT * FROM t1 ------ " );
   // blocks until the query is completed and all data has been acquired
@@ -234,54 +233,54 @@ function DoSomeWork(err, conn)
 
 var MyAsynchronousTask = function (err, conn)
 {
-	DoSomeWork(err, conn);
-	conn.close();
+  DoSomeWork(err, conn);
+  conn.close();
 }
 
 function ifx_db_Open(ConStr) 
 {
-	console.log(" --- MyAsynchronousTask Starting....." );
-	dbobj.open( ConStr, MyAsynchronousTask );
-	console.log(" --- Check the sequence printed!" );
+  console.log(" --- MyAsynchronousTask Starting....." );
+  dbobj.open( ConStr, MyAsynchronousTask );
+  console.log(" --- Check the sequence printed!" );
 }
 
 function ifx_db_OpenSync(ConStr) 
 {
-	console.log(" --- Executing ifx_db.openSync() ...." );
-	var conn;
-	try 
-	{
-	  conn = dbobj.openSync(ConStr);
-	}
-	catch(e) 
-	{
-	  console.log(e);
-	  return;
-	}
-	
-	DoSomeWork(0, conn);
-	
-	try 
-	{
-	    conn.closeSync();
-	}
-	catch(e) 
-	{
-	  console.log(e);
-	}
-	console.log(" --- End ifx_db.openSync()" );
+  console.log(" --- Executing ifx_db.openSync() ...." );
+  var conn;
+  try 
+  {
+    conn = dbobj.openSync(ConStr);
+  }
+  catch(e) 
+  {
+    console.log(e);
+    return;
+  }
+  
+  DoSomeWork(0, conn);
+  
+  try 
+  {
+      conn.closeSync();
+  }
+  catch(e) 
+  {
+    console.log(e);
+  }
+  console.log(" --- End ifx_db.openSync()" );
 }
 
 function main_func()
 {
-	//  Make sure the port is IDS SQLI port.
-	var ConnectionString = "SERVER=ids1;DATABASE=mydb1;HOST=BlueGene.ibm.com;PROTOCOL=onsoctcp;SERVICE=5550;UID=user1;PWD=xyz;";
-		
-	//Synchronous Execution 
-	ifx_db_OpenSync(ConnectionString);
-	
-	//Asynchronous Execution
-	ifx_db_Open(ConnectionString);
+  //  Make sure the port is IDS SQLI port.
+  var ConnectionString = "SERVER=ids1;DATABASE=mydb1;HOST=BlueGene.ibm.com;PROTOCOL=onsoctcp;SERVICE=5550;UID=user1;PWD=xyz;";
+    
+  //Synchronous Execution 
+  ifx_db_OpenSync(ConnectionString);
+  
+  //Asynchronous Execution
+  ifx_db_Open(ConnectionString);
 }
 
 main_func();
@@ -360,20 +359,20 @@ Synchronously open a connection to a database.
 
 ```javascript
 var ibmdb = require("ifx_db"),
-	connString = "SERVER=ids1;DATABASE=mydb1;HOST=9.25.140.10;PROTOCOL=onsoctcp;SERVICE=5550;UID=user1;PWD=xyz;";
+  connString = "SERVER=ids1;DATABASE=mydb1;HOST=9.25.140.10;PROTOCOL=onsoctcp;SERVICE=5550;UID=user1;PWD=xyz;";
 
 try {
-	var conn = ibmdb.openSync(connString);
-	conn.query("select * from customers fetch first 10 rows only", function (err, rows, moreResultSets) {
-		if (err) {
-			console.log(err);
-		} else {
-		  console.log(rows);
-		}
-		conn.close();	
-	});
+  var conn = ibmdb.openSync(connString);
+  conn.query("select * from customers fetch first 10 rows only", function (err, rows, moreResultSets) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(rows);
+    }
+    conn.close();  
+  });
 } catch (e) {
-	console.log(e.message);
+  console.log(e.message);
 }
 ```
 
@@ -391,23 +390,23 @@ var ibmdb = require("ifx_db"),
    cn = "SERVER=ids1;DATABASE=mydb1;HOST=9.25.140.10;PROTOCOL=onsoctcp;SERVICE=5550;UID=user1;PWD=xyz;";
 
 ibmdb.open(cn, function (err, conn) {
-	if (err) {
-		return console.log(err);
-	}
+  if (err) {
+    return console.log(err);
+  }
 
-	//we now have an open connection to the database
-	//so lets get some data
-	conn.query("select * from customers fetch first 10 rows only", function (err, rows, moreResultSets) {
-		if (err) {
-			console.log(err);
-		} else {
-		
-		  console.log(rows);
-		}
+  //we now have an open connection to the database
+  //so lets get some data
+  conn.query("select * from customers fetch first 10 rows only", function (err, rows, moreResultSets) {
+    if (err) {
+      console.log(err);
+    } else {
+    
+      console.log(rows);
+    }
 
-		//if moreResultSets is truthy, then this callback function will be called
-		//again with the next set of rows.
-	});
+    //if moreResultSets is truthy, then this callback function will be called
+    //again with the next set of rows.
+  });
 });
 ```
 
@@ -443,15 +442,15 @@ var ibmdb = require("ifx_db"),
    cn = "SERVER=ids1;DATABASE=mydb1;HOST=9.25.140.10;PROTOCOL=onsoctcp;SERVICE=5550;UID=user1;PWD=xyz;";
 
 ibmdb.open(cn, function (err, conn) {
-	if (err) {
-		return console.log(err);
-	}
-	
-	//we now have an open connection to the database
-	
-	conn.close(function (err) {
-		console.log("the database connection is now closed");
-	});
+  if (err) {
+    return console.log(err);
+  }
+  
+  //we now have an open connection to the database
+  
+  conn.close(function (err) {
+    console.log("the database connection is now closed");
+  });
 });
 ```
 
@@ -497,7 +496,7 @@ ibmdb.open(cn,function(err,conn){
       else result.closeSync();
 
       //Close the connection
-	  conn.close(function(err){}));
+    conn.close(function(err){}));
     });
   });
 });
@@ -523,7 +522,7 @@ ibmdb.open(cn,function(err,conn){
     result.closeSync();
 
     //Close the connection
-	conn.close(function(err){}));
+  conn.close(function(err){}));
   });
 });
 ```
@@ -686,18 +685,18 @@ Get a `Database` instance which is already connected to `connectionString`
 
 ```javascript
 var Pool = require("ifx_db").Pool
-	, pool = new Pool()
+  , pool = new Pool()
     , cn = "SERVER=ids1;DATABASE=mydb1;HOST=9.25.140.10;PROTOCOL=onsoctcp;SERVICE=5550;UID=user1;PWD=xyz;";
 
 pool.open(cn, function (err, db) {
-	if (err) {
-		return console.log(err);
-	}
+  if (err) {
+    return console.log(err);
+  }
 
-	//db is now an open database connection and can be used like normal
-	//if we run some queries with db.query(...) and then call db.close();
-	//a connection to `cn` will be re-opened silently behind the scense
-	//and will be ready the next time we do `pool.open(cn)`
+  //db is now an open database connection and can be used like normal
+  //if we run some queries with db.query(...) and then call db.close();
+  //a connection to `cn` will be re-opened silently behind the scense
+  //and will be ready the next time we do `pool.open(cn)`
 });
 ```
 
@@ -709,20 +708,20 @@ Close all connections in the `Pool` instance
 
 ```javascript
 var Pool = require("ifx_db").Pool
-	, pool = new Pool()
+  , pool = new Pool()
     , cn = "SERVER=ids1;DATABASE=mydb1;HOST=9.25.140.10;PROTOCOL=onsoctcp;SERVICE=5550;UID=user1;PWD=xyz;";
 
 pool.open(cn, function (err, db) {
-	if (err) {
-		return console.log(err);
-	}
+  if (err) {
+    return console.log(err);
+  }
 
-	//db is now an open database connection and can be used like normal
-	//but all we will do now is close the whole pool
-	
-	pool.close(function () {
-		console.log("all connections in the pool are closed");
-	});
+  //db is now an open database connection and can be used like normal
+  //but all we will do now is close the whole pool
+  
+  pool.close(function () {
+    console.log("all connections in the pool are closed");
+  });
 });
 ```
 
