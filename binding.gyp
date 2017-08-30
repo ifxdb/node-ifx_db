@@ -62,6 +62,35 @@
         }
         ], 
 
+        ############### Linux ARM #################
+        [ 'OS == "linux" and target_arch =="arm" ', 
+        {
+          'conditions' : 
+          [
+
+          ],
+
+
+          'libraries' : 
+          [
+                '-L$(CSDK_HOME)/lib/cli', 
+                '-lthcli'
+          ],    
+
+
+          'include_dirs': 
+          [
+                '$(CSDK_HOME)/incl/cli'
+          ],
+
+
+          'cflags' : 
+          [
+            "-g "
+          ],
+        }
+        ], 
+
         ############### Linux 64bit #################
         [ 'OS == "linux" and target_arch =="x64" ', 
         {
