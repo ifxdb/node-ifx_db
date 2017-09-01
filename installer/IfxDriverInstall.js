@@ -48,6 +48,12 @@ function IfxNodeJsInstall()
             {
                 PlatformDir = 'Linux64';
             }
+
+            if (arch == 'arm')
+            {
+                PlatformDir = 'Arm';
+            }
+
             // if (arch == 'arm64')
             // {
             //     PlatformDir = 'Arm64';
