@@ -203,8 +203,8 @@ SET PATH=C:\informix\bin;%PATH%
 
 ```javascript
 var dbobj = require('ifx_db');
-var ConnectionString = "SERVER=<IDS ServerName>;DATABASE=<dbname>;HOST=<myhost>;PROTOCOL=<Protocol>;SERVICE=<IDS SQLI Port#>;UID=<UserName>;PWD=<password>;";
-//Eg: "SERVER=ids1;DATABASE=mydb1;HOST=BlueGene.ibm.com;PROTOCOL=onsoctcp;SERVICE=5550;UID=user1;PWD=xyz;"
+var ConnectionString = "SERVER=<IDS ServerName>;DATABASE=<dbname>;HOST=<myhost>;SERVICE=<Port#>;UID=<UserName>;PWD=<password>;";
+//Eg: "SERVER=ids1;DATABASE=mydb1;HOST=BlueGene.ibm.com;SERVICE=5550;UID=user1;PWD=xyz;"
 ```
 
 
