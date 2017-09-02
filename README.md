@@ -1,6 +1,8 @@
 ## Informix native node.js driver
-------------------------------------
-Informix native node.js driver is a high performance driver with asynchronous/synchronous interface for node.js database applications working with Informix. Feel free to make contribution to help community. 
+---------------------------------
+Informix native node.js driver is a high performance driver with asynchronous/synchronous interface suitable for highly scalable enterprise and IoT solution working with Informix database.  
+
+The development activity for the driver is powered by passion and independent thinking. Tougher we grow as an open community, you may send pull request; relevant discussion and queries are answered through [stackoverflow](http://stackoverflow.com/questions/tagged/informix)   
 
 
 ## install
@@ -11,12 +13,12 @@ npm install ifx_db
 
 The driver has a prebuilt binary for 64bit version of ARM, Linux and Windows, all other platform you may perform a local build. The current version of Informix native node driver (ifx_db@6.0.x) is being compiled with Node.js v6.11.x LTS libraries. The driver is expected to work node.js version 6x.  
    
-**FYI**: Informix Client SDK 410 xC2 or above is needed the driver to connect to the database.
+**FYI**: Informix Client SDK 410 xC2 or above is needed the driver to connect to the database. Make sure Informix CSDK is configured and its environments are set by the time your try out sample.
 
 
 ## Linux Build
 --------------
-**FYI:** make sure bit architecture matches for all binary components; if you are using 64bit nodejs make sure you are using 64bit Informix Client-SDK as well.
+**FYI:** Make sure bit architectures matches for all binary components; if you are using 64bit nodejs make sure you are using 64bit Informix Client-SDK as well.
 
 ### Prerequisite :
 * Git  
@@ -174,14 +176,10 @@ C:\work\node-ifx_db\build\Debug
 | `list`        | Lists the currently installed node header versions
 | `remove`      | Removes the node header files for the given version
 
-
-
-## Running the informix driver sample application
--------------------------------------------------
-
-#### FYI: 
-* [Node.js breaking changes between v4 LTS and v6 LTS](https://github.com/nodejs/node/wiki/Breaking-changes-between-v4-LTS-and-v6-LTS)
-* [Node.js community wiki](https://github.com/nodejs/node/wiki)
+  
+  
+## Runtime Environment Setup
+----------------------------------
 
 ### Set runtime environment to pick Informix Client SDK libraries.
 #### Linux
@@ -196,6 +194,9 @@ export PATH=$INFORMIXDIR/bin:$PATH
 SET PATH=C:\informix\bin;%PATH%
 ```
 
+#### FYI: 
+* [Node.js breaking changes between v4 LTS and v6 LTS](https://github.com/nodejs/node/wiki/Breaking-changes-between-v4-LTS-and-v6-LTS)
+* [Node.js community wiki](https://github.com/nodejs/node/wiki)
 
 
 ## Connection String
@@ -203,7 +204,7 @@ SET PATH=C:\informix\bin;%PATH%
 
 ```javascript
 var dbobj = require('ifx_db');
-var ConnectionString = "SERVER=<IDS ServerName>;DATABASE=<dbname>;HOST=<myhost>;SERVICE=<Port#>;UID=<UserName>;PWD=<password>;";
+var ConStr = "SERVER=<IDS ServerName>;DATABASE=<dbname>;HOST=<myhost>;SERVICE=<Port#>;UID=<UserName>;PWD=<password>;";
 //Eg: "SERVER=ids1;DATABASE=mydb1;HOST=BlueGene.ibm.com;SERVICE=5550;UID=user1;PWD=xyz;"
 ```
 
@@ -313,13 +314,7 @@ main_func();
 
 ```
 
-
-
-Discussion Forums
------------------
-To start a discussion or need help you can post a topic on http://stackoverflow.com/questions/tagged/informix
-
-api
+API
 ---
 
 ### Database
