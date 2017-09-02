@@ -192,6 +192,7 @@ export PATH=$INFORMIXDIR/bin:$PATH
 
 #### Windows
 ```bat
+rem say you have installed CSDK at C:\informix then
 SET PATH=C:\informix\bin;%PATH%
 ```
 
