@@ -175,7 +175,9 @@ C:\work\node-ifx_db\build\Debug
 | `remove`      | Removes the node header files for the given version
 
 
+
 ## Running the informix driver sample application
+-------------------------------------------------
 
 #### FYI: 
 * [Node.js breaking changes between v4 LTS and v6 LTS](https://github.com/nodejs/node/wiki/Breaking-changes-between-v4-LTS-and-v6-LTS)
