@@ -1,6 +1,6 @@
-## Informix native Node.js driver
+## Informix native node.js driver
 ------------------------------------
-Informix native Node.js driver is a high performance driver with asynchronous/synchronous interface for node.js database applications working with Informix. Feel free to make contribution to help community. 
+Informix native node.js driver is a high performance driver with asynchronous/synchronous interface for node.js database applications working with Informix. Feel free to make contribution to help community. 
 
 
 ## install
@@ -9,22 +9,14 @@ Informix native Node.js driver is a high performance driver with asynchronous/sy
 npm install ifx_db
 ```
 
-The driver has a prebuilt binary for 64bit version of Linux and Windows (soon ARM too), all other platform you may perform a local build. The current version of Informix native node driver (ifx_db@6.0.x) is being compiled with Node.js v6.11.x LTS libraries. The driver is expected to work node.js version 6x.  
+The driver has a prebuilt binary for 64bit version of ARM, Linux and Windows, all other platform you may perform a local build. The current version of Informix native node driver (ifx_db@6.0.x) is being compiled with Node.js v6.11.x LTS libraries. The driver is expected to work node.js version 6x.  
    
 **FYI**: Informix Client SDK 410 xC2 or above is needed the driver to connect to the database.
 
 
-### FYI: 
-* [Node.js breaking changes between v4 LTS and v6 LTS](https://github.com/nodejs/node/wiki/Breaking-changes-between-v4-LTS-and-v6-LTS)
-* [Node.js community wiki](https://github.com/nodejs/node/wiki)
-
-
-
-
 ## Linux Build
 --------------
-**FYI:** make sure bit architecture matches for all binary components  
-If you are using 64bit nodejs make sure you are using 64bit Informix Client-SDK as well.
+**FYI:** make sure bit architecture matches for all binary components; if you are using 64bit nodejs make sure you are using 64bit Informix Client-SDK as well.
 
 ### Prerequisite :
 * Git  
@@ -63,6 +55,14 @@ node-gyp build -v
 ```
 
 ### Quick Test 
+
+##### Set runtime environment to pick Informix Client SDK libraries.
+```bash
+export LD_LIBRARY_PATH=${INFORMIXDIR}/lib:${INFORMIXDIR}/lib/esql:${INFORMIXDIR}/lib/cli
+export PATH=$INFORMIXDIR/bin:$PATH
+```
+
+##### Get a sample code 
 ```bash
 cd ..
 #rm -rf node_modules
@@ -71,7 +71,9 @@ cd     node_modules
 ln -s  ../node-ifx_db  ./ifx_db
 cd ..
 cp node-ifx_db/test/SampleApp1.js .
-
+```
+##### Run the sample 
+```bash
 # edit connection informaton and then run
 node SampleApp1.js
 ```
@@ -171,6 +173,24 @@ C:\work\node-ifx_db\build\Debug
 | `install`     | Installs node header files for the given version
 | `list`        | Lists the currently installed node header versions
 | `remove`      | Removes the node header files for the given version
+
+
+### FYI: 
+* [Node.js breaking changes between v4 LTS and v6 LTS](https://github.com/nodejs/node/wiki/Breaking-changes-between-v4-LTS-and-v6-LTS)
+* [Node.js community wiki](https://github.com/nodejs/node/wiki)
+
+### Set runtime environment to pick Informix Client SDK libraries.
+#### Linux
+```bash
+export LD_LIBRARY_PATH=${INFORMIXDIR}/lib:${INFORMIXDIR}/lib/esql:${INFORMIXDIR}/lib/cli
+export PATH=$INFORMIXDIR/bin:$PATH
+```
+
+#### Windows
+```bat
+SET PATH=C:\informix\bin;%PATH%
+```
+
 
 
 ## Connection String
