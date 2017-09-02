@@ -1,8 +1,8 @@
 ## Informix native node.js driver
 ---------------------------------
-Informix native node.js driver is a high performance driver with asynchronous/synchronous interface suitable for highly scalable enterprise and IoT solution working with Informix database.  
+Informix native node.js driver is a high performance driver with asynchronous/synchronous interface suitable for highly scalable enterprise and IoT solutions working with Informix database.  
 
-The development activity for the driver is powered by passion and independent thinking. You may send pull request, tougher we grow as an open community, relevant discussion and queries are answered by community through stackoverflow.  
+The development activity for the driver is powered by passion and independent thinking. You may send pull request, together we grow as an open community, relevant discussion and queries are answered by community through stackoverflow.  
 [http://stackoverflow.com/questions/tagged/informix](http://stackoverflow.com/questions/tagged/informix)
 
 
