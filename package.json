@@ -34,10 +34,16 @@
   },
   "keywords": [
     "node",
-    "odbc",
-    "IBM",
     "Informix",
-    "driver"
+    "driver",
+    "IoT",
+    "asynchronous",
+    "synchronous",
+    "scalable",
+    "enterprise",
+    "odbc",
+    "HCL",
+    "IBM" 
   ],
   "author": "Sathyanesh Krishnan",
   "license": "MIT"
