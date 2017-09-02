@@ -1,7 +1,7 @@
 {
   "name": "ifx_db",
   "description": "IBM Informix bindings for node",
-  "version": "6.0.3",
+  "version": "6.0.4",
   "main": "lib/odbc.js",
   "homepage": "https://github.com/ifxdb/node-ifx_db",
   "repository": {
@@ -43,7 +43,7 @@
     "enterprise",
     "odbc",
     "HCL",
-    "IBM" 
+    "IBM"
   ],
   "author": "Sathyanesh Krishnan",
   "license": "MIT"
