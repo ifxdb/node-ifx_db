@@ -2,8 +2,7 @@
 ---------------------------------
 Informix native node.js driver is a high performance driver with asynchronous/synchronous interface suitable for highly scalable enterprise and IoT solutions working with Informix database.  
 
-The development activities of the driver are powered by passion, dedication and independent thinking. You may send pull request, together we grow as an open community, relevant discussion and queries are answered by community through stackoverflow.  
-[http://stackoverflow.com/questions/tagged/informix](http://stackoverflow.com/questions/tagged/informix)
+The development activities of the driver are powered by passion, dedication and independent thinking. You may send pull request, together we grow as an open community; relevant discussion and queries are answered by community through stackoverflow. [http://stackoverflow.com/questions/tagged/informix](http://stackoverflow.com/questions/tagged/informix)
 
 
 ## install
@@ -12,7 +11,7 @@ The development activities of the driver are powered by passion, dedication and 
 npm install ifx_db
 ```
 
-The driver has a prebuilt binary for 64bit version of ARM, Linux and Windows, all other platform you may perform a local build. The current version of Informix native node driver (ifx_db@6.0.x) is being compiled with Node.js v6.11.x LTS libraries. The driver is expected to work node.js version 6x.  
+The driver has been certified to work with **Raspberry Pi**, it has prebuilt binaries for **ARM**, **x86 Linux64** and **Win64**, all other platform you may perform a local build. The current version of Informix native node driver (ifx_db@6.0.x) is being compiled with Node.js v6.11.x LTS libraries. The driver is expected to work node.js version 6x.  
    
 **FYI**: Informix Client SDK 410 xC2 or above is needed the driver to connect to the database. Make sure Informix CSDK is configured and its environments are set prior to running application.
 
