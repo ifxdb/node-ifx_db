@@ -147,6 +147,8 @@ SET NODE_SRC=C:\njs\Src6112
 #### Fire the driver build 
 ```bat
 cd C:\work\IfxNode
+npm install nan
+
 node-gyp configure
 node-gyp build
 
@@ -162,6 +164,8 @@ C:\work\IfxNode\IfxNodeJsVS2015.sln
 ```
 If no build error then the driver binaries will be at 
 C:\work\IfxNode\build\Debug
+or
+C:\work\IfxNode\build\Release
 ```
 
 ### Quick test of the local build 
