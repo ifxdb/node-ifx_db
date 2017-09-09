@@ -8,7 +8,7 @@ var odbc = require("../odbc.js"),
 
       
 //open a connection to the database
-db.open("DSN=myDsnName;UID=myUserName;PWD=mySuperSecretPassword;DATABASE=myAwesomeDatabase", function(err)
+db.open("SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;UID=informix;PWD=xxxx;", function(err)
 {
 	
 	if (err) {

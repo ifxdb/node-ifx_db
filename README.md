@@ -204,8 +204,7 @@ SET PATH=C:\informix\bin;%PATH%
 
 ```javascript
 var dbobj = require('ifxnjs');
-var ConStr = "SERVER=<IDS ServerName>;DATABASE=<dbname>;HOST=<myhost>;SERVICE=<Port#>;UID=<UserName>;PWD=<password>;";
-//Eg: "SERVER=ids1;DATABASE=mydb1;HOST=BlueGene.ibm.com;SERVICE=5550;UID=user1;PWD=xyz;"
+var ConStr = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;UID=informix;PWD=xxxx;";
 ```
 
 
@@ -301,7 +300,7 @@ function ifxnjs_OpenSync(ConStr)
 function main_func()
 {
   //  Make sure the port is IDS SQLI port.
-  var ConnectionString = "SERVER=ids1;DATABASE=mydb1;HOST=BlueGene.ibm.com;PROTOCOL=onsoctcp;SERVICE=5550;UID=user1;PWD=xyz;";
+  var ConnectionString = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;UID=informix;PWD=xxxx;"
     
   //Synchronous Execution 
   ifxnjs_OpenSync(ConnectionString);
@@ -380,7 +379,7 @@ Synchronously open a connection to a database.
 
 ```javascript
 var ibmdb = require("ifxnjs"),
-  connString = "SERVER=ids1;DATABASE=mydb1;HOST=9.25.140.10;PROTOCOL=onsoctcp;SERVICE=5550;UID=user1;PWD=xyz;";
+  connString = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;UID=informix;PWD=xxxx;"
 
 try {
   var conn = ibmdb.openSync(connString);
@@ -408,7 +407,7 @@ Issue an asynchronous SQL query to the database which is currently open.
 
 ```javascript
 var ibmdb = require("ifxnjs"),
-   cn = "SERVER=ids1;DATABASE=mydb1;HOST=9.25.140.10;PROTOCOL=onsoctcp;SERVICE=5550;UID=user1;PWD=xyz;";
+   cn = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;UID=informix;PWD=xxxx;"
 
 ibmdb.open(cn, function (err, conn) {
   if (err) {
@@ -441,7 +440,7 @@ Synchronously issue a SQL query to the database that is currently open.
 
 ```javascript
 var ibmdb = require("ifxnjs"),
-   cn = "SERVER=ids1;DATABASE=mydb1;HOST=9.25.140.10;PROTOCOL=onsoctcp;SERVICE=5550;UID=user1;PWD=xyz;";
+   cn = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;UID=informix;PWD=xxxx;"
 
 ibmdb.open(cn, function(err, conn){
 
@@ -460,7 +459,7 @@ Close the currently opened database.
 
 ```javascript
 var ibmdb = require("ifxnjs"),
-   cn = "SERVER=ids1;DATABASE=mydb1;HOST=9.25.140.10;PROTOCOL=onsoctcp;SERVICE=5550;UID=user1;PWD=xyz;";
+   cn = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;UID=informix;PWD=xxxx;"
 
 ibmdb.open(cn, function (err, conn) {
   if (err) {
@@ -481,7 +480,7 @@ Synchronously close the currently opened database.
 
 ```javascript
 var ibmdb = require("ifxnjs")(),
-   cn = "SERVER=ids1;DATABASE=mydb1;HOST=9.25.140.10;PROTOCOL=onsoctcp;SERVICE=5550;UID=user1;PWD=xyz;";
+   cn = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;UID=informix;PWD=xxxx;"
 
 //Blocks until the connection is open
 var conn = ibmdb.openSync(cn);
@@ -501,7 +500,7 @@ Returns a `Statement` object via the callback
 
 ```javascript
 var ibmdb = require("ifxnjs"),
-   cn = "SERVER=ids1;DATABASE=mydb1;HOST=9.25.140.10;PROTOCOL=onsoctcp;SERVICE=5550;UID=user1;PWD=xyz;";
+   cn = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;UID=informix;PWD=xxxx;"
 
 ibmdb.open(cn,function(err,conn){
   conn.prepare("insert into hits (col1, col2) VALUES (?, ?)", function (err, stmt) {
@@ -533,7 +532,7 @@ Returns a `Statement` object
 
 ```javascript
 var ibmdb = require("ifxnjs"),
-   cn = "SERVER=ids1;DATABASE=mydb1;HOST=9.25.140.10;PROTOCOL=onsoctcp;SERVICE=5550;UID=user1;PWD=xyz;";
+   cn = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;UID=informix;PWD=xxxx;"
 
 ibmdb.open(cn,function(err,conn){
   var stmt = conn.prepareSync("insert into hits (col1, col2) VALUES (?, ?)");
@@ -566,7 +565,7 @@ Commit a transaction
 
 ```javascript
 var ibmdb = require("ifxnjs"),
-   cn = "SERVER=ids1;DATABASE=mydb1;HOST=9.25.140.10;PROTOCOL=onsoctcp;SERVICE=5550;UID=user1;PWD=xyz;";
+   cn = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;UID=informix;PWD=xxxx;"
 
 ibmdb.open(cn, function(err,conn) {
 
@@ -601,7 +600,7 @@ Synchronously commit a transaction
 
 ```javascript
 var ibmdb = require("ifxnjs"),
-   cn = "SERVER=ids1;DATABASE=mydb1;HOST=9.25.140.10;PROTOCOL=onsoctcp;SERVICE=5550;UID=user1;PWD=xyz;";
+   cn = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;UID=informix;PWD=xxxx;"
 
 ibmdb.open(cn, function(err,conn) {
 
@@ -632,7 +631,7 @@ Rollback a transaction
 
 ```javascript
 var ibmdb = require("ifxnjs"),
-   cn = "SERVER=ids1;DATABASE=mydb1;HOST=9.25.140.10;PROTOCOL=onsoctcp;SERVICE=5550;UID=user1;PWD=xyz;";
+   cn = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;UID=informix;PWD=xxxx;"
 
 ibmdb.open(cn, function(err,conn) {
 
@@ -667,7 +666,7 @@ Synchronously rollback a transaction
 
 ```javascript
 var ibmdb = require("ifxnjs")
-   cn = "SERVER=ids1;DATABASE=mydb1;HOST=9.25.140.10;PROTOCOL=onsoctcp;SERVICE=5550;UID=user1;PWD=xyz;";
+   cn = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;UID=informix;PWD=xxxx;"
 
 ibmdb.open(cn, function(err,conn) {
 
@@ -707,7 +706,7 @@ Get a `Database` instance which is already connected to `connectionString`
 ```javascript
 var Pool = require("ifxnjs").Pool
   , pool = new Pool()
-    , cn = "SERVER=ids1;DATABASE=mydb1;HOST=9.25.140.10;PROTOCOL=onsoctcp;SERVICE=5550;UID=user1;PWD=xyz;";
+    , cn = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;UID=informix;PWD=xxxx;"
 
 pool.open(cn, function (err, db) {
   if (err) {
@@ -730,7 +729,7 @@ Close all connections in the `Pool` instance
 ```javascript
 var Pool = require("ifxnjs").Pool
   , pool = new Pool()
-    , cn = "SERVER=ids1;DATABASE=mydb1;HOST=9.25.140.10;PROTOCOL=onsoctcp;SERVICE=5550;UID=user1;PWD=xyz;";
+    , cn = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;UID=informix;PWD=xxxx;"
 
 pool.open(cn, function (err, db) {
   if (err) {
@@ -747,17 +746,10 @@ pool.open(cn, function (err, db) {
 ```
 
 contributors
-------
-* IBM
+------------
+* Javier Sagrera
 * Sathyanesh Krishnan (msatyan@gmail.com)
-* Dan VerWeire (dverweire@gmail.com)
-* Lee Smith (notwink@gmail.com)
-* Bruno Bigras
-* Christian Ensel
-* Yorick
-* Joachim Kainz
-* Oleg Efimov
-* paulhendrix
+
 
 
 license
@@ -770,20 +762,3 @@ Copyright (c) 2013 Dan VerWeire <dverweire@gmail.com>
 
 Copyright (c) 2010 Lee Smith <notwink@gmail.com>
 
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of 
-this software and associated documentation files (the "Software"), to deal in 
-the Software without restriction, including without limitation the rights to 
-use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
-the Software, and to permit persons to whom the Software is furnished to do so,
-subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR 
-COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER 
-IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
