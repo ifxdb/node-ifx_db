@@ -1,5 +1,6 @@
 /*
-  Copyright (c) 2016, Sathyanesh Krishnan<msatyan@gmail.com>
+  Copyright (c) 2017 Sathyanesh Krishnan <msatyan@gmail.com>
+  Copyright (c) 2017 Javier Sagrera
   Copyright (c) 2013, Dan VerWeire<dverweire@gmail.com>
   Copyright (c) 2010, Lee Smith<notwink@gmail.com>
 

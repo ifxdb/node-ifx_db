@@ -1,3 +1,6 @@
+// Copyright (c) 2017 Sathyanesh Krishnan <msatyan@gmail.com>
+// Copyright (c) 2017 Javier Sagrera
+
 
 var fs = require('fs');
 //var url = require('url');

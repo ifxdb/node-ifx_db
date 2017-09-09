@@ -3,7 +3,7 @@
 // Author : bimaljha@in.ibm.com
 
 var common = require("./common")
-    , ifxdb = require("../")
+    , ifxnjs = require("../")
     , assert = require("assert")
     , fs = require('fs')
     , cn = common.connectionString
@@ -13,7 +13,7 @@ var common = require("./common")
     , outputfile2 = 'trc2.fmt'
     ;
 
-ifxdb.open(cn, function (err,conn) 
+ifxnjs.open(cn, function (err,conn) 
 {
   if (err) 
   {

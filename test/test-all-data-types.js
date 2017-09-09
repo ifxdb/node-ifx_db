@@ -1,9 +1,9 @@
 var common = require("./common")
-    , ifxdb = require("../")
+    , ifxnjs = require("../")
     , assert = require("assert")
     , cn = common.connectionString;
 
-    ifxdb.open(cn, function(err, conn) {
+    ifxnjs.open(cn, function(err, conn) {
       if(err) console.log(err);
       assert.equal(err, null);
 

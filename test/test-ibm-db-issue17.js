@@ -1,7 +1,7 @@
 /*require the ibm_db module*/
 var common = require("./common")
   , assert = require("assert")
-  , ifxdb = require("../");
+  , ifxnjs = require("../");
 
 var connString = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;UID=informix;PWD=xxxxx;";
 
@@ -13,7 +13,7 @@ var testValues = [10205152031467301, 10205152031467303];
   param 1: The DSN string which has the details of database name to connect to, user id, password, hostname, portnumber 
   param 2: The Callback function to execute when connection attempt to the specified database is completed
 */
-ifxdb.open(common.connectionString, function(err, conn)
+ifxnjs.open(common.connectionString, function(err, conn)
 {
         if(err) {
           	console.error("error: ", err.message);

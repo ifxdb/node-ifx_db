@@ -1,12 +1,12 @@
 var common = require("./common")
-  , ifxdb = require("../")
+  , ifxnjs = require("../")
   , assert = require("assert")
   ;
 
 var count = 0;
 var iterations = 10;
 
-var conn = ifxdb.openSync(common.connectionString);
+var conn = ifxnjs.openSync(common.connectionString);
   
 common.dropTables(conn, function () {
   common.createTables(conn, function (err, data) {

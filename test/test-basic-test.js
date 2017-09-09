@@ -1,9 +1,9 @@
 var common = require("./common")
-    , ifxdb = require("../")
+    , ifxnjs = require("../")
     , assert = require("assert")
     , cn = common.connectionString;
 
-ifxdb.open(cn, {"fetchMode": 3}, function(err, conn) { // 3 means FETCH_ARRARY
+ifxnjs.open(cn, {"fetchMode": 3}, function(err, conn) { // 3 means FETCH_ARRARY
   if(err) console.log(err);
   assert.equal(err, null);
 

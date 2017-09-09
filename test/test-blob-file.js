@@ -3,12 +3,12 @@
 // Author: bimaljha@in.ibm.com
 
 var common = require("./common")
-    , ifxdb = require("../")
+    , ifxnjs = require("../")
     , assert = require("assert")
     , fs = require('fs')
     , cn = common.connectionString;
 
-ifxdb.open(cn, function (err,conn) 
+ifxnjs.open(cn, function (err,conn) 
 {
   if (err) 
   {

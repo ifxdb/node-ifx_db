@@ -1,13 +1,13 @@
 var common = require("./common")
-	, ifxdb = require("../")
-	, pool = new ifxdb.Pool()
+	, ifxnjs = require("../")
+	, pool = new ifxnjs.Pool()
 	, connectionString = common.connectionString
     , assert = require("assert")
 	, connections = []
 	, connectCount = 2;
 
 var startTime1, startTime2, totalTime1, totalTime2, dropTable = 0;
-var elapsedTime = ifxdb.getElapsedTime;
+var elapsedTime = ifxnjs.getElapsedTime;
 var ret = pool.init(connectCount, connectionString); 
 if(typeof ret === 'object') assert.equal(ret.message, undefined);
 
@@ -29,7 +29,7 @@ pool.open(connectionString, function( err, conn) {
     conn.close(function(err){});
 });
 
-ifxdb.debug(true);
+ifxnjs.debug(true);
 var q1time, q2time;
 console.log(elapsedTime(), "Opening connection #1");
 pool.open(connectionString, function (err, connection) {
@@ -86,7 +86,7 @@ var testLongTime = function(conn) {
 
             // Clean up
             conn.querySync("drop table mtab1");
-            ifxdb.debug(false);
+            ifxnjs.debug(false);
             pool.close();
         });
     });

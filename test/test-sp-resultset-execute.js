@@ -3,7 +3,7 @@
 // APIs are used.
 
 var common = require("./common")
-  , ifxdb = require("../")
+  , ifxnjs = require("../")
   , assert = require("assert")
   , schema = common.connectionObject.CURRENTSCHEMA;
 
@@ -14,8 +14,8 @@ var proc2 = "create or replace procedure " + schema + ".proc2 ( IN v1 int, INOUT
 var proc3 = "create or replace procedure " + schema + ".proc2 ( IN v1 int, IN v2 varchar(30) )  dynamic result sets 2 language sql begin  declare cr1  cursor with return for select c1, c2 from " + schema + ".mytab1; declare cr2  cursor with return for select c2 from " + schema + ".mytab1; open cr1; open cr2; end";
 var query = "call " + schema + ".proc2(?, ?)";
 var result;
-//ifxdb.debug(true);
-ifxdb.open(common.connectionString, {fetchMode : 3}, function (err, conn) {
+//ifxnjs.debug(true);
+ifxnjs.open(common.connectionString, {fetchMode : 3}, function (err, conn) {
     if(err) { 
       console.log(err);
       process.exit(-1);

@@ -1,12 +1,12 @@
 var common = require("./common")
-	, ifxdb = require("../")
-	, pool = new ifxdb.Pool()
+	, ifxnjs = require("../")
+	, pool = new ifxnjs.Pool()
 	, connectionString = common.connectionString
     , assert = require("assert")
 	, connections = []
 	, connectCount = 12;
 
-//ifxdb.debug(true);
+//ifxnjs.debug(true);
 pool.setMaxPoolSize(9); // Max no of active connections.
 pool.setConnectTimeout(5); // Connection timeout in seconds.
 var ret = pool.init(6, connectionString); // Initialize pool with n no of connections.
