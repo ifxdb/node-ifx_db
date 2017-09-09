@@ -18,16 +18,16 @@ catch (e) {
   };
 }
 
-exports.connectionObject.DATABASE = process.env.IFX_DB_DBNAME   || exports.connectionObject.DATABASE;
-exports.connectionObject.HOSTNAME = process.env.IFX_DB_HOSTNAME || exports.connectionObject.HOSTNAME;
-exports.connectionObject.UID      = process.env.IFX_DB_UID      || exports.connectionObject.UID;
-exports.connectionObject.PWD      = process.env.IFX_DB_PWD      || exports.connectionObject.PWD;
-exports.connectionObject.PORT     = process.env.IFX_DB_PORT     || exports.connectionObject.PORT;
-exports.connectionObject.PROTOCOL = process.env.IFX_DB_PROTOCOL || exports.connectionObject.PROTOCOL;
+exports.connectionObject.DATABASE = process.env.IFX_DBNAME   || exports.connectionObject.DATABASE;
+exports.connectionObject.HOSTNAME = process.env.IFX_HOSTNAME || exports.connectionObject.HOSTNAME;
+exports.connectionObject.UID      = process.env.IFX_UID      || exports.connectionObject.UID;
+exports.connectionObject.PWD      = process.env.IFX_PWD      || exports.connectionObject.PWD;
+exports.connectionObject.PORT     = process.env.IFX_PORT     || exports.connectionObject.PORT;
+exports.connectionObject.PROTOCOL = process.env.IFX_PROTOCOL || exports.connectionObject.PROTOCOL;
 
 //checks if schema is defined
-if (process.env.IFX_DB_SCHEMA !== 'undefined') {
-    exports.connectionObject.CURRENTSCHEMA = process.env.IFX_DB_SCHEMA || exports.connectionObject.CURRENTSCHEMA;
+if (process.env.IFX_SCHEMA !== 'undefined') {
+    exports.connectionObject.CURRENTSCHEMA = process.env.IFX_SCHEMA || exports.connectionObject.CURRENTSCHEMA;
 }
 
 for(key in exports.connectionObject) 

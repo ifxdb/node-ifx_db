@@ -3,11 +3,11 @@ IBM DB Test Suite
 
 Connection info must be specified in the environment. 
 For example, by sourcing the following ENV Vars:
-export IFX_DB_DBNAME=<Database Name>
-export IFX_DB_UID=<Username>
-export IFX_DB_PWD=<Password>
-export IFX_DB_HOSTNAME=<Hostname or IP>
-export IFX_DB_PORT=<Database Port>
+export IFX_DBNAME=<Database Name>
+export IFX_UID=<Username>
+export IFX_PWD=<Password>
+export IFX_HOSTNAME=<Hostname or IP>
+export IFX_PORT=<Database Port>
 
 OR,
     If not using ENV Vars,Update connection info in 
