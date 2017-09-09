@@ -56,7 +56,7 @@ node-gyp build -v
 ./build/Release/ifx_njs_bind.node
 ```
 
-### Quick Test 
+### Quick test of the local build
 
 ##### Set runtime environment to pick Informix Client SDK libraries.
 ```bash
@@ -161,10 +161,10 @@ C:\work\IfxNode\IfxNodeJsVS2015.sln
 ```
 
 ### Driver binaries
-```
-If no build error then the driver binaries will be at 
+```bash
+#If no build error then the driver binaries will be at 
 C:\work\IfxNode\build\Debug
-or
+# or
 C:\work\IfxNode\build\Release
 ```
 
