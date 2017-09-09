@@ -12,9 +12,9 @@
  
 #### Prepare Linux64 prebuild binary 
 ```bash
-git clone https://github.com/ifxdb/node-ifx_db.git
+git clone https://github.com/ifxdb/IfxNode.git
 
-cd node-ifx_db
+cd IfxNode
 npm update
 
 rm -rf ./build  
@@ -40,15 +40,15 @@ cd ..
 rm -rf node_modules
 mkdir  node_modules
 cd node_modules
-ln -s ../node-ifx_db ./ifx_db
+ln -s ../IfxNode ./ifx_db
 cd ..
-cp node-ifx_db/test/SampleApp1.js .
+cp IfxNode/test/SampleApp1.js .
 node SampleApp1.js
 ```
 
 ###  Checking Hash
 ```
-cd cd node-ifx_db
+cd cd IfxNode
 md5sum ./prebuilt/Linux64/build.zip
 6901472318b1b3173f8633b5f402daf4  ./prebuilt/Linux64/build.zip
 
@@ -62,7 +62,7 @@ update the Hash and Checkin the repo
 
 * [certutil](https://technet.microsoft.com/library/cc732443.aspx)
 ```
-cd C:\work\node-ifx_db\prebuilt\Win64
+cd C:\work\IfxNode\prebuilt\Win64
 certutil -hashfile build.zip MD5
 685ef0f84d3954ba1c7a0377a36908c4
 ```
@@ -83,14 +83,14 @@ npm install unzip
 npm install node-gyp
 
 cd /work/dev/t1/node_modules
-git clone https://github.com/ifxdb/node-ifx_db.git
+git clone https://github.com/ifxdb/IfxNode.git
 
-cd /work/dev/t1/node_modules/node-ifx_db
+cd /work/dev/t1/node_modules/IfxNode
 #git checkout PreBuiltBin
 # rm -rf ./.git
 
 cd /work/dev/t1/node_modules/
-mv  node-ifx_db     ifx_db
+mv  IfxNode     ifx_db
 cd /work/dev/t1/node_modules/ifx_db
 node installer/IfxDriverInstall.js
 

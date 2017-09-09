@@ -41,9 +41,9 @@ export LD_LIBRARY_PATH=${INFORMIXDIR}/lib/esql:${INFORMIXDIR}/lib/cli
 
 ### Fire the build 
 ```bash 
-git clone https://github.com/ifxdb/node-ifx_db.git
+git clone https://github.com/ifxdb/IfxNode.git
 
-cd node-ifx_db
+cd IfxNode
 npm update
 
 rm -rf ./build  
@@ -70,9 +70,9 @@ cd ..
 #rm -rf node_modules
 mkdir  node_modules
 cd     node_modules
-ln -s  ../node-ifx_db  ./ifx_db
+ln -s  ../IfxNode  ./ifx_db
 cd ..
-cp node-ifx_db/test/SampleApp1.js .
+cp IfxNode/test/SampleApp1.js .
 ```
 ##### Run the sample 
 ```bash
@@ -125,8 +125,8 @@ vcbuild.bat clean              : Clean Project
 #### clone the driver source code
 ```bat
 cd C:\work
-git clone https://github.com/ifxdb/node-ifx_db.git
-cd C:\work\node-ifx_db
+git clone https://github.com/ifxdb/IfxNode.git
+cd C:\work\IfxNode
 ```
 
 #### Set env for the build 
@@ -146,7 +146,7 @@ SET NODE_SRC=C:\njs\Src6112
 
 #### Fire the driver build 
 ```bat
-cd C:\work\node-ifx_db
+cd C:\work\IfxNode
 node-gyp configure
 node-gyp build
 
@@ -155,13 +155,13 @@ node-gyp build  --debug
 node-gyp build  --release
 
 Alternative build: you may use the Visual Studio 2015 Solution to build from source
-C:\work\node-ifx_db\IfxNodeJsVS2015.sln
+C:\work\IfxNode\IfxNodeJsVS2015.sln
 ```
 
 ### Driver binaries
 ```
 If no build error then the driver binaries will be at 
-C:\work\node-ifx_db\build\Debug
+C:\work\IfxNode\build\Debug
 ```
 
 #### [FYI: node-gyp build helps](https://github.com/nodejs/node-gyp)
@@ -762,9 +762,9 @@ contributors
 
 license
 -------
-Copyright (c) 2015 Sathyanesh Krishnan <msatyan@gmail.com>
+Copyright (c) 2017 Sathyanesh Krishnan <msatyan@gmail.com>
 
-Copyright (c) 2014 IBM Corporation <opendev@us.ibm.com>
+Copyright (c) 2017 Javier Sagrera
 
 Copyright (c) 2013 Dan VerWeire <dverweire@gmail.com>
 

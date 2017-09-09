@@ -1,19 +1,21 @@
 {
   "name": "ifx_db",
-  "description": "IBM Informix bindings for node",
+  "description": "Informix native node.js driver",
   "version": "6.0.4",
   "main": "lib/odbc.js",
-  "homepage": "https://github.com/ifxdb/node-ifx_db",
+  "homepage": "https://github.com/OpenIfx/IfxNode",
   "repository": {
     "type": "git",
-    "url": "git://github.com/ifxdb/node-ifx_db.git"
+    "url": "git://github.com/OpenIfx/IfxNode.git"
   },
   "bugs": {
-    "url": "https://github.com/ifxdb/node-ifx_db/issues"
+    "url": "https://github.com/OpenIfx/IfxNode/issues"
   },
   "contributors": [
-    "IBM Informix",
-    "Sathyanesh Krishnan"
+    "OpenIfx",
+    "Informix",
+    "Sathyanesh Krishnan",
+    "Javier Sagrera"
   ],
   "directories": {
     "example": "examples",
@@ -44,8 +46,7 @@
     "rasberty",
     "pi",
     "odbc",
-    "HCL",
-    "IBM"
+    "HCL"
   ],
   "author": "Sathyanesh Krishnan",
   "license": "MIT"
