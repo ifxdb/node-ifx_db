@@ -164,6 +164,20 @@ If no build error then the driver binaries will be at
 C:\work\IfxNode\build\Debug
 ```
 
+### Quick test of the local build 
+```bash
+md C:\work\t1
+cd C:\work\t1
+npm install bindings
+# FYI: Copy the entire IfxNode dir under C:\work\t1\node_modules\ and then rename it to ifxnjs
+xcopy C:\work\IfxNode C:\work\t1\node_modules\ifxnjs /s /I
+
+copy C:\work\IfxNode\examples\SampleApp1.js
+
+#edit the connection information of the application, then run
+node SampleApp1.js
+```
+
 #### [FYI: node-gyp build helps](https://github.com/nodejs/node-gyp)
 | **Command**   | **Description**
 |:--------------|:---------------------------------------------------------------
