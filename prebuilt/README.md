@@ -12,7 +12,7 @@
  
 #### Prepare Linux64 prebuild binary 
 ```bash
-git clone https://github.com/ifxdb/IfxNode.git
+git clone https://github.com/OpenIfx/IfxNode.git
 
 cd IfxNode
 npm update
@@ -83,7 +83,7 @@ npm install unzip
 npm install node-gyp
 
 cd /work/dev/t1/node_modules
-git clone https://github.com/ifxdb/IfxNode.git
+git clone https://github.com/OpenIfx/IfxNode.git
 
 cd /work/dev/t1/node_modules/IfxNode
 #git checkout PreBuiltBin
