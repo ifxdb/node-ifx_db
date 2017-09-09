@@ -53,7 +53,7 @@ node-gyp build -v
 
 #### check the build output, if all right then the driver binary is    
 ```bash
-./build/Release/ifx_node_bind.node
+./build/Release/ifx_njs_bind.node
 ```
 
 ### Quick Test 

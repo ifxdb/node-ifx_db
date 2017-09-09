@@ -2,7 +2,7 @@
   'targets' : 
   [
     {
-      'target_name' : 'ifx_node_bind',
+      'target_name' : 'ifx_njs_bind',
 
       'sources' : 
       [

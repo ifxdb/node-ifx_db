@@ -23,7 +23,7 @@ node-gyp build -v
 
 rm ./build/binding.Makefile  
 rm ./build/config.gypi  
-rm ./build/ifx_node_bind.target.mk  
+rm ./build/ifx_njs_bind.target.mk  
 rm ./build/Makefile 
 rm -rf ./build/Release/.deps
 rm -rf ./build/Release/obj.target

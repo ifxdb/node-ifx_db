@@ -13,7 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{16E9192A-3D7A-4BE8-C8B6-732FDE44C875}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>ifx_node_bind</RootNamespace>
+    <RootNamespace>ifx_njs_bind</RootNamespace>
     <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
     <PreferredToolArchitecture>x64</PreferredToolArchitecture>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
