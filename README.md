@@ -8,10 +8,10 @@ The development activities of the driver are powered by passion, dedication and 
 ## install
 ----------
 ```bash
-npm install ifx_db
+npm install ifxnjs
 ```
 
-The driver has been certified to work with **Raspberry Pi**, it has prebuilt binaries for **ARM**, **x86 Linux64** and **Win64**, all other platform you may perform a local build. The current version of Informix native node driver (ifx_db@6.0.x) is being compiled with Node.js v6.11.x LTS libraries. The driver is expected to work node.js version 6x.  
+The driver has been certified to work with **Raspberry Pi**, it has prebuilt binaries for **ARM**, **x86 Linux64** and **Win64**, all other platform you may perform a local build. The current version of Informix native node driver (ifxnjs@6.0.x) is being compiled with Node.js v6.11.x LTS libraries. The driver is expected to work node.js version 6x.  
    
 **FYI**: Informix Client SDK 410 xC2 or above is needed the driver to connect to the database. Make sure Informix CSDK is configured and its environments are set prior to running application.
 
@@ -70,7 +70,7 @@ cd ..
 #rm -rf node_modules
 mkdir  node_modules
 cd     node_modules
-ln -s  ../IfxNode  ./ifx_db
+ln -s  ../IfxNode  ./ifxnjs
 cd ..
 cp IfxNode/test/SampleApp1.js .
 ```
@@ -203,7 +203,7 @@ SET PATH=C:\informix\bin;%PATH%
 --------------------
 
 ```javascript
-var dbobj = require('ifx_db');
+var dbobj = require('ifxnjs');
 var ConStr = "SERVER=<IDS ServerName>;DATABASE=<dbname>;HOST=<myhost>;SERVICE=<Port#>;UID=<UserName>;PWD=<password>;";
 //Eg: "SERVER=ids1;DATABASE=mydb1;HOST=BlueGene.ibm.com;SERVICE=5550;UID=user1;PWD=xyz;"
 ```
@@ -215,7 +215,7 @@ var ConStr = "SERVER=<IDS ServerName>;DATABASE=<dbname>;HOST=<myhost>;SERVICE=<P
 
 ```javascript
 
-var dbobj = require('ifx_db');
+var dbobj = require('ifxnjs');
 
 function DirExec( conn, ErrIgn, sql )
 {
@@ -264,16 +264,16 @@ var MyAsynchronousTask = function (err, conn)
   conn.close();
 }
 
-function ifx_db_Open(ConStr) 
+function ifxnjs_Open(ConStr) 
 {
   console.log(" --- MyAsynchronousTask Starting....." );
   dbobj.open( ConStr, MyAsynchronousTask );
   console.log(" --- Check the sequence printed!" );
 }
 
-function ifx_db_OpenSync(ConStr) 
+function ifxnjs_OpenSync(ConStr) 
 {
-  console.log(" --- Executing ifx_db.openSync() ...." );
+  console.log(" --- Executing ifxnjs.openSync() ...." );
   var conn;
   try 
   {
@@ -295,7 +295,7 @@ function ifx_db_OpenSync(ConStr)
   {
     console.log(e);
   }
-  console.log(" --- End ifx_db.openSync()" );
+  console.log(" --- End ifxnjs.openSync()" );
 }
 
 function main_func()
@@ -304,10 +304,10 @@ function main_func()
   var ConnectionString = "SERVER=ids1;DATABASE=mydb1;HOST=BlueGene.ibm.com;PROTOCOL=onsoctcp;SERVICE=5550;UID=user1;PWD=xyz;";
     
   //Synchronous Execution 
-  ifx_db_OpenSync(ConnectionString);
+  ifxnjs_OpenSync(ConnectionString);
   
   //Asynchronous Execution
-  ifx_db_Open(ConnectionString);
+  ifxnjs_Open(ConnectionString);
 }
 
 main_func();
@@ -323,7 +323,7 @@ The simple api is based on instances of the `Database` class. You may get an
 instance in one of the following ways:
 
 ```javascript
-require("ifx_db").open(connectionString, function (err, conn){
+require("ifxnjs").open(connectionString, function (err, conn){
   //conn is already open now if err is falsy
 });
 ```
@@ -331,13 +331,13 @@ require("ifx_db").open(connectionString, function (err, conn){
 or by using the helper function:
 
 ```javascript
-var ibmdb = require("ifx_db")();
+var ibmdb = require("ifxnjs")();
 ``` 
 
 or by creating an instance with the constructor function:
 
 ```javascript
-var Database = require("ifx_db").Database
+var Database = require("ifxnjs").Database
   , ibmdb = new Database();
 ```
 
@@ -351,7 +351,7 @@ Open a connection to a database.
 * **callback** - `callback (err, conn)`
 
 ```javascript
-var ibmdb = require("ifx_db");
+var ibmdb = require("ifxnjs");
 
 ibmdb.open(connectionString, function (err, connection) {
     if (err) 
@@ -379,7 +379,7 @@ Synchronously open a connection to a database.
 * **connectionString** - The connection string for your database
 
 ```javascript
-var ibmdb = require("ifx_db"),
+var ibmdb = require("ifxnjs"),
   connString = "SERVER=ids1;DATABASE=mydb1;HOST=9.25.140.10;PROTOCOL=onsoctcp;SERVICE=5550;UID=user1;PWD=xyz;";
 
 try {
@@ -407,7 +407,7 @@ Issue an asynchronous SQL query to the database which is currently open.
 * **callback** - `callback (err, rows, moreResultSets)`
 
 ```javascript
-var ibmdb = require("ifx_db"),
+var ibmdb = require("ifxnjs"),
    cn = "SERVER=ids1;DATABASE=mydb1;HOST=9.25.140.10;PROTOCOL=onsoctcp;SERVICE=5550;UID=user1;PWD=xyz;";
 
 ibmdb.open(cn, function (err, conn) {
@@ -440,7 +440,7 @@ Synchronously issue a SQL query to the database that is currently open.
     any '?' characters in `sqlQuery`.
 
 ```javascript
-var ibmdb = require("ifx_db"),
+var ibmdb = require("ifxnjs"),
    cn = "SERVER=ids1;DATABASE=mydb1;HOST=9.25.140.10;PROTOCOL=onsoctcp;SERVICE=5550;UID=user1;PWD=xyz;";
 
 ibmdb.open(cn, function(err, conn){
@@ -459,7 +459,7 @@ Close the currently opened database.
 * **callback** - `callback (err)`
 
 ```javascript
-var ibmdb = require("ifx_db"),
+var ibmdb = require("ifxnjs"),
    cn = "SERVER=ids1;DATABASE=mydb1;HOST=9.25.140.10;PROTOCOL=onsoctcp;SERVICE=5550;UID=user1;PWD=xyz;";
 
 ibmdb.open(cn, function (err, conn) {
@@ -480,7 +480,7 @@ ibmdb.open(cn, function (err, conn) {
 Synchronously close the currently opened database.
 
 ```javascript
-var ibmdb = require("ifx_db")(),
+var ibmdb = require("ifxnjs")(),
    cn = "SERVER=ids1;DATABASE=mydb1;HOST=9.25.140.10;PROTOCOL=onsoctcp;SERVICE=5550;UID=user1;PWD=xyz;";
 
 //Blocks until the connection is open
@@ -500,7 +500,7 @@ Prepare a statement for execution.
 Returns a `Statement` object via the callback
 
 ```javascript
-var ibmdb = require("ifx_db"),
+var ibmdb = require("ifxnjs"),
    cn = "SERVER=ids1;DATABASE=mydb1;HOST=9.25.140.10;PROTOCOL=onsoctcp;SERVICE=5550;UID=user1;PWD=xyz;";
 
 ibmdb.open(cn,function(err,conn){
@@ -532,7 +532,7 @@ Synchronously prepare a statement for execution.
 Returns a `Statement` object
 
 ```javascript
-var ibmdb = require("ifx_db"),
+var ibmdb = require("ifxnjs"),
    cn = "SERVER=ids1;DATABASE=mydb1;HOST=9.25.140.10;PROTOCOL=onsoctcp;SERVICE=5550;UID=user1;PWD=xyz;";
 
 ibmdb.open(cn,function(err,conn){
@@ -565,7 +565,7 @@ Commit a transaction
 * **callback** - `callback (err)`
 
 ```javascript
-var ibmdb = require("ifx_db"),
+var ibmdb = require("ifxnjs"),
    cn = "SERVER=ids1;DATABASE=mydb1;HOST=9.25.140.10;PROTOCOL=onsoctcp;SERVICE=5550;UID=user1;PWD=xyz;";
 
 ibmdb.open(cn, function(err,conn) {
@@ -600,7 +600,7 @@ ibmdb.open(cn, function(err,conn) {
 Synchronously commit a transaction
 
 ```javascript
-var ibmdb = require("ifx_db"),
+var ibmdb = require("ifxnjs"),
    cn = "SERVER=ids1;DATABASE=mydb1;HOST=9.25.140.10;PROTOCOL=onsoctcp;SERVICE=5550;UID=user1;PWD=xyz;";
 
 ibmdb.open(cn, function(err,conn) {
@@ -631,7 +631,7 @@ Rollback a transaction
 * **callback** - `callback (err)`
 
 ```javascript
-var ibmdb = require("ifx_db"),
+var ibmdb = require("ifxnjs"),
    cn = "SERVER=ids1;DATABASE=mydb1;HOST=9.25.140.10;PROTOCOL=onsoctcp;SERVICE=5550;UID=user1;PWD=xyz;";
 
 ibmdb.open(cn, function(err,conn) {
@@ -666,7 +666,7 @@ ibmdb.open(cn, function(err,conn) {
 Synchronously rollback a transaction
 
 ```javascript
-var ibmdb = require("ifx_db")
+var ibmdb = require("ifxnjs")
    cn = "SERVER=ids1;DATABASE=mydb1;HOST=9.25.140.10;PROTOCOL=onsoctcp;SERVICE=5550;UID=user1;PWD=xyz;";
 
 ibmdb.open(cn, function(err,conn) {
@@ -705,7 +705,7 @@ Get a `Database` instance which is already connected to `connectionString`
 * **callback** - `callback (err, db)`
 
 ```javascript
-var Pool = require("ifx_db").Pool
+var Pool = require("ifxnjs").Pool
   , pool = new Pool()
     , cn = "SERVER=ids1;DATABASE=mydb1;HOST=9.25.140.10;PROTOCOL=onsoctcp;SERVICE=5550;UID=user1;PWD=xyz;";
 
@@ -728,7 +728,7 @@ Close all connections in the `Pool` instance
 * **callback** - `callback (err)`
 
 ```javascript
-var Pool = require("ifx_db").Pool
+var Pool = require("ifxnjs").Pool
   , pool = new Pool()
     , cn = "SERVER=ids1;DATABASE=mydb1;HOST=9.25.140.10;PROTOCOL=onsoctcp;SERVICE=5550;UID=user1;PWD=xyz;";
 

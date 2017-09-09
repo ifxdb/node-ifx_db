@@ -1,5 +1,5 @@
 {
-  "name": "ifx_db",
+  "name": "ifxnjs",
   "description": "Informix native node.js driver",
   "version": "6.0.4",
   "main": "lib/odbc.js",

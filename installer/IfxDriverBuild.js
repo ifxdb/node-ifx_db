@@ -62,7 +62,7 @@ function IfxNodeJsBuild()
                 if (iS_CSDK_HOME_Valid == true)
                 {
                     console.log('Building binaries for IfxNode. This platform is not completely supported, you might encounter errors.');
-                    console.log('In such cases please open an issue on our repository, http://github.com/ifx_db/IfxNode.');
+                    console.log('In such cases please open an issue on our repository, https://github.com/OpenIfx/IfxNode');
                     buildBinary();
                 }
                 else

@@ -4,9 +4,9 @@
 
 | **Platform** | **NodeJS Version** | **MD5 hash**
 |:-------------|:-------------------|:----------------------------------------
-| `Win64`      | node-v6.11.2       | 685ef0f84d3954ba1c7a0377a36908c4
-| `Arm64`      | node-v6.11.2       | 
+| `Arm`        | node-v6.11.2       | 
 | `Linux64`    | node-v6.11.2       | 6901472318b1b3173f8633b5f402daf4
+| `Win64`      | node-v6.11.2       | 685ef0f84d3954ba1c7a0377a36908c4
 
 
  
@@ -40,7 +40,7 @@ cd ..
 rm -rf node_modules
 mkdir  node_modules
 cd node_modules
-ln -s ../IfxNode ./ifx_db
+ln -s ../IfxNode ./ifxnjs
 cd ..
 cp IfxNode/test/SampleApp1.js .
 node SampleApp1.js
@@ -90,11 +90,11 @@ cd /work/dev/t1/node_modules/IfxNode
 # rm -rf ./.git
 
 cd /work/dev/t1/node_modules/
-mv  IfxNode     ifx_db
-cd /work/dev/t1/node_modules/ifx_db
+mv  IfxNode     ifxnjs
+cd /work/dev/t1/node_modules/ifxnjs
 node installer/IfxDriverInstall.js
 
-cp /work/dev/t1/node_modules/ifx_db/test/SampleApp1.js /work/dev/t1/.
+cp /work/dev/t1/node_modules/ifxnjs/test/SampleApp1.js /work/dev/t1/.
 cd /work/dev/t1
 node SampleApp1.js
 ```
