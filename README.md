@@ -41,7 +41,7 @@ export LD_LIBRARY_PATH=${INFORMIXDIR}/lib/esql:${INFORMIXDIR}/lib/cli
 
 ### Fire the build 
 ```bash 
-git clone https://github.com/OpenIfx/IfxNode.git
+git clone https://github.com/OpenInformix/IfxNode.git
 
 cd IfxNode
 npm update
@@ -125,7 +125,7 @@ vcbuild.bat clean              : Clean Project
 #### clone the driver source code
 ```bat
 cd C:\work
-git clone https://github.com/OpenIfx/IfxNode.git
+git clone https://github.com/OpenInformix/IfxNode.git
 cd C:\work\IfxNode
 ```
 

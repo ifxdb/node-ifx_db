@@ -3,16 +3,16 @@
   "description": "Informix native node.js driver",
   "version": "6.0.4",
   "main": "lib/odbc.js",
-  "homepage": "https://github.com/OpenIfx/IfxNode",
+  "homepage": "https://github.com/OpenInformix/IfxNode",
   "repository": {
     "type": "git",
-    "url": "git://github.com/OpenIfx/IfxNode.git"
+    "url": "git://github.com/OpenInformix/IfxNode.git"
   },
   "bugs": {
-    "url": "https://github.com/OpenIfx/IfxNode/issues"
+    "url": "https://github.com/OpenInformix/IfxNode/issues"
   },
   "contributors": [
-    "OpenIfx",
+    "OpenInformix",
     "Informix",
     "Sathyanesh Krishnan",
     "Javier Sagrera"
