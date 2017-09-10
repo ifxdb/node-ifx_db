@@ -1,3 +1,7 @@
+##### Copyright 2017 OpenInformix
+
+##### [Licensed under the MIT](https://opensource.org/licenses/MIT)
+
 ## Informix native node.js driver
 ---------------------------------
 Informix native node.js driver is a high performance driver with asynchronous/synchronous interface suitable for highly scalable enterprise and IoT solutions working with Informix database.  
