@@ -43,10 +43,8 @@
     "synchronous",
     "scalable",
     "enterprise",
-    "rasberty",
-    "pi",
-    "odbc",
-    "HCL"
+    "raspberry",
+    "pi"
   ],
   "author": "Sathyanesh Krishnan",
   "license": "MIT"

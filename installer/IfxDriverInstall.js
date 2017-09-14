@@ -56,11 +56,6 @@ function IfxNodeJsInstall()
             {
                 PlatformDir = 'Arm';
             }
-
-            // if (arch == 'arm64')
-            // {
-            //     PlatformDir = 'Arm64';
-            // }           
         }        
 
         if( PlatformDir == undefined)
