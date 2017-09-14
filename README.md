@@ -171,6 +171,21 @@ C:\work\IfxNode\build\Debug
 # or
 C:\work\IfxNode\build\Release
 ```
+### Cleanup build files
+```bat
+del C:\work\IfxNode\build\binding.sln
+del C:\work\IfxNode\build\config.gypi
+del C:\work\IfxNode\build\ifx_njs_bind.vcxproj
+del C:\work\IfxNode\build\ifx_njs_bind.vcxproj.filters
+
+del C:\work\IfxNode\build\Release\ifx_njs_bind.exp
+del C:\work\IfxNode\build\Release\ifx_njs_bind.lib
+del C:\work\IfxNode\build\Release\ifx_njs_bind.map
+del C:\work\IfxNode\build\Release\ifx_njs_bind.pdb
+
+del /S /F /Q C:\work\IfxNode\build\Release\obj
+rd /S /Q C:\work\IfxNode\build\Release\obj
+```
 
 ### Quick test of the local build 
 ```bash
