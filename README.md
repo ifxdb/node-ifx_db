@@ -34,7 +34,10 @@ The driver has been certified to work with **Raspberry Pi**, it has prebuilt bin
 
 
 ```bash  
-# Complile time environment setting  
+# Assuming that you have installed 'node.js' at /work/nodejs
+# Assuming that you have installed 'CSDK' at /work/informix
+
+# Then the complile time environment setting  
 export CSDK_HOME=/work/informix  
 export PATH=/work/nodejs/bin:$PATH  
 
@@ -45,8 +48,10 @@ export LD_LIBRARY_PATH=${INFORMIXDIR}/lib/esql:${INFORMIXDIR}/lib/cli
 
 ### Fire the build 
 ```bash 
+cd /work
 git clone https://github.com/OpenInformix/IfxNode.git
 
+# /work/IfxNode
 cd IfxNode
 npm update
 
@@ -70,11 +75,16 @@ export PATH=$INFORMIXDIR/bin:$PATH
 
 ##### Get a sample code 
 ```bash
-cd ..
+# /work/try
+# cd ..
+cd /work/try
+
 #rm -rf node_modules
 mkdir  node_modules
+
+# /work/IfxNode/node_modules
 cd     node_modules
-ln -s  ../IfxNode  ./ifxnjs
+ln -s  /work/IfxNode  ./ifxnjs
 cd ..
 cp IfxNode/test/SampleApp1.js .
 ```
