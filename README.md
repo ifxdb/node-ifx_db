@@ -69,16 +69,31 @@ ls -l ./build/Release/ifx_njs_bind.node
 ```
 
 #### Build Cleanup
-```bsh
+```bash
 rm /work/t1/IfxNode/build/binding.Makefile
 rm /work/t1/IfxNode/build/config.gypi
 rm /work/t1/IfxNode/build/ifx_njs_bind.target.mk
 rm /work/t1/IfxNode/build/Makefile
 rm -rf /work/t1/IfxNode/build/Release/obj.target
 rm -rf /work/t1/IfxNode/build/Release/.deps
+
+cd /work/t1/IfxNode
+zip -r build.zip ./build
+# mv build.zip ./prebuilt/Linux64/build.zip
 ```
 
 ### Quick test of the local build
+---------------------------------
+
+##### Get a sample code 
+```bash
+cd /work/try
+rm -rf /work/try/node_modules
+mkdir /work/try/node_modules
+
+ln -s  /work/t1/IfxNode  /work/try/node_modules/ifxnjs
+cp /work/t1/IfxNode/test/SampleApp1.js .
+```
 
 ##### Set runtime environment to pick Informix Client SDK libraries.
 ```bash
@@ -87,20 +102,11 @@ export LD_LIBRARY_PATH=${INFORMIXDIR}/lib:${INFORMIXDIR}/lib/esql:${INFORMIXDIR}
 export PATH=$INFORMIXDIR/bin:$PATH
 ```
 
-##### Get a sample code 
+##### Run the sample 
 ```bash
 cd /work/try
 
-#rm -rf node_modules
-mkdir  /work/try/node_modules
-
-cd /work/try/node_modules
-ln -s  /work/t1/IfxNode  ./ifxnjs
-cd ..
-cp /work/t1/IfxNode/test/SampleApp1.js .
-```
-##### Run the sample 
-```bash
+vi SampleApp1.js
 # edit connection informaton and then run
 node SampleApp1.js
 ```
