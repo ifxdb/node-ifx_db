@@ -48,11 +48,10 @@ export LD_LIBRARY_PATH=${INFORMIXDIR}/lib/esql:${INFORMIXDIR}/lib/cli
 
 ### Fire the build 
 ```bash 
-cd /work
+cd /work/t1
 git clone https://github.com/OpenInformix/IfxNode.git
 
-# /work/IfxNode
-cd IfxNode
+cd /work/t1/IfxNode
 npm update
 
 rm -rf ./build  
@@ -62,7 +61,17 @@ node-gyp build -v
 
 #### check the build output, if all right then the driver binary is    
 ```bash
-./build/Release/ifx_njs_bind.node
+ls -l ./build/Release/ifx_njs_bind.node
+```
+
+#### Build Cleanup
+```bsh
+rm /work/t1/IfxNode/build/binding.Makefile
+rm /work/t1/IfxNode/build/config.gypi
+rm /work/t1/IfxNode/build/ifx_njs_bind.target.mk
+rm /work/t1/IfxNode/build/Makefile
+rm -rf /work/t1/IfxNode/build/Release/obj.target
+rm -rf /work/t1/IfxNode/build/Release/.deps
 ```
 
 ### Quick test of the local build
@@ -75,18 +84,15 @@ export PATH=$INFORMIXDIR/bin:$PATH
 
 ##### Get a sample code 
 ```bash
-# /work/try
-# cd ..
 cd /work/try
 
 #rm -rf node_modules
-mkdir  node_modules
+mkdir  /work/try/node_modules
 
-# /work/IfxNode/node_modules
-cd     node_modules
-ln -s  /work/IfxNode  ./ifxnjs
+cd /work/try/node_modules
+ln -s  /work/t1/IfxNode  ./ifxnjs
 cd ..
-cp IfxNode/test/SampleApp1.js .
+cp /work/t1/IfxNode/test/SampleApp1.js .
 ```
 ##### Run the sample 
 ```bash
