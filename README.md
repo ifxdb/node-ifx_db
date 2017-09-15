@@ -37,9 +37,13 @@ The driver has been certified to work with **Raspberry Pi**, it has prebuilt bin
 # Assuming that you have installed 'node.js' at /work/nodejs
 # Assuming that you have installed 'CSDK' at /work/informix
 
+cd /work
+rm /work/nodejs
+sudo ln -s  /work/dev/node-v6.11.2-linux-x64  /work/nodejs
+
 # Then the complile time environment setting  
 export CSDK_HOME=/work/informix  
-export PATH=/work/nodejs/bin:$PATH  
+export PATH=/work/nodejs/bin:$PATH
 
 # Runtime environment setting  
 export INFORMIXDIR=${CSDK_HOME}  
@@ -78,6 +82,7 @@ rm -rf /work/t1/IfxNode/build/Release/.deps
 
 ##### Set runtime environment to pick Informix Client SDK libraries.
 ```bash
+export INFORMIXDIR=/work/informix
 export LD_LIBRARY_PATH=${INFORMIXDIR}/lib:${INFORMIXDIR}/lib/esql:${INFORMIXDIR}/lib/cli
 export PATH=$INFORMIXDIR/bin:$PATH
 ```
@@ -257,7 +262,7 @@ SET PATH=C:\informix\bin;%PATH%
 
 ```javascript
 var dbobj = require('ifxnjs');
-var ConStr = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;UID=informix;PWD=xxxx;";
+var ConStr = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;PROTOCOL=onsoctcp;UID=informix;PWD=xxxx;"";
 ```
 
 
@@ -353,7 +358,7 @@ function ifxnjs_OpenSync(ConStr)
 function main_func()
 {
   //  Make sure the port is IDS SQLI port.
-  var ConnectionString = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;UID=informix;PWD=xxxx;"
+  var ConnectionString = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;PROTOCOL=onsoctcp;UID=informix;PWD=xxxx;";
     
   //Synchronous Execution 
   ifxnjs_OpenSync(ConnectionString);
