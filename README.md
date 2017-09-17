@@ -32,25 +32,33 @@ The driver has been certified to work with **Raspberry Pi**, it has prebuilt bin
 * NAN        (npm install -g nan)
 * Informix Client SDK 410 xC2 or above
 
-
+#### FYI: Make sure you have the right node.js
 ```bash  
-# Assuming that you have installed 'node.js' at /work/nodejs
-# Assuming that you have installed 'CSDK' at /work/informix
+# rm /work/nodejs
+# cd /work/dev
+# if 64bit Linux on x86
+# wget https://nodejs.org/dist/v6.11.2/node-v6.11.2-linux-x64.tar.xz
+# tar -xvf node-v6.11.2-linux-x64.tar.xz
+# sudo ln -s  /work/dev/node-v6.11.2-linux-x64  /work/nodejs
 
-cd /work
-rm /work/nodejs
-sudo ln -s  /work/dev/node-v6.11.2-linux-x64  /work/nodejs
+# Remove old nodejs installation if any
+sudo apt-get remove nodejs nodejs-legacy -y
+sudo apt-get remove npm  -y
 
+# Install 6x nodejs
+curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+sudo apt-get install -y nodejs
+```
+#### Environment setting
+```bash
+# sudo ln -s /home/informix/1210UC9 /work/informix
+# Assuming 'CSDK' is installed at /work/informix
 # Then the complile time environment setting  
 export CSDK_HOME=/work/informix  
-export PATH=/work/nodejs/bin:$PATH
-
-# Runtime environment setting  
-export INFORMIXDIR=${CSDK_HOME}  
-export LD_LIBRARY_PATH=${INFORMIXDIR}/lib/esql:${INFORMIXDIR}/lib/cli  
+#export PATH=/work/nodejs/bin:$PATH
 ```
 
-### Fire the build 
+### Fire the build
 ```bash 
 cd /work/t1
 git clone https://github.com/OpenInformix/IfxNode.git
@@ -77,9 +85,13 @@ rm /work/t1/IfxNode/build/Makefile
 rm -rf /work/t1/IfxNode/build/Release/obj.target
 rm -rf /work/t1/IfxNode/build/Release/.deps
 
+# apt-get update
+# apt-get install zip unzip
+
 cd /work/t1/IfxNode
 zip -r build.zip ./build
 # mv build.zip ./prebuilt/Linux64/build.zip
+# mv build.zip ./prebuilt/Arm/build.zip
 ```
 
 ### Quick test of the local build
