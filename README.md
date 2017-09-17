@@ -40,6 +40,7 @@ The driver has been certified to work with **Raspberry Pi**, it has prebuilt bin
 # wget https://nodejs.org/dist/v6.11.2/node-v6.11.2-linux-x64.tar.xz
 # tar -xvf node-v6.11.2-linux-x64.tar.xz
 # sudo ln -s  /work/dev/node-v6.11.2-linux-x64  /work/nodejs
+# export PATH=/work/nodejs/bin:$PATH
 
 # Remove old nodejs installation if any
 sudo apt-get remove nodejs nodejs-legacy -y
@@ -55,7 +56,6 @@ sudo apt-get install -y nodejs
 # Assuming 'CSDK' is installed at /work/informix
 # Then the complile time environment setting  
 export CSDK_HOME=/work/informix  
-#export PATH=/work/nodejs/bin:$PATH
 ```
 
 ### Fire the build
