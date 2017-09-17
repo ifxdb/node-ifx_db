@@ -50,11 +50,10 @@ sudo apt-get remove npm  -y
 curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
 sudo apt-get install -y nodejs
 ```
-#### Environment setting
+#### Complile time environment
 ```bash
 # sudo ln -s /home/informix/1210UC9 /work/informix
 # Assuming 'CSDK' is installed at /work/informix
-# Then the complile time environment setting  
 export CSDK_HOME=/work/informix  
 ```
 
