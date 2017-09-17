@@ -1,7 +1,8 @@
-##### Copyright 2017 Informix
+###### Copyright 2017 Informix
 
-### Licensed under the Apache License, Version 2.0
-This will be a read only repository for reference; all future development will be on our new home.  
+##### Licensed under the Apache License, Version 2.0
+Moving forward this will be only a read only repository for reference.  
+The **OpenInformix** is our new home and all future developments.  
 [https://github.com/OpenInformix/](https://github.com/OpenInformix/)  
 [https://github.com/OpenInformix/IfxNode](https://github.com/OpenInformix/IfxNode)
 
