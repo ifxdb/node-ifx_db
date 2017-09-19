@@ -4,20 +4,20 @@
 
 ## Informix native node.js driver
 ---------------------------------
-Informix native node.js driver is a high performance driver with asynchronous/synchronous interface suitable for highly scalable enterprise and IoT solutions working with Informix database.  
+Informix native node.js driver is a high performance driver with asynchronous/synchronous interface suitable for highly scalable enterprise applications and lightweight enough for Internet of things (IoT) solutions working with Informix database.
 
-The development activities of the driver are powered by passion, dedication and independent thinking. You may send pull request, together we grow as an open community; relevant discussion and queries are answered by community through stackoverflow. [http://stackoverflow.com/questions/tagged/informix](http://stackoverflow.com/questions/tagged/informix)
+The development activities of the driver are powered by passion, dedication and independent thinking. You may send pull request, together we grow as an open community; relevant discussion and queries are answered by community through **Stack Overflow**. [http://stackoverflow.com/questions/tagged/informix](http://stackoverflow.com/questions/tagged/informix)
 
 
-## install
-----------
+## Installing the driver
+------------------------
 ```bash
 npm install ifxnjs
 ```
 
-The driver has been certified to work with **Raspberry Pi**, it has prebuilt binaries for **ARM**, **x86 Linux64** and **Win64**, all other platform you may perform a local build. The current version of Informix native node driver (ifxnjs@6.0.x) is being compiled with Node.js v6.11.x LTS libraries. The driver is expected to work node.js version 6x.  
+The driver has prebuilt binaries for **ARM**, **Linux x64** and **Win64**, and it is certified to work with **Raspberry Pi**; all other platforms you may perform a local build. The current version of Informix native node driver (ifxnjs@6.0.x) is being compiled with Node.js v6.11.x LTS libraries. The driver is expected to work node.js version 6x.  
    
-**FYI**: Informix Client SDK 410 xC2 or above is needed the driver to connect to the database. Make sure Informix CSDK is configured and its environments are set prior to running application.
+**FYI**: Informix Client SDK 410 xC2 or above is needed for the driver to make connection to the database. Make sure Informix CSDK is configured and its environments are set prior to running application.
 
 
 ## Linux Build
@@ -279,7 +279,7 @@ SET PATH=C:\informix\bin;%PATH%
 
 ```javascript
 var dbobj = require('ifxnjs');
-var ConStr = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;PROTOCOL=onsoctcp;UID=informix;PWD=xxxx;"";
+var ConStr = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;PROTOCOL=onsoctcp;UID=informix;PWD=xxxx;";
 ```
 
 
