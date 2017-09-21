@@ -3,7 +3,7 @@
 ##### Licensed under the Apache License, Version 2.0
 The **OpenInformix** is our new home and all future developments.  
 ```diff
-- FYI: The ifxdb will be a read only repository for reference.  
+- FYI: The node-ifx_db will be a read only repository for reference.  
 ```
  
 [https://github.com/OpenInformix/](https://github.com/OpenInformix/)  
