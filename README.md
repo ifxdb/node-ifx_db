@@ -17,7 +17,18 @@ npm install ifxnjs
 
 The driver has prebuilt binaries for **ARM**, **Linux x64** and **Win64**, and it is certified to work with **Raspberry Pi**; all other platforms you may perform a local build. The current version of Informix native node driver (ifxnjs@6.0.x) is being compiled with Node.js v6.11.x LTS libraries. The driver is expected to work node.js version 6x.  
    
-**FYI**: Informix Client SDK 410 xC2 or above is needed for the driver to make connection to the database. Make sure Informix CSDK is configured and its environments are set prior to running application.
+FYI: **Informix Client SDK 4.10 xC2 or above** is needed for the driver to make connection to the database. Make sure Informix Client SDK is installed and its environments are set prior to running application.
+
+#### Linux Client SDK runtime env
+```bash
+export LD_LIBRARY_PATH=${INFORMIXDIR}/lib:${INFORMIXDIR}/lib/esql:${INFORMIXDIR}/lib/cli
+export PATH=$INFORMIXDIR/bin:$PATH
+```
+
+#### Windows Client SDK runtime env
+```bat
+SET PATH=C:\%INFORMIXDIR%\bin;%PATH%
+```
 
 
 ## Linux Build
@@ -25,12 +36,12 @@ The driver has prebuilt binaries for **ARM**, **Linux x64** and **Win64**, and i
 **FYI:** Make sure bit architectures matches for all binary components; if you are using 64bit nodejs make sure you are using 64bit Informix Client-SDK as well.
 
 ### Prerequisite :
+* Informix Client SDK 410 xC2 or above
 * Git  
 * NodeJS
 * Python     (2.7.x (3.x is not supported yet))
 * Node-gyp   (npm install -g node-gyp)
 * NAN        (npm install -g nan)
-* Informix Client SDK 410 xC2 or above
 
 #### FYI: Make sure you have the right node.js
 ```bash  
@@ -133,12 +144,12 @@ If you are using 64bit nodejs make sure you are using 64bit Informix Client-SDK 
 
 
 ### Prerequisite :
+* Informix Client SDK 410 xC2 or above
 * Git  
 * NodeJS
 * Python     (2.7.x (3.x is not supported yet))
 * Node-gyp   (npm install -g node-gyp)
 * NAN        (npm install -g nan)
-* Informix Client SDK 410 xC2 or above
 
 
 #### Build node.js from its source
