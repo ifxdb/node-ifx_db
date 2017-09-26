@@ -19,13 +19,13 @@ The driver has prebuilt binaries for **ARM**, **Linux x64** and **Win64**, and i
    
 FYI: **Informix Client SDK 4.10 xC2 or above** is needed for the driver to make connection to the database. Make sure Informix Client SDK is installed and its environments are set prior to running application.
 
-#### Linux Client SDK runtime env
+##### Linux Client SDK runtime env
 ```bash
 export LD_LIBRARY_PATH=${INFORMIXDIR}/lib:${INFORMIXDIR}/lib/esql:${INFORMIXDIR}/lib/cli
 export PATH=$INFORMIXDIR/bin:$PATH
 ```
 
-#### Windows Client SDK runtime env
+##### Windows Client SDK runtime env
 ```bat
 SET PATH=C:\%INFORMIXDIR%\bin;%PATH%
 ```
