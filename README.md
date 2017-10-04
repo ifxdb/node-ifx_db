@@ -27,7 +27,7 @@ export PATH=$INFORMIXDIR/bin:$PATH
 
 ##### Windows: Informix Client SDK runtime env
 ```bat
-SET PATH=C:\%INFORMIXDIR%\bin;%PATH%
+SET PATH=%INFORMIXDIR%\bin;%PATH%
 ```
 
 
