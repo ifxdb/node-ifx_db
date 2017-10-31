@@ -31,7 +31,7 @@ The driver source code is platform neutral; you may build the driver on any plat
 
 ## Runtime Environment
 ----------------------
-The Informix Python driver has dependency on **Informix Client SDK version 4.10 xC2 or above**. Make sure to set Informix Client SDK runtime environment before running the applications.  
+The Informix node.js driver has dependency on **Informix Client SDK version 4.10 xC2 or above**. Make sure to set Informix Client SDK runtime environment before running the applications.  
 
 Say **INFORMIXDIR** is the location where you have installed Informix Client SDK.
 ##### Linux
