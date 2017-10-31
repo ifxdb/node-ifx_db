@@ -51,7 +51,7 @@ SET PATH=%INFORMIXDIR%\bin;%PATH%
 
 ```javascript
 var dbobj = require('ifxnjs');
-var ConStr = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;PROTOCOL=onsoctcp;UID=informix;PWD=xxxx;";
+var ConStr = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;UID=informix;PWD=xxxx;";
 ```
 
 
@@ -147,7 +147,7 @@ function ifxnjs_OpenSync(ConStr)
 function main_func()
 {
   //  Make sure the port is IDS SQLI port.
-  var ConnectionString = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;PROTOCOL=onsoctcp;UID=informix;PWD=xxxx;";
+  var ConnectionString = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;UID=informix;PWD=xxxx;";
     
   //Synchronous Execution 
   ifxnjs_OpenSync(ConnectionString);
