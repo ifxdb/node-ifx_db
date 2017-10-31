@@ -20,17 +20,8 @@ The driver has prebuilt binaries for **ARM**, **Linux x64** and **Win64**, and i
 FYI: **Informix Client SDK 4.10 xC2 or above** is needed for the driver to make connection to the database. Make sure Informix Client SDK is installed and its environments are set prior to running application.
 
 
-
-## Build the driver from its source code
-------------------
-The driver source code is platform neutral; you may build the driver on any platforms. If you face any difficulty feel free to reach out to us, we are happy to help you. The following URL has instruction to build it on Windows and Linux. 
-
-* [Windows Build](./LocalBuildWindows.md)
-* [Linux Build](./LocalBuildLinux.md)
-
-
-## Runtime Environment
-----------------------
+### Runtime Environment
+-----------------------
 The Informix node.js driver has dependency on **Informix Client SDK version 4.10 xC2 or above**. Make sure to set Informix Client SDK runtime environment before running the applications.  
 
 Say **INFORMIXDIR** is the location where you have installed Informix Client SDK.
@@ -41,9 +32,15 @@ export LD_LIBRARY_PATH=${INFORMIXDIR}/lib:${INFORMIXDIR}/lib/esql:${INFORMIXDIR}
 
 ##### Windows
 ```bat
-# c:\informix
 SET PATH=%INFORMIXDIR%\bin;%PATH%
 ```
+
+## Build the driver from its source code
+----------------------------------------
+The driver source code is platform neutral; if needed you may build the driver on any platforms. If you face any difficulty feel free to reach out to us, we are happy to help you. The following URL has instruction to build it on Windows and Linux. 
+
+* [Windows Build](./LocalBuildWindows.md)
+* [Linux Build](./LocalBuildLinux.md)
 
 
 ## Connection String
