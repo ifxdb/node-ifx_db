@@ -62,7 +62,7 @@ db.createConnection(function (err, conn) {
           result = conn.querySync("select * from " + common.tableName);
           data = result.fetchAllSync();
           
-          assert.deepEqual(data, [ { COLINT: 42, COLDATETIME: null, COLTEXT: null } ]);
+          assert.deepEqual(data, [ { colint: 42, coldatetime: null, coltext: null } ]);
           
           finish();
         });

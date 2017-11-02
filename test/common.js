@@ -9,20 +9,22 @@ try {
 }
 catch (e) {
   exports.connectionObject = {
-    DATABASE : "SAMPLE",
+    SERVER : "ids1210",
+    DATABASE : "sample",
     HOSTNAME : "localhost",
     UID : "informix",
     PWD : "xxxxxx",
-    PORT : "9088",
-    PROTOCOL : "TCPIP"
+    SERVICE : "9088",
+    PROTOCOL : "onsoctcp"
   };
 }
 
+exports.connectionObject.SERVER	  = process.env.IFX_SERVER   || exports.connectionObject.SERVER;
 exports.connectionObject.DATABASE = process.env.IFX_DBNAME   || exports.connectionObject.DATABASE;
 exports.connectionObject.HOSTNAME = process.env.IFX_HOSTNAME || exports.connectionObject.HOSTNAME;
 exports.connectionObject.UID      = process.env.IFX_UID      || exports.connectionObject.UID;
 exports.connectionObject.PWD      = process.env.IFX_PWD      || exports.connectionObject.PWD;
-exports.connectionObject.PORT     = process.env.IFX_PORT     || exports.connectionObject.PORT;
+exports.connectionObject.SERVICE  = process.env.IFX_SERVICE  || exports.connectionObject.SERVICE;
 exports.connectionObject.PROTOCOL = process.env.IFX_PROTOCOL || exports.connectionObject.PROTOCOL;
 
 //checks if schema is defined
@@ -65,5 +67,5 @@ exports.dropTables = function (db, cb) {
 };
 
 exports.createTables = function (db, cb) {
-  db.query("create table " + exports.tableName + " (COLINT INTEGER, COLDATETIME TIMESTAMP, COLTEXT VARCHAR(255))", cb);
+  db.query("create table " + exports.tableName + " (COLINT INTEGER, COLDATETIME DATETIME YEAR TO FRACTION(5), COLTEXT VARCHAR(255))", cb);
 };

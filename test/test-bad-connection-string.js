@@ -14,9 +14,9 @@ db.open("this is wrong", function(err) {
   console.log(err);
   
   if( /^win/.test(process.platform) )
-    assert.deepEqual(err.message, '[IBM][CLI Driver] SQL1024N  A database connection does not exist.  SQLSTATE=08003\r\n');
+    assert.deepEqual(err.message, '[Microsoft][ODBC Driver Manager] Invalid connection string attribute');
   else
-    assert.deepEqual(err.message, '[IBM][CLI Driver] SQL1024N  A database connection does not exist.  SQLSTATE=08003\n');
+    assert.deepEqual(err.message, '[Informix][Informix ODBC Driver]General error');
   
   assert.equal(db.connected, false);
 });

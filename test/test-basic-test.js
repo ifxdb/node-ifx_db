@@ -11,9 +11,9 @@ ifxnjs.open(cn, {"fetchMode": 3}, function(err, conn) { // 3 means FETCH_ARRARY
     conn.querySync("drop table mytab1");
     } catch (e) {}
   conn.querySync("create table mytab1 (c1 int, c2 varchar(10))");
-  conn.query('select 1, 4, 5 from sysibm.sysdummy1;' +
+  conn.query('select 1, 4, 5 from table (set{1});' +
              'select * from mytab1 where c1 = 2;'+
-             'select 3,7,8 from sysibm.sysdummy1', [23], function (err, data) {
+             'select 3,7,8 from table (set{1})', [23], function (err, data) {
     if (err) console.log(err);
     else {
       console.log( data);
@@ -45,7 +45,7 @@ ifxnjs.open(cn, {"fetchMode": 3}, function(err, conn) { // 3 means FETCH_ARRARY
             console.log(data);
             result.closeSync();
             conn.querySync("drop table mytab1");
-            assert.deepEqual(data, [ { C1: 42, C2: 'bimal' } ]);
+            assert.deepEqual(data, [ { c1: 42, c2: 'bimal' } ]);
             conn.close(function () { console.log('done'); });
           }
         });
