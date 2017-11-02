@@ -19,270 +19,28 @@ The driver has prebuilt binaries for **ARM**, **Linux x64** and **Win64**, and i
    
 FYI: **Informix Client SDK 4.10 xC2 or above** is needed for the driver to make connection to the database. Make sure Informix Client SDK is installed and its environments are set prior to running application.
 
-##### Linux: Informix Client SDK runtime env
+
+### Runtime Environment
+-----------------------
+The Informix node.js driver has dependency on **Informix Client SDK version 4.10 xC2 or above**. Make sure to set Informix Client SDK runtime environment before running the applications.  
+
+Say **INFORMIXDIR** is the location where you have installed Informix Client SDK.
+##### Linux
 ```bash
 export LD_LIBRARY_PATH=${INFORMIXDIR}/lib:${INFORMIXDIR}/lib/esql:${INFORMIXDIR}/lib/cli
-export PATH=$INFORMIXDIR/bin:$PATH
 ```
 
-##### Windows: Informix Client SDK runtime env
+##### Windows
 ```bat
 SET PATH=%INFORMIXDIR%\bin;%PATH%
 ```
 
+## Build the driver from its source code
+----------------------------------------
+The driver source code is platform neutral; if needed you may build the driver on any platforms. If you face any difficulty feel free to reach out to us, we are happy to help you. The following URL has instruction to build it on Windows and Linux. 
 
-## Linux Build
---------------
-**FYI:** Make sure bit architectures matches for all binary components; if you are using 64bit nodejs make sure you are using 64bit Informix Client-SDK as well.
-
-### Prerequisite :
-* Informix Client SDK 410 xC2 or above
-* Git  
-* NodeJS
-* Python     (2.7.x (3.x is not supported yet))
-* Node-gyp   (npm install -g node-gyp)
-* NAN        (npm install -g nan)
-
-#### FYI: Make sure you have the right node.js
-```bash  
-# rm /work/nodejs
-# cd /work/dev
-# if 64bit Linux on x86
-# wget https://nodejs.org/dist/v6.11.2/node-v6.11.2-linux-x64.tar.xz
-# tar -xvf node-v6.11.2-linux-x64.tar.xz
-# sudo ln -s  /work/dev/node-v6.11.2-linux-x64  /work/nodejs
-# export PATH=/work/nodejs/bin:$PATH
-
-# Remove old nodejs installation if any
-sudo apt-get remove nodejs nodejs-legacy -y
-sudo apt-get remove npm  -y
-
-# Install 6x nodejs
-curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
-sudo apt-get install -y nodejs
-```
-#### Complile time environment
-```bash
-# sudo ln -s /home/informix/1210UC9 /work/informix
-# Assuming 'CSDK' is installed at /work/informix
-export CSDK_HOME=/work/informix  
-```
-
-### Fire the build
-```bash 
-cd /work/t1
-git clone https://github.com/OpenInformix/IfxNode.git
-
-cd /work/t1/IfxNode
-npm update
-
-rm -rf ./build  
-node-gyp configure -v  
-node-gyp build -v 
-```
-
-#### check the build output, if all right then the driver binary is    
-```bash
-ls -l ./build/Release/ifx_njs_bind.node
-```
-
-#### Build Cleanup
-```bash
-rm /work/t1/IfxNode/build/binding.Makefile
-rm /work/t1/IfxNode/build/config.gypi
-rm /work/t1/IfxNode/build/ifx_njs_bind.target.mk
-rm /work/t1/IfxNode/build/Makefile
-rm -rf /work/t1/IfxNode/build/Release/obj.target
-rm -rf /work/t1/IfxNode/build/Release/.deps
-
-# apt-get update
-# apt-get install zip unzip
-
-cd /work/t1/IfxNode
-zip -r build.zip ./build
-# mv build.zip ./prebuilt/Linux64/build.zip
-# mv build.zip ./prebuilt/Arm/build.zip
-```
-
-### Quick test of the local build
----------------------------------
-
-##### Get a sample code 
-```bash
-cd /work/try
-rm -rf /work/try/node_modules
-mkdir /work/try/node_modules
-
-ln -s  /work/t1/IfxNode  /work/try/node_modules/ifxnjs
-cp /work/t1/IfxNode/test/SampleApp1.js .
-```
-
-##### Set runtime environment to pick Informix Client SDK libraries.
-```bash
-export INFORMIXDIR=/work/informix
-export LD_LIBRARY_PATH=${INFORMIXDIR}/lib:${INFORMIXDIR}/lib/esql:${INFORMIXDIR}/lib/cli
-export PATH=$INFORMIXDIR/bin:$PATH
-```
-
-##### Run the sample 
-```bash
-cd /work/try
-
-vi SampleApp1.js
-# edit connection informaton and then run
-node SampleApp1.js
-```
-
-
-## Windows Build
-----------------
-* Build Nodejs from its source 
-* Build Informix Nodejs driver 
-
-FYI: make sure bit architecture matches for all binary components  
-If you are using 64bit nodejs make sure you are using 64bit Informix Client-SDK as well.  
-
-
-### Prerequisite :
-* Informix Client SDK 410 xC2 or above
-* Git  
-* NodeJS
-* Python     (2.7.x (3.x is not supported yet))
-* Node-gyp   (npm install -g node-gyp)
-* NAN        (npm install -g nan)
-
-
-#### Build node.js from its source
-The **node.lib** is needed for compiling C/C++ native addons, One of the ways to get this library is to build node.js from its source, then there will never be any compatibility issue.  
-FYI: The node.lib can also be obtained from **node-gyp** too, it is up to you to choose one of the approach.  
-
-
-#### Open VS 2015 x64 cmd
-```bat
-# Say you have extracted NodeJS sourct at **C:\njs\Src6112**
-cd C:\njs\Src6112
-
-SET NODE_SRC=C:\njs\Src6112
-vcbuild.bat nosign release x64
-
-FYI:
-vcbuild.bat nosign release x64 : Build in release mode in 64-bit computers
-vcbuild.bat nosign debug x64   : Build in debug mode for 64-bit computers
-vcbuild.bat nosign release     : Build in release mode in 32-bit computers
-vcbuild.bat clean              : Clean Project
-```
-
-
-### Build the Informix node.js driver 
-
-#### clone the driver source code
-```bat
-cd C:\work
-git clone https://github.com/OpenInformix/IfxNode.git
-cd C:\work\IfxNode
-```
-
-#### Set env for the build 
-* **c:\Informix** is the location where Informix CSDK installed 
-* **C:\njs\Src6112** is the nodejs source that you have completed the build 
-``` bat
-#Open VS 2015 x64 cmd
-
-#Switch NodeJS to picket from the newly build location
-SET PATH=C:\njs\Src6112\Debug;C:\njs\Src6112\deps\npm\bin\node-gyp-bin;%PATH%
-or (depens on your nodejs build)
-SET PATH=C:\njs\Src6112\Release;C:\njs\Src6112\deps\npm\bin\node-gyp-bin;%PATH%
-
-SET CSDK_HOME=c:\Informix
-SET NODE_SRC=C:\njs\Src6112
-```
-
-#### Fire the driver build 
-```bat
-cd C:\work\IfxNode
-npm install nan
-
-node-gyp configure
-node-gyp build
-
-#FYI: 
-node-gyp build  --debug
-node-gyp build  --release
-
-Alternative build: you may use the Visual Studio 2015 Solution to build from source
-C:\work\IfxNode\IfxNodeJsVS2015.sln
-```
-
-### Driver binaries
-```bash
-#If no build error then the driver binaries will be at 
-C:\work\IfxNode\build\Debug
-# or
-C:\work\IfxNode\build\Release
-```
-### Cleanup build files
-```bat
-del C:\work\IfxNode\build\binding.sln
-del C:\work\IfxNode\build\config.gypi
-del C:\work\IfxNode\build\ifx_njs_bind.vcxproj
-del C:\work\IfxNode\build\ifx_njs_bind.vcxproj.filters
-
-del C:\work\IfxNode\build\Release\ifx_njs_bind.exp
-del C:\work\IfxNode\build\Release\ifx_njs_bind.lib
-del C:\work\IfxNode\build\Release\ifx_njs_bind.map
-del C:\work\IfxNode\build\Release\ifx_njs_bind.pdb
-
-del /S /F /Q C:\work\IfxNode\build\Release\obj
-rd /S /Q C:\work\IfxNode\build\Release\obj
-```
-
-### Quick test of the local build 
-```bash
-md C:\work\t1
-cd C:\work\t1
-npm install bindings
-# FYI: Copy the entire IfxNode dir under C:\work\t1\node_modules\ and then rename it to ifxnjs
-xcopy C:\work\IfxNode C:\work\t1\node_modules\ifxnjs /s /I
-
-copy C:\work\IfxNode\examples\SampleApp1.js
-
-#edit the connection information of the application, then run
-node SampleApp1.js
-```
-
-#### [FYI: node-gyp build helps](https://github.com/nodejs/node-gyp)
-| **Command**   | **Description**
-|:--------------|:---------------------------------------------------------------
-| `help`        | Shows the help dialog
-| `build`       | Invokes `make`/`msbuild.exe` and builds the native addon
-| `clean`       | Removes the `build` directory if it exists
-| `configure`   | Generates project build files for the current platform
-| `rebuild`     | Runs `clean`, `configure` and `build` all in a row
-| `install`     | Installs node header files for the given version
-| `list`        | Lists the currently installed node header versions
-| `remove`      | Removes the node header files for the given version
-
-  
-  
-## Runtime Environment Setup
-----------------------------------
-
-### Set runtime environment to pick Informix Client SDK libraries.
-#### Linux
-```bash
-export LD_LIBRARY_PATH=${INFORMIXDIR}/lib:${INFORMIXDIR}/lib/esql:${INFORMIXDIR}/lib/cli
-export PATH=$INFORMIXDIR/bin:$PATH
-```
-
-#### Windows
-```bat
-# say you have installed CSDK at C:\informix then
-SET PATH=C:\informix\bin;%PATH%
-```
-
-#### FYI: 
-* [Node.js breaking changes between v4 LTS and v6 LTS](https://github.com/nodejs/node/wiki/Breaking-changes-between-v4-LTS-and-v6-LTS)
-* [Node.js community wiki](https://github.com/nodejs/node/wiki)
+* [Windows Build](./LocalBuildWindows.md)
+* [Linux Build](./LocalBuildLinux.md)
 
 
 ## Connection String
@@ -290,7 +48,7 @@ SET PATH=C:\informix\bin;%PATH%
 
 ```javascript
 var dbobj = require('ifxnjs');
-var ConStr = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;PROTOCOL=onsoctcp;UID=informix;PWD=xxxx;";
+var ConStr = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;UID=informix;PWD=xxxx;";
 ```
 
 
@@ -386,7 +144,7 @@ function ifxnjs_OpenSync(ConStr)
 function main_func()
 {
   //  Make sure the port is IDS SQLI port.
-  var ConnectionString = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;PROTOCOL=onsoctcp;UID=informix;PWD=xxxx;";
+  var ConnectionString = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;UID=informix;PWD=xxxx;";
     
   //Synchronous Execution 
   ifxnjs_OpenSync(ConnectionString);
