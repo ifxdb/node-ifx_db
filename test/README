@@ -1,13 +1,15 @@
-IBM DB Test Suite
+IfxNode Test Suite
 
 
 Connection info must be specified in the environment. 
 For example, by sourcing the following ENV Vars:
+
+export IFX_SERVER=<Database Server>
 export IFX_DBNAME=<Database Name>
 export IFX_UID=<Username>
 export IFX_PWD=<Password>
 export IFX_HOSTNAME=<Hostname or IP>
-export IFX_PORT=<Database Port>
+export IFX_SERVICE=<Database Port>
 
 OR,
     If not using ENV Vars,Update connection info in 
