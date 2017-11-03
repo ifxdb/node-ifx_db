@@ -14,7 +14,7 @@ pool.open(cn, function (err,conn) {
   if (err) console.log(err);
   assert.equal(err, null);
   console.log("Got new connection at => " + getDateTime());
-  conn.query('select 1 from sysibm.sysdummy1', function (err, data) {
+  conn.query('select 1 from table(set{1})', function (err, data) {
     if (err) console.log(err);
     else console.log(data);
 
@@ -31,7 +31,7 @@ pool.open(cn, function (err,conn) {
         if (err) return console.log(err);
         endtime = getDateTime();
         console.log("Got connection from pool at ==> " + endtime);
-        conn.query('select 1 from sysibm.sysdummy1', function (err, data) {
+        conn.query('select 1 from table(set{1})', function (err, data) {
           if (err) console.log(err);
           else console.log(data);
 

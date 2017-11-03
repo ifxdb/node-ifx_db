@@ -19,7 +19,7 @@ function issueQuery() {
     , time = new Date().getTime();
   
   for (var x = 0; x < iterations; x++) {
-    var data = db.querySync("select 1 + 1 as test from sysibm.sysdummy1");
+    var data = db.querySync("select 1 + 1 as test from table(set{1})");
     count += 1;
   }
   

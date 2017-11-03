@@ -26,7 +26,7 @@ ifxnjs.open(common.connectionString, function(err, conn)
 			param 1: The SQL query to be issued
 			param 2: The callback function to execute when the database server responds
 		*/
-		conn.query("SELECT TIMESTAMP_FORMAT('1999-12-31 23:59:59.123', 'YYYY-MM-DD HH24:MI:SS.FF') AS TD FROM SYSIBM.SYSDUMMY1;", function(err, nodetest, moreResultSets) {
+		conn.query("SELECT TIMESTAMP_FORMAT('1999-12-31 23:59:59.123', 'YYYY-MM-DD HH24:MI:SS.FF') AS TD FROM TABLE(SET{1});", function(err, nodetest, moreResultSets) {
 		
 			if(err) {
 				console.log('Error: '+err);

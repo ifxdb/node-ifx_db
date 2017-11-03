@@ -7,7 +7,7 @@ var common = require("./common")
 db.openSync(common.connectionString);
 assert.equal(db.connected, true);
 
-var query = {"sql": "select 1 as COLINT, 'some test' as COLTEXT FROM SYSIBM.SYSDUMMY1"};
+var query = {"sql": "select 1 as COLINT, 'some test' as COLTEXT FROM TABLE(SET{1})"};
 db.queryResult(query, function (err, result) {
   assert.equal(err, null);
   assert.equal(result.constructor.name, "ODBCResult");
@@ -15,7 +15,7 @@ db.queryResult(query, function (err, result) {
   result.fetch(function (err, data) {
     db.closeSync();
     console.log("Returned data = " + JSON.stringify(data));
-    assert.deepEqual(data, { COLINT: '1', COLTEXT: 'some test' });
+    assert.deepEqual(data, { colint: '1', coltext: 'some test' });
   });
 });
 

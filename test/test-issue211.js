@@ -16,7 +16,6 @@ stmt2.sql = 'SELECT COUNT(C1) FROM FINAL TABLE(UPDATE T1 SET C2=?, C3=? WHERE C1
 stmt2.params = ['Jane', 'Joan'];
 stmt2.noResults = false;
 
-ifxnjs.debug(true);
 ifxnjs.open(cn, function(err, conn1) {
   if (err) console.log(err);
   assert.equal(err, null);
@@ -44,8 +43,11 @@ ifxnjs.open(cn, function(err, conn1) {
               conn1.query(stmt1, function(err, data) {
                 console.log('Query 1 executed');
                 if (err) {
-                  conn1.rollbackTransaction();
-                  console.log(err);
+					conn1.rollbackTransaction(function (err) {
+						if (err) {
+							console.log(err);
+						}
+					}); 
                 } else {
                   conn1.commitTransaction();
                   console.log('<<< DATA >>>:', data);
@@ -56,8 +58,11 @@ ifxnjs.open(cn, function(err, conn1) {
               conn2.query(stmt2, function(err, data) {
                 console.log('Query 2 executed');
                 if (err) {
-                  conn2.rollbackTransaction();
-                  console.log(err);
+					conn2.rollbackTransaction(function (err) {
+						if (err) {
+							console.log(err);
+						}
+					});
                 } else {
                   conn2.commitTransaction();
                   console.log('<<< DATA >>>:', data);

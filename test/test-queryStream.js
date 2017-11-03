@@ -22,7 +22,7 @@ odbc.open(common.connectionString, function(err, conn) {
     if(err) return console.log(err);
     assert.equal(conn.connected, true);
 
-    var sql = "select 1 as COLINT, 'some test' as COLTEXT FROM SYSIBM.SYSDUMMY1";
+    var sql = "select 1 as COLINT, 'some test' as COLTEXT FROM TABLE(SET{1})";
     var stream = conn.queryStream(sql);
 
     stream.once('data', function (data) {

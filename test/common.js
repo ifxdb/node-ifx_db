@@ -59,7 +59,7 @@ if (process.argv.length === 3) {
   });
 }
 
-exports.databaseName = "SAMPLE";
+exports.databaseName = exports.connectionObject.DATABASE;
 exports.tableName = "NODE_ODBC_TEST_TABLE";
 
 exports.dropTables = function (db, cb) {

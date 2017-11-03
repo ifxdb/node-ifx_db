@@ -9,8 +9,8 @@ db.open(common.connectionString, function(err) {
   assert.equal(db.connected, true);
   
   var dt = new Date();
-  var dtString = dt.toISOString().replace('Z','').replace('T', ' ') + '000';
-  var sql = "SELECT cast('" + dtString + "' as timestamp) as DT1 FROM SYSIBM.SYSDUMMY1";
+  var dtString = dt.toISOString().replace('Z','').replace('T', ' ') + '00';
+  var sql = "SELECT cast('" + dtString + "' as DATETIME YEAR TO FRACTION(5)) as DT1 FROM TABLE(SET{1})";
   
   console.log(sql);
   
@@ -25,8 +25,8 @@ db.open(common.connectionString, function(err) {
       
       //test selected data after the connection
       //is closed, in case the assertion fails
-	  assert.equal(data[0].DT1.constructor.name, "String", "DT1 is not an instance of a String object");
-      //assert.equal(data[0].DT1.getTime(), dt.getTime());
+	  assert.equal(data[0].dt1.constructor.name, "String", "DT1 is not an instance of a String object");
+      //assert.equal(data[0].dt1.getTime(), dt.getTime());
     });
   });
 });

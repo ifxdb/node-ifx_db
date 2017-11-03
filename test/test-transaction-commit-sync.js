@@ -36,7 +36,7 @@ common.createTables(db, function (err, data) {
     
     result = db.querySync("select * from " + common.tableName);
     
-    assert.deepEqual(result, [ { COLINT: 42, COLDATETIME: null, COLTEXT: null } ]);
+    assert.deepEqual(result, [ { colint: 42, coldatetime: null, coltext: null } ]);
   }
   catch (e) {
     console.log("Failed when committing");

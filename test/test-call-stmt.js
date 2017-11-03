@@ -16,9 +16,9 @@ ifxnjs.open(cn, function (err, conn)
           conn.querySync("drop procedure " + schema + ".proc1(INT, INT, VARCHAR(20))");
     } catch(e) {}
 
-    conn.querySync("create or replace procedure " + schema + ".proc1 " +
-                   "(IN v1 INTEGER, OUT v2 INTEGER, INOUT v3 VARCHAR(20)) " +
-                   "BEGIN set v2 = v1 + 1; set v3 = 'verygood'; END");
+    conn.querySync("create procedure " + schema + ".proc1 " +
+                   "(v1 INTEGER, OUT v2 INTEGER, INOUT v3 VARCHAR(20)) " +
+                   "let v2 = v1 + 1; let v3 = 'verygood'; end procedure");
     var param1 = {ParamType:"INPUT", DataType:1, Data:0};
     var param2 = {ParamType:"OUTPUT", DataType:1, Data:0};
     var param3 = {ParamType:"INOUT", DataType:1, Data:"abc", Length:30};
@@ -27,10 +27,10 @@ ifxnjs.open(cn, function (err, conn)
     assert.deepEqual(result, [ 1, 'verygood' ]);
     console.log("Output Parameters V2 = ", result[0], ", V3 = ", result[1]);
 
-    conn.querySync("drop procedure " + schema + ".proc1(INT, INT, VARCHAR(20))");
-    conn.querySync("create or replace procedure " + schema + ".proc2 (IN v1 INTEGER) BEGIN END");
-    result = conn.querySync("call " + schema + ".proc2(?)", [param1]);
-    assert.deepEqual(result, []);
+    conn.querysync("drop procedure " + schema + ".proc1(int, int, varchar(20))");
+    conn.querysync("create procedure " + schema + ".proc2 (v1 integer); end procedure");
+    result = conn.querysync("call " + schema + ".proc2(?)", [param1]);
+    assert.deepequal(result, []);
     conn.querySync("drop procedure " + schema + ".proc2(INT)");
     conn.closeSync();
     console.log('done');

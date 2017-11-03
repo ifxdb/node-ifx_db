@@ -59,7 +59,7 @@ common.createTables(db, function (err, data) {
         
         data = db.querySync("select * from " + common.tableName);
         
-        assert.deepEqual(data, [ { COLINT: 42, COLDATETIME: null, COLTEXT: null } ]);
+        assert.deepEqual(data, [ { colint: 42, coldatetime: null, coltext: null } ]);
         
         finish();
       });

@@ -18,7 +18,7 @@ function issueQuery() {
 		, time = new Date().getTime();
 	
 	for (var x = 0; x < iterations; x++) {
-		db.query("select 1 + 1 as test from sysibm.sysdummy1", cb);
+		db.query("select 1 + 1 as test from table(set{1})", cb);
 	}
 	
 	function cb (err, data) {

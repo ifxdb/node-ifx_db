@@ -20,7 +20,7 @@ function issueQuery3(done) {
   var count = 0
     , time = new Date().getTime();
   
-  var stmt = db.prepareSync('select cast(? as INTEGER) as test from sysibm.sysdummy1');
+  var stmt = db.prepareSync('select cast(? as INTEGER) as test from table(set{1})');
     
   for (var x = 0; x < iterations; x++) {
     (function (x) {

@@ -11,7 +11,7 @@
 //
 //       // return pool.openAsync(connectionString).disposer(function (conn) {
 //       //         console.log("connection opened.");
-//       //         conn.query('select 1 from sysibm.sysdummy1', function (err, data) {
+//       //         conn.query('select 1 from table(set{1})', function (err, data) {
 //       //             if (err) console.log(err);
 //       //             else console.log(data);
 //       //             conn.close(function () {
