@@ -16,7 +16,7 @@ db.open("this is wrong", function(err) {
   if( /^win/.test(process.platform) )
     assert.deepEqual(err.message, '[Microsoft][ODBC Driver Manager] Invalid connection string attribute');
   else
-    assert.deepEqual(err.message, '[Informix][Informix ODBC Driver]General error');
+    assert.deepEqual(err.message, '[Informix][Informix ODBC Driver]General error.');
   
   assert.equal(db.connected, false);
 });
