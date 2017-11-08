@@ -19,18 +19,18 @@ ifxnjs.open(cn, function (err,conn)
       conn.querySync("drop table mytab");
   } catch (e) {};
   try {
-    conn.querySync("create table mytab (empId int, photo BLOB(1M), trace CLOB(1M))");
+    conn.querySync("create table mytab (empId int, photo BYTE, desc TEXT)");
     } catch (e) {};
   
   var img1= 'data/phool.jpg'; //fs.readFileSync('phool.jpg','binary');
-  var text= 'data/trc.fmt'; //fs.readFileSync('trc.fmt','ascii');
+  var text= 'data/desc.txt'; //fs.readFileSync('trc.fmt','ascii');
 
   var len1  = fs.statSync(img1)["size"];
   var len2  = fs.statSync(text)["size"];
   console.log( "img1.length = " + len1);
   console.log( "text.length = " + len2);
 
-  conn.prepare("insert into mytab(empId, photo, trace) VALUES (?, ?, ?)", 
+  conn.prepare("insert into mytab(empId, photo, desc) VALUES (?, ?, ?)", 
       function (err, stmt) 
    {
     if (err) 
@@ -43,9 +43,10 @@ ifxnjs.open(cn, function (err,conn)
     // Except, numbers and string; all other datatypes like LOBS, GRAPHIC, File, etc
     // must be passed as JSON Object or Array.
     var photo = {ParamType:"FILE", DataType: "BLOB", "Data":img1};
-    var tracefile = {ParamType: 3, "DataType": "CLOB", Data: text};
-
-	stmt.execute([18, photo, tracefile], function (err, result) 
+    var desc = {ParamType: "FILE", "DataType": "CLOB", Data: text};
+	console.log(photo);
+	console.log(desc);
+	stmt.execute([18, photo, desc], function (err, result) 
 	{
       if( err ) console.log(err);  
       else result.closeSync();
@@ -64,20 +65,20 @@ ifxnjs.open(cn, function (err,conn)
           {
             data = result.fetchAllSync();
             fs.writeFileSync('phool2.jpg', data[0].PHOTO, 'binary');
-            fs.writeFileSync('trc2.fmt', data[0].TRACE, 'ascii');
+            fs.writeFileSync('desc2.txt', data[0].DESC, 'ascii');
             try {
                 conn.querySync("drop table mytab");
             } catch (e) {};
             result.closeSync();
   
             var size1 = fs.statSync("phool2.jpg")["size"];
-            var size2 = fs.statSync("trc2.fmt")["size"];
+            var size2 = fs.statSync("desc2.txt")["size"];
             console.log("Lengths after select = " + size1+ ", " + size2);
             assert(len1, size1);
             assert(len2, size2);
 
             fs.unlinkSync("phool2.jpg");
-            fs.unlink("trc2.fmt", function () { console.log('done'); });
+            fs.unlink("desc2.txt", function () { console.log('done'); });
           }
         });
       });

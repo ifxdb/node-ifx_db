@@ -17,10 +17,11 @@ db.open(common.connectionString, function(err){
 
 function createInsertString(batchSize) {
 
-    insertString = "insert into bench_insert (str) values ('testing')";
+    insertString = "insert into bench_insert (str) select * from table(list{ row('testing')";
     for (var i = 0; i < batchSize; i++) {
-        insertString += ", ('testing')";
+        insertString += ", row('testing')";
     }
+	insertString += "})";
 }
 function createTable() {
 	db.query("create table bench_insert (str varchar(50))", function (err) {

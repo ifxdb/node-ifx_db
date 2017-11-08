@@ -8,9 +8,9 @@ var common = require("./common")
     , fs = require('fs')
     , cn = common.connectionString
     , inputfile1 = 'data/phool.jpg'
-    , inputfile2 = 'data/trc.fmt'
+    , inputfile2 = 'data/desc.txt'
     , outputfile1 = 'phool2.jpg'
-    , outputfile2 = 'trc2.fmt'
+    , outputfile2 = 'desc2.txt'
     ;
 
 ifxnjs.open(cn, function (err,conn) 
@@ -24,7 +24,7 @@ ifxnjs.open(cn, function (err,conn)
       conn.querySync("drop table mytab");
   } catch (e) {};
   try {
-    conn.querySync("create table mytab (empId int, photo BLOB(1M), trace CLOB(1M))");
+    conn.querySync("create table mytab (empId int, photo BLOB, trace CLOB)");
     } catch (e) {};
   
   var img1= fs.readFileSync(inputfile1,'binary');

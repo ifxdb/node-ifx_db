@@ -37,6 +37,7 @@ db.createConnection(function (err, conn) {
       result = conn.querySync("select * from " + common.tableName);
       
       assert.deepEqual(result.fetchAllSync(), [ { colint: 42, coldatetime: null, coltext: null } ]);
+	  result.closeSync();
     }
     catch (e) {
       console.log("Failed when committing");

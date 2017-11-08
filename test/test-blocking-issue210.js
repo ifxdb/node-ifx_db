@@ -18,11 +18,11 @@ pool.open(connectionString, function( err, conn) {
           conn.querySync("drop table mtab2"); } catch(e) {};
     conn.querySync("create table mtab1(c1 varchar(30), c2 varchar(20))");
     conn.querySync("create table mtab2(c1 varchar(30), c2 varchar(20))");
-    conn.querySync("Insert into mtab1 values ('1', 'bimal'),('2','kumar'),('3', 'jha'), ('4', 'kamal'), ('5', 'ibm')");
-    conn.querySync("Insert into mtab1 values ('1', 'bimal'),('2','kumar'),('3', 'jha'), ('4', 'kamal'), ('5', 'ibm')");
+    conn.querySync("Insert into mtab1 select * from table (list{ row('1', 'bimal'),row('2','kumar'),row('3', 'jhaaa'), row('4', 'kamal'), row('5', 'infmx') })");
+    conn.querySync("Insert into mtab1 select * from table (list{ row('1', 'bimal'),row('2','kumar'),row('3', 'jhaaa'), row('4', 'kamal'), row('5', 'infmx') })");
     for(var i = 0; i < 9 ; i++) {
-      conn.querySync("insert into mtab2 (select * from mtab1)");
-      conn.querySync("insert into mtab1 (select * from mtab2)");
+      conn.querySync("insert into mtab2 select * from mtab1");
+      conn.querySync("insert into mtab1 select * from mtab2");
       }
     conn.querySync("drop table mtab2");
     console.log(elapsedTime(), "Inserted rows in mtab1 = ", conn.querySync("select count(*) from mtab1")[0]['1']);
@@ -65,8 +65,9 @@ pool.open(connectionString, function (err, connection) {
 
 // Test case for issue #230
 var testLongTime = function(conn) {
-    conn.querySync("insert into mtab1 values ('330107196906080910', '330107196906080910'), "+
-                   "('330107196906080910', '330107196906080910'), ('330107196906080910', '')");
+    conn.querySync("insert into mtab1 values ('330107196906080910', '330107196906080910'); "+
+                   "insert into mtab1 values ('330107196906080910', '330107196906080910');"+
+					"insert into mtab1 values('330107196906080910', '')");
     var query1 = "select c1, c2 from mtab1 where (c1 in (?, ?) or c2 in (?, ?) and (? is null or c2 = ?))";
     var query2 = "select c1, c2 from mtab1 where (c1 in ('330107196906080910', '330107196906080910') " +
                  "or c2 in ('330107196906080910', '330107196906080910') and ('' is null or c2 = ''))";
