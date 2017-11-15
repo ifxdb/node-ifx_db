@@ -1,6 +1,4 @@
 /*
-  Copyright (c) 2017 Sathyanesh Krishnan <msatyan@gmail.com>
-  Copyright (c) 2017 Javier Sagrera
   Copyright (c) 2013, Dan VerWeire<dverweire@gmail.com>
   Copyright (c) 2010, Lee Smith<notwink@gmail.com>
 
@@ -21,6 +19,8 @@
 #define _SRC_ODBC_CONNECTION_H
 
 #include <nan.h>
+
+#define DEFAULT_CONNECTION_TIMEOUT 30
 
 class ODBCConnection : public Nan::ObjectWrap {
   public:
@@ -50,8 +50,8 @@ class ODBCConnection : public Nan::ObjectWrap {
     static NAN_GETTER(ConnectedGetter);
     static NAN_GETTER(ConnectTimeoutGetter);
     static NAN_SETTER(ConnectTimeoutSetter);
-    static NAN_GETTER(LoginTimeoutGetter);
-    static NAN_SETTER(LoginTimeoutSetter);
+    static NAN_GETTER(SystemNamingGetter);
+    static NAN_SETTER(SystemNamingSetter);
 
     //async methods
     static NAN_METHOD(BeginTransaction);
@@ -62,10 +62,10 @@ class ODBCConnection : public Nan::ObjectWrap {
     static void UV_EndTransaction(uv_work_t* work_req);
     static void UV_AfterEndTransaction(uv_work_t* work_req, int status);
     
-    
     static NAN_METHOD(Open);
     static void UV_Open(uv_work_t* work_req);
     static void UV_AfterOpen(uv_work_t* work_req, int status);
+    static void SetConnectionAttributes( ODBCConnection* conn );
 
     static NAN_METHOD(Close);
     static void UV_Close(uv_work_t* work_req);
@@ -90,8 +90,10 @@ class ODBCConnection : public Nan::ObjectWrap {
     static NAN_METHOD(CreateStatementSync);
     static NAN_METHOD(OpenSync);
     static NAN_METHOD(QuerySync);
+    static NAN_METHOD(CallSync);
     static NAN_METHOD(BeginTransactionSync);
     static NAN_METHOD(EndTransactionSync);
+    static NAN_METHOD(SetIsolationLevel);
     
     struct Fetch_Request {
       Nan::Callback* callback;
@@ -105,10 +107,10 @@ class ODBCConnection : public Nan::ObjectWrap {
     SQLHENV m_hENV;
     SQLHDBC m_hDBC;
     SQLUSMALLINT canHaveMoreResults;
+    bool systemNaming;  // For i5/OS SQL_ATTR_DBC_SYS_NAMING
     bool connected;
     int statements;
-    int connectTimeout;
-	SQLUINTEGER loginTimeout;
+    SQLUINTEGER connectTimeout; // For SQL_ATTR_LOGIN_TIMEOUT
 };
 
 struct create_statement_work_data {

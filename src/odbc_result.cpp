@@ -494,7 +494,7 @@ void ODBCResult::UV_AfterFetchAll(uv_work_t* work_req, int status) {
     data->objError.Reset(ODBC::GetSQLError(
       SQL_HANDLE_STMT, 
       self->m_hSTMT,
-      (char *) "[node-odbc] Error in ODBCResult::UV_AfterFetchAll"
+      (char *) "[node-ifxnjs] Error in ODBCResult::UV_AfterFetchAll"
     ));
     
     doMoreWork = false;
@@ -617,7 +617,7 @@ NAN_METHOD(ODBCResult::FetchAllSync) {
         objError = ODBC::GetSQLError(
           SQL_HANDLE_STMT, 
           self->m_hSTMT,
-          (char *) "[node-odbc] Error in ODBCResult::UV_AfterFetchAll; probably"
+          (char *) "[node-ifxnjs] Error in ODBCResult::UV_AfterFetchAll; probably"
             " your query did not have a result set."
         );
         
@@ -715,7 +715,7 @@ NAN_METHOD(ODBCResult::MoreResultsSync) {
   SQLRETURN ret = SQLMoreResults(result->m_hSTMT);
 
   if (ret == SQL_ERROR) {
-    Nan::ThrowError(ODBC::GetSQLError(SQL_HANDLE_STMT, result->m_hSTMT, (char *)"[node-odbc] Error in ODBCResult::MoreResultsSync"));
+    Nan::ThrowError(ODBC::GetSQLError(SQL_HANDLE_STMT, result->m_hSTMT, (char *)"[node-ifxnjs] Error in ODBCResult::MoreResultsSync"));
   }
 
   info.GetReturnValue().Set(SQL_SUCCEEDED(ret) || ret == SQL_ERROR ? Nan::True() : Nan::False());

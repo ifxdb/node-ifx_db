@@ -1,6 +1,6 @@
 /*
-  Copyright (c) 2017 Sathyanesh Krishnan <msatyan@gmail.com>
-  Copyright (c) 2017 Javier Sagrera
+  Copyright (c) 2017, Sathyanesh Krishnan <msatyan@gmail.com>
+  Copyright (c) 2017, Javier Sagrera
   Copyright (c) 2013, Dan VerWeire<dverweire@gmail.com>
 
   Permission to use, copy, modify, and/or distribute this software for any
@@ -75,42 +75,27 @@ ODBCStatement::~ODBCStatement() {
 }
 
 void ODBCStatement::Free() {
-  DEBUG_PRINTF("ODBCStatement::Free\n");
+  DEBUG_PRINTF("ODBCStatement::Free paramCount = %i, m_hSTMT =%X\n", paramCount, m_hSTMT);
   //if we previously had parameters, then be sure to free them
   if (paramCount) {
-    int count = paramCount;
-    paramCount = 0;
-    
-    Parameter prm;
-    
-    //free parameter memory
-    for (int i = 0; i < count; i++) {
-      if (prm = params[i], prm.buffer != NULL) {
-        switch (prm.c_type) {
-          case SQL_C_WCHAR:   free(prm.buffer);             break;
-          case SQL_C_CHAR:    free(prm.buffer);             break; 
-          case SQL_C_SBIGINT: delete (int64_t *)prm.buffer; break;
-          case SQL_C_DOUBLE:  delete (double  *)prm.buffer; break;
-          case SQL_C_BIT:     delete (bool    *)prm.buffer; break;
-        }
-      }
-    }
-
-    free(params);
+      FREE_PARAMS( params, paramCount ) ;
+      DEBUG_PRINTF("ODBCStatement::Free - Params Freed.\n");
   }
   
   if (m_hSTMT) {
     uv_mutex_lock(&ODBC::g_odbcMutex);
-    
     SQLFreeHandle(SQL_HANDLE_STMT, m_hSTMT);
     m_hSTMT = (SQLHSTMT)NULL;
-    
+
     uv_mutex_unlock(&ODBC::g_odbcMutex);
-    
-    if (bufferLength > 0) {
-      free(buffer);
-    }
   }
+    
+  if (bufferLength > 0) {
+      if(buffer) free(buffer);
+      buffer = NULL;
+      bufferLength = 0;
+  }
+  DEBUG_PRINTF("ODBCStatement::Free() Done.\n");
 }
 
 NAN_METHOD(ODBCStatement::New) {
@@ -129,17 +114,18 @@ NAN_METHOD(ODBCStatement::New) {
   ODBCStatement* stmt = new ODBCStatement(hENV, hDBC, hSTMT);
   
   //specify the buffer length
-  stmt->bufferLength = MAX_VALUE_SIZE - 1;
+  stmt->bufferLength = MAX_VALUE_SIZE;
   
   //initialze a buffer for this object
-  stmt->buffer = (uint16_t *) malloc(stmt->bufferLength + 1);
-  //TODO: make sure the malloc succeeded
+  stmt->buffer = (uint16_t *) malloc(stmt->bufferLength+2);
+  MEMCHECK( stmt->buffer );
 
   //set the initial colCount to 0
   stmt->colCount = 0;
   
   //initialize the paramCount
   stmt->paramCount = 0;
+  stmt->params = 0;
   
   stmt->Wrap(info.Holder());
   
@@ -160,9 +146,11 @@ NAN_METHOD(ODBCStatement::Execute) {
   ODBCStatement* stmt = Nan::ObjectWrap::Unwrap<ODBCStatement>(info.Holder());
   
   uv_work_t* work_req = (uv_work_t *) (calloc(1, sizeof(uv_work_t)));
+  MEMCHECK( work_req );
   
   execute_work_data* data = 
     (execute_work_data *) calloc(1, sizeof(execute_work_data));
+  MEMCHECK( data );
 
   data->cb = new Nan::Callback(cb);
   
@@ -196,45 +184,61 @@ void ODBCStatement::UV_AfterExecute(uv_work_t* req, int status) {
   DEBUG_PRINTF("ODBCStatement::UV_AfterExecute\n");
   
   execute_work_data* data = (execute_work_data *)(req->data);
-  
   Nan::HandleScope scope;
+  int outParamCount = 0; // Non-zero tells its a SP with OUT param
+  Local<Array> sp_result = Nan::New<Array>();
   
   //an easy reference to the statment object
-  ODBCStatement* self = data->stmt->self();
+  ODBCStatement* stmt = data->stmt->self();
 
+  if (SQL_SUCCEEDED( data->result )) {
+    for(int i = 0; i < stmt->paramCount; i++) { // For stored Procedure CALL
+      if(stmt->params[i].paramtype % 2 == 0) {
+        sp_result->Set(Nan::New(outParamCount), ODBC::GetOutputParameter(stmt->params[i]));
+        outParamCount++;
+      }
+    }
+  }
+  if( stmt->paramCount ) {
+    FREE_PARAMS( stmt->params, stmt->paramCount ) ;
+  }
+  
   //First thing, let's check if the execution of the query returned any errors 
   if(data->result == SQL_ERROR) {
     ODBC::CallbackSQLError(
       SQL_HANDLE_STMT,
-      self->m_hSTMT,
+      stmt->m_hSTMT,
       data->cb);
   }
   else {
     Local<Value> info[4];
     bool* canFreeHandle = new bool(false);
     
-    info[0] = Nan::New<External>((void*) (intptr_t) self->m_hENV);
-    info[1] = Nan::New<External>((void*) (intptr_t) self->m_hDBC);
-    info[2] = Nan::New<External>((void*) (intptr_t) self->m_hSTMT);
+    info[0] = Nan::New<External>((void*) (intptr_t) stmt->m_hENV);
+    info[1] = Nan::New<External>((void*) (intptr_t) stmt->m_hDBC);
+    info[2] = Nan::New<External>((void*) (intptr_t) stmt->m_hSTMT);
     info[3] = Nan::New<External>((void*)canFreeHandle);
     
-    // TODO is this object being cleared anywhere? Memory leak?
-    Nan::Persistent<Object> js_result;
-    js_result.Reset(Nan::New(ODBCResult::constructor)->NewInstance(4, info));
+    Local<Object> js_result = Nan::New<Function>(ODBCResult::constructor)->NewInstance(4, info);
 
     info[0] = Nan::Null();
-    info[1] = Nan::New(js_result);
+    info[1] = js_result;
+
+    if(outParamCount) {
+        info[2] = sp_result; // Must a CALL stmt
+    }
+    else info[2] = Nan::Null();
 
     Nan::TryCatch try_catch;
 
-    data->cb->Call(2, info);
+    data->cb->Call(3, info);
 
     if (try_catch.HasCaught()) {
       FatalException(try_catch);
     }
   }
 
-  self->Unref();
+  stmt->Unref();
   delete data->cb;
   
   free(data);
@@ -252,14 +256,28 @@ NAN_METHOD(ODBCStatement::ExecuteSync) {
   Nan::HandleScope scope;
 
   ODBCStatement* stmt = Nan::ObjectWrap::Unwrap<ODBCStatement>(info.Holder());
+  int outParamCount = 0;
+  Local<Array> sp_result = Nan::New<Array>();
 
   SQLRETURN ret = SQLExecute(stmt->m_hSTMT); 
+
+  if (SQL_SUCCEEDED(ret)) {
+    for(int i = 0; i < stmt->paramCount; i++) { // For stored Procedure CALL
+      if(stmt->params[i].paramtype % 2 == 0) {
+        sp_result->Set(Nan::New(outParamCount), ODBC::GetOutputParameter(stmt->params[i]));
+        outParamCount++;
+      }
+    }
+  }
+  if( stmt->paramCount ) {
+    FREE_PARAMS( stmt->params, stmt->paramCount ) ;
+  }
   
   if(ret == SQL_ERROR) {
     Nan::ThrowError(ODBC::GetSQLError(
       SQL_HANDLE_STMT,
       stmt->m_hSTMT,
-      (char *) "[node-odbc] Error in ODBCStatement::ExecuteSync"
+      (char *) "[node-ifxnjs] Error in ODBCStatement::ExecuteSync"
     ));
     
     info.GetReturnValue().Set(Nan::Null());
@@ -275,7 +293,15 @@ NAN_METHOD(ODBCStatement::ExecuteSync) {
     
     Local<Object> js_result = Nan::New(ODBCResult::constructor)->NewInstance(4, result);
 
-    info.GetReturnValue().Set(js_result);
+    if( outParamCount ) // Its a CALL stmt with OUT params.
+    {   // Return an array with outparams as second element. [result, outparams]
+        Local<Array> resultset = Nan::New<Array>();
+        resultset->Set(0, js_result);
+        resultset->Set(1, sp_result);
+        info.GetReturnValue().Set(resultset);
+    }
+    else
+        info.GetReturnValue().Set(js_result);
   }
 }
 
@@ -293,9 +319,11 @@ NAN_METHOD(ODBCStatement::ExecuteNonQuery) {
   ODBCStatement* stmt = Nan::ObjectWrap::Unwrap<ODBCStatement>(info.Holder());
   
   uv_work_t* work_req = (uv_work_t *) (calloc(1, sizeof(uv_work_t)));
+  MEMCHECK( work_req );
   
   execute_work_data* data = 
     (execute_work_data *) calloc(1, sizeof(execute_work_data));
+  MEMCHECK( data );
 
   data->cb = new Nan::Callback(cb);
   
@@ -394,7 +422,7 @@ NAN_METHOD(ODBCStatement::ExecuteNonQuerySync) {
     Nan::ThrowError(ODBC::GetSQLError(
       SQL_HANDLE_STMT,
       stmt->m_hSTMT,
-      (char *) "[node-odbc] Error in ODBCStatement::ExecuteSync"
+      (char *) "[node-ifxnjs] Error in ODBCStatement::ExecuteSync"
     ));
     
     info.GetReturnValue().Set(Nan::Null());
@@ -432,16 +460,25 @@ NAN_METHOD(ODBCStatement::ExecuteDirect) {
   ODBCStatement* stmt = Nan::ObjectWrap::Unwrap<ODBCStatement>(info.Holder());
   
   uv_work_t* work_req = (uv_work_t *) (calloc(1, sizeof(uv_work_t)));
+  MEMCHECK( work_req );
   
   execute_direct_work_data* data = 
     (execute_direct_work_data *) calloc(1, sizeof(execute_direct_work_data));
+  MEMCHECK( data );
 
   data->cb = new Nan::Callback(cb);
 
   data->sqlLen = sql->Length();
 
+#ifdef UNICODE
+  data->sql = (uint16_t *) malloc((data->sqlLen * sizeof(uint16_t)) + sizeof(uint16_t));
+  MEMCHECK( data->sql );
+  sql->Write((uint16_t *) data->sql);
+#else
   data->sql = (char *) malloc(data->sqlLen +1);
+  MEMCHECK( data->sql );
   sql->WriteUtf8((char *) data->sql);
+#endif
 
   data->stmt = stmt;
   work_req->data = data;
@@ -532,7 +569,11 @@ NAN_METHOD(ODBCStatement::ExecuteDirectSync) {
   
   Nan::HandleScope scope;
 
+#ifdef UNICODE
+  REQ_WSTR_ARG(0, sql);
+#else
   REQ_STR_ARG(0, sql);
+#endif
 
   ODBCStatement* stmt = Nan::ObjectWrap::Unwrap<ODBCStatement>(info.Holder());
   
@@ -545,7 +586,7 @@ NAN_METHOD(ODBCStatement::ExecuteDirectSync) {
     Nan::ThrowError(ODBC::GetSQLError(
       SQL_HANDLE_STMT,
       stmt->m_hSTMT,
-      (char *) "[node-odbc] Error in ODBCStatement::ExecuteDirectSync"
+      (char *) "[node-ifxnjs] Error in ODBCStatement::ExecuteDirectSync"
     ));
     
     info.GetReturnValue().Set(Nan::Null());
@@ -586,9 +627,17 @@ NAN_METHOD(ODBCStatement::PrepareSync) {
 
   int sqlLen = sql->Length() + 1;
 
+#ifdef UNICODE
+  uint16_t *sql2;
+  sql2 = (uint16_t *) malloc(sqlLen * sizeof(uint16_t));
+  MEMCHECK( sql2 );
+  sql->Write(sql2);
+#else
   char *sql2;
   sql2 = (char *) malloc(sqlLen);
+  MEMCHECK( sql2 );
   sql->WriteUtf8(sql2);
+#endif
   
   ret = SQLPrepare(
     stmt->m_hSTMT,
@@ -602,7 +651,7 @@ NAN_METHOD(ODBCStatement::PrepareSync) {
     Nan::ThrowError(ODBC::GetSQLError(
       SQL_HANDLE_STMT,
       stmt->m_hSTMT,
-      (char *) "[node-odbc] Error in ODBCStatement::PrepareSync"
+      (char *) "[node-ifxnjs] Error in ODBCStatement::PrepareSync"
     ));
 
     info.GetReturnValue().Set(Nan::False());
@@ -625,16 +674,25 @@ NAN_METHOD(ODBCStatement::Prepare) {
   ODBCStatement* stmt = Nan::ObjectWrap::Unwrap<ODBCStatement>(info.Holder());
   
   uv_work_t* work_req = (uv_work_t *) (calloc(1, sizeof(uv_work_t)));
+  MEMCHECK( work_req );
   
   prepare_work_data* data = 
     (prepare_work_data *) calloc(1, sizeof(prepare_work_data));
+  MEMCHECK( data );
 
   data->cb = new Nan::Callback(cb);
 
   data->sqlLen = sql->Length();
 
+#ifdef UNICODE
+  data->sql = (uint16_t *) malloc((data->sqlLen * sizeof(uint16_t)) + sizeof(uint16_t));
+  MEMCHECK( data->sql );
+  sql->Write((uint16_t *) data->sql);
+#else
   data->sql = (char *) malloc(data->sqlLen +1);
+  MEMCHECK( data->sql );
   sql->WriteUtf8((char *) data->sql);
+#endif
   
   data->stmt = stmt;
   
@@ -720,15 +778,14 @@ void ODBCStatement::UV_AfterPrepare(uv_work_t* req, int status) {
  * 
  */
 
-NAN_METHOD(ODBCStatement::BindSync) {
+NAN_METHOD(ODBCStatement::BindSync) 
+{
   DEBUG_PRINTF("ODBCStatement::BindSync\n");
-  
   Nan::HandleScope scope;
 
   if ( !info[0]->IsArray() ) {
     return Nan::ThrowTypeError("Argument 1 must be an Array");
   }
-
   ODBCStatement* stmt = Nan::ObjectWrap::Unwrap<ODBCStatement>(info.Holder());
   
   DEBUG_PRINTF("ODBCStatement::BindSync m_hDBC=%X m_hDBC=%X m_hSTMT=%X\n",
@@ -740,25 +797,7 @@ NAN_METHOD(ODBCStatement::BindSync) {
   //if we previously had parameters, then be sure to free them
   //before allocating more
   if (stmt->paramCount) {
-    int count = stmt->paramCount;
-    stmt->paramCount = 0;
-    
-    Parameter prm;
-    
-    //free parameter memory
-    for (int i = 0; i < count; i++) {
-      if (prm = stmt->params[i], prm.buffer != NULL) {
-        switch (prm.c_type) {
-          case SQL_C_WCHAR:   free(prm.buffer);             break;
-          case SQL_C_CHAR:    free(prm.buffer);             break; 
-          case SQL_C_SBIGINT: delete (int64_t *)prm.buffer; break;
-          case SQL_C_DOUBLE:  delete (double  *)prm.buffer; break;
-          case SQL_C_BIT:     delete (bool    *)prm.buffer; break;
-        }
-      }
-    }
-
-    free(stmt->params);
+      FREE_PARAMS( stmt->params, stmt->paramCount ) ;
   }
   
   stmt->params = ODBC::GetParametersFromArray(
@@ -766,36 +805,8 @@ NAN_METHOD(ODBCStatement::BindSync) {
     &stmt->paramCount);
   
   SQLRETURN ret = SQL_SUCCESS;
-  Parameter prm;
-  
-  for (int i = 0; i < stmt->paramCount; i++) {
-    prm = stmt->params[i];
-    
-    DEBUG_PRINTF(
-      "ODBCStatement::BindSync - param[%i]: c_type=%i type=%i "
-      "buffer_length=%i size=%i length=%i &length=%X decimals=%i value=%s\n",
-      i, prm.c_type, prm.type, prm.buffer_length, prm.size, prm.length, 
-      &stmt->params[i].length, prm.decimals,
-      ((prm.length <= 0)? "" : prm.buffer) 
-    );
 
-    ret = SQLBindParameter(
-      stmt->m_hSTMT,        //StatementHandle
-      i + 1,                      //ParameterNumber
-      SQL_PARAM_INPUT,            //InputOutputType
-      prm.c_type,                 //ValueType
-      prm.type,                   //ParameterType
-      prm.size,                   //ColumnSize
-      prm.decimals,               //DecimalDigits
-      prm.buffer,                 //ParameterValuePtr
-      prm.buffer_length,          //BufferLength
-      //using &prm.length did not work here...
-      &stmt->params[i].length);   //StrLen_or_IndPtr
-
-    if (ret == SQL_ERROR) {
-      break;
-    }
-  }
+  ret = ODBC::BindParameters( stmt->m_hSTMT, stmt->params, stmt->paramCount ) ;
 
   if (SQL_SUCCEEDED(ret)) {
     info.GetReturnValue().Set(Nan::True());
@@ -804,7 +815,7 @@ NAN_METHOD(ODBCStatement::BindSync) {
     Nan::ThrowError(ODBC::GetSQLError(
       SQL_HANDLE_STMT,
       stmt->m_hSTMT,
-      (char *) "[node-odbc] Error in ODBCStatement::BindSync"
+      (char *) "[node-ifxnjs] Error in ODBCStatement::BindSync"
     ));
     
     info.GetReturnValue().Set(Nan::False());
@@ -832,32 +843,16 @@ NAN_METHOD(ODBCStatement::Bind) {
   ODBCStatement* stmt = Nan::ObjectWrap::Unwrap<ODBCStatement>(info.Holder());
   
   uv_work_t* work_req = (uv_work_t *) (calloc(1, sizeof(uv_work_t)));
+  MEMCHECK( work_req );
   
   bind_work_data* data = 
     (bind_work_data *) calloc(1, sizeof(bind_work_data));
+  MEMCHECK( data );
 
   //if we previously had parameters, then be sure to free them
   //before allocating more
   if (stmt->paramCount) {
-    int count = stmt->paramCount;
-    stmt->paramCount = 0;
-    
-    Parameter prm;
-    
-    //free parameter memory
-    for (int i = 0; i < count; i++) {
-      if (prm = stmt->params[i], prm.buffer != NULL) {
-        switch (prm.c_type) {
-          case SQL_C_WCHAR:   free(prm.buffer);             break;
-          case SQL_C_CHAR:    free(prm.buffer);             break; 
-          case SQL_C_SBIGINT: delete (int64_t *)prm.buffer; break;
-          case SQL_C_DOUBLE:  delete (double  *)prm.buffer; break;
-          case SQL_C_BIT:     delete (bool    *)prm.buffer; break;
-        }
-      }
-    }
-
-    free(stmt->params);
+      FREE_PARAMS( stmt->params, stmt->paramCount ) ;
   }
   
   data->stmt = stmt;
@@ -898,38 +893,8 @@ void ODBCStatement::UV_Bind(uv_work_t* req) {
     data->stmt->m_hSTMT
   );
   
-  SQLRETURN ret = SQL_SUCCESS;
-  Parameter prm;
-  
-  for (int i = 0; i < data->stmt->paramCount; i++) {
-    prm = data->stmt->params[i];
-    
-    DEBUG_PRINTF(
-      "ODBCStatement::UV_Bind - param[%i]: c_type=%i type=%i "
-      "buffer_length=%i size=%i length=%i &length=%X decimals=%i value=%s\n",
-      i, prm.c_type, prm.type, prm.buffer_length, prm.size, prm.length, 
-      &data->stmt->params[i].length, prm.decimals, prm.buffer
-    );
-
-    ret = SQLBindParameter(
-      data->stmt->m_hSTMT,        //StatementHandle
-      i + 1,                      //ParameterNumber
-      SQL_PARAM_INPUT,            //InputOutputType
-      prm.c_type,                 //ValueType
-      prm.type,                   //ParameterType
-      prm.size,                   //ColumnSize
-      prm.decimals,               //DecimalDigits
-      prm.buffer,                 //ParameterValuePtr
-      prm.buffer_length,          //BufferLength
-      //using &prm.length did not work here...
-      &data->stmt->params[i].length);   //StrLen_or_IndPtr
-
-    if (ret == SQL_ERROR) {
-      break;
-    }
-  }
-
-  data->result = ret;
+  data->result = ODBC::BindParameters( data->stmt->m_hSTMT, 
+                 data->stmt->params, data->stmt->paramCount ) ;
 }
 
 void ODBCStatement::UV_AfterBind(uv_work_t* req, int status) {
@@ -992,9 +957,7 @@ NAN_METHOD(ODBCStatement::CloseSync) {
   }
   else {
     uv_mutex_lock(&ODBC::g_odbcMutex);
-    
     SQLFreeStmt(stmt->m_hSTMT, closeOption);
-  
     uv_mutex_unlock(&ODBC::g_odbcMutex);
   }
 

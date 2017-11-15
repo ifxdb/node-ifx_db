@@ -1,6 +1,4 @@
 /*
-  Copyright (c) 2017 Sathyanesh Krishnan <msatyan@gmail.com>
-  Copyright (c) 2017 Javier Sagrera
   Copyright (c) 2013, Dan VerWeire <dverweire@gmail.com>
   Copyright (c) 2010, Lee Smith <notwink@gmail.com>
 
@@ -26,18 +24,13 @@
 #include <wchar.h>
 
 #include <stdlib.h>
-#ifdef dynodbc
-#include "dynodbc.h"
-#else
-//SAT TODO:
 #include <infxcli.h>
-#endif
 
 using namespace v8;
 using namespace node;
 
 #define MAX_FIELD_SIZE 1024
-#define MAX_VALUE_SIZE 1048576
+#define MAX_VALUE_SIZE 1022
 
 #define MODE_COLLECT_AND_CALLBACK 1
 #define MODE_CALLBACK_FOR_EACH 2
@@ -45,19 +38,52 @@ using namespace node;
 #define FETCH_OBJECT 4
 #define SQL_DESTROY 9999
 
-// SAT
 #ifdef UNICODE
 #define _T(c) L##c
 #else
 #define _T(c) c
 #endif
 
-// SAT
 #ifdef UNICODE
 #define _tcslen wcslen
 #else
 #define _tcslen strlen
 #endif
+
+
+// Free Bind Parameters 
+#define FREE_PARAMS( params, count )                                 \
+    Parameter prm;                                                   \
+    if(params != NULL ) {                                            \
+      for (int i = 0; i < count; i++) {                              \
+        if (prm = params[i], prm.buffer != NULL) {                   \
+          switch (prm.c_type) {                                      \
+            case SQL_C_LONG:    delete (int64_t *)prm.buffer; break; \
+            case SQL_C_DOUBLE:  delete (double  *)prm.buffer; break; \
+            case SQL_C_BIT:     delete (bool    *)prm.buffer; break; \
+            case SQL_C_CHAR:                                         \
+            case SQL_C_WCHAR:                                        \
+            default:     free(prm.buffer); prm.buffer = NULL; break; \
+          }                                                          \
+        }                                                            \
+      }                                                              \
+      free(params);                                                  \
+    }                                                                \
+    params = NULL;                                                   \
+    count = 0;
+
+// two macros ensures that any macro used will be expanded 
+// before being stringified. #x gives string value of x.
+#define LINESTRING(x) #x
+#define LINENO(x) LINESTRING(x)
+// Check memory allocated successfully or not.
+#define MEMCHECK( buffer )                                           \
+  if (!buffer) {                                                     \
+    Nan::LowMemoryNotification();                                    \
+    Nan::ThrowError( "Could not allocate enough memory in ifxnjs "   \
+                     "file " __FILE__ ":" LINENO(__LINE__) ".");     \
+    return;                                                          \
+  }
 
 typedef struct {
   unsigned char *name;
@@ -68,13 +94,16 @@ typedef struct {
 } Column;
 
 typedef struct {
+  SQLSMALLINT  paramtype;
   SQLSMALLINT  c_type;
   SQLSMALLINT  type;
-  SQLLEN       size;
-  void        *buffer;
+  SQLULEN      size;
+  SQLSMALLINT  decimals;
+  SQLPOINTER   buffer;
   SQLLEN       buffer_length;    
   SQLLEN       length;
-  SQLSMALLINT  decimals;
+  SQLUINTEGER  fileOption;    // For BindFileToParam
+  SQLINTEGER   fileIndicator; // For BindFileToParam
 } Parameter;
 
 class ODBC : public Nan::ObjectWrap {
@@ -87,6 +116,7 @@ class ODBC : public Nan::ObjectWrap {
     static Column* GetColumns(SQLHSTMT hStmt, short* colCount);
     static void FreeColumns(Column* columns, short* colCount);
     static Handle<Value> GetColumnValue(SQLHSTMT hStmt, Column column, uint16_t* buffer, int bufferLength);
+    static Handle<Value> GetOutputParameter(Parameter prm);
     static Local<Object> GetRecordTuple (SQLHSTMT hStmt, Column* columns, short* colCount, uint16_t* buffer, int bufferLength);
     static Local<Value> GetRecordArray (SQLHSTMT hStmt, Column* columns, short* colCount, uint16_t* buffer, int bufferLength);
     static Handle<Value> CallbackSQLError(SQLSMALLINT handleType, SQLHANDLE handle, Nan::Callback* cb);
@@ -94,10 +124,8 @@ class ODBC : public Nan::ObjectWrap {
     static Local<Value> GetSQLError (SQLSMALLINT handleType, SQLHANDLE handle);
     static Local<Value> GetSQLError (SQLSMALLINT handleType, SQLHANDLE handle, char* message);
     static Local<Array>  GetAllRecordsSync (SQLHENV hENV, SQLHDBC hDBC, SQLHSTMT hSTMT, uint16_t* buffer, int bufferLength);
-#ifdef dynodbc
-    static Handle<Value> LoadODBCLibrary(const Arguments& info);
-#endif
     static Parameter* GetParametersFromArray (Local<Array> values, int* paramCount);
+    static SQLRETURN  BindParameters(SQLHSTMT hSTMT, Parameter params[], int count);
     
     void Free();
     
@@ -105,6 +133,12 @@ class ODBC : public Nan::ObjectWrap {
     ODBC() {}
 
     ~ODBC();
+
+    static void GetStringParam(Local<Value> value, Parameter * param, int num);
+    static void GetNullParam(Parameter * param, int num);
+    static void GetInt32Param(Local<Value> value, Parameter * param, int num);
+    static void GetNumberParam(Local<Value> value, Parameter * param, int num);
+    static void GetBoolParam(Local<Value> value, Parameter * param, int num);
 
     static NAN_METHOD(New);
 
@@ -236,7 +270,7 @@ struct query_request {
   Local<External> VAR = Local<External>::Cast(info[I]);
 
 #define OPT_INT_ARG(I, VAR, DEFAULT)                                    \
-  int VAR;                                                              \
+  SQLUSMALLINT VAR;                                                     \
   if (info.Length() <= (I)) {                                           \
     VAR = (DEFAULT);                                                    \
   } else if (info[I]->IsInt32()) {                                      \
