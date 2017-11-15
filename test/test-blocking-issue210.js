@@ -14,6 +14,7 @@ if(typeof ret === 'object') assert.equal(ret.message, undefined);
 //moment().format("YYYY-MM-DD HH:mm:ss.SSS"));
 console.log(elapsedTime(), "Started pool.open, populate a table MTAB1 of 40K rows.");
 pool.open(connectionString, function( err, conn) {
+	console.log(elapsedTime(), "pool.open");
     try { conn.querySync("drop table mtab1");
           conn.querySync("drop table mtab2"); } catch(e) {};
     conn.querySync("create table mtab1(c1 varchar(30), c2 varchar(20))");
@@ -24,12 +25,13 @@ pool.open(connectionString, function( err, conn) {
       conn.querySync("insert into mtab2 select * from mtab1");
       conn.querySync("insert into mtab1 select * from mtab2");
       }
+	
     conn.querySync("drop table mtab2");
-    console.log(elapsedTime(), "Inserted rows in mtab1 = ", conn.querySync("select count(*) from mtab1")[0]['1']);
+	console.log( "Inserted rows in mtab1 = ", conn.querySync("select count(*) from systables")[0]['1']);
     conn.close(function(err){});
 });
-
-ifxnjs.debug(true);
+console.log(elapsedTime(), "After insert.");
+//ifxnjs.debug(true);
 var q1time, q2time;
 console.log(elapsedTime(), "Opening connection #1");
 pool.open(connectionString, function (err, connection) {
@@ -87,7 +89,7 @@ var testLongTime = function(conn) {
 
             // Clean up
             conn.querySync("drop table mtab1");
-            ifxnjs.debug(false);
+            //ifxnjs.debug(false);
             pool.close();
         });
     });

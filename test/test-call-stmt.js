@@ -7,13 +7,13 @@ var common = require("./common")
   , schema = common.connectionObject.CURRENTSCHEMA;
 
 if(schema == undefined) schema = "NEWTON";
-var query = "CaLL " + schema + ".proc1(?, ?, ?)";
+var query = "{call proc1(?, ?, ?)}";
 ifxnjs.open(cn, function (err, conn)
 {
     if(err) console.log(err);
     assert.equal(err, null);
     try {
-          conn.querySync("drop procedure " + schema + ".proc1(INT, INT, VARCHAR(20))");
+          conn.querySync("drop procedure " + schema + ".proc1");
     } catch(e) {}
 
     conn.querySync("create procedure " + schema + ".proc1 " +
@@ -27,11 +27,11 @@ ifxnjs.open(cn, function (err, conn)
     assert.deepEqual(result, [ 1, 'verygood' ]);
     console.log("Output Parameters V2 = ", result[0], ", V3 = ", result[1]);
 
-    conn.querysync("drop procedure " + schema + ".proc1(int, int, varchar(20))");
-    conn.querysync("create procedure " + schema + ".proc2 (v1 integer); end procedure");
-    result = conn.querysync("call " + schema + ".proc2(?)", [param1]);
-    assert.deepequal(result, []);
-    conn.querySync("drop procedure " + schema + ".proc2(INT)");
+    conn.querySync("drop procedure " + schema + ".proc1(int, int, varchar(20))");
+    conn.querySync("create procedure " + schema + ".proc1 (v1 integer); end procedure");
+    result = conn.querySync("call proc1(?)", [param1]);
+    assert.deepEqual(result, []);
+    conn.querySync("drop procedure " + schema + ".proc1(INT)");
     conn.closeSync();
     console.log('done');
 });

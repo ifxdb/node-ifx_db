@@ -18,4 +18,4 @@ catch (e) {
 }
 
 db.closeSync();
-assert.equal(err.error, "[node-odbc] Error in ODBCConnection::QuerySync");
+assert.equal(err.error, "[node-ifxnjs] Error in ODBCConnection::QuerySync");
