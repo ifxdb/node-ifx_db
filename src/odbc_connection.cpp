@@ -269,15 +269,7 @@ void ODBCConnection::UV_Open(uv_work_t* req) {
   memcpy((void*)ConnectionString, DriverTag, (DriverTagLen));
   memcpy((void*)((unsigned char *)ConnectionString + DriverTagLen), (void *)(data->connection), ConnectionLengthIn);
   /////////////////////////////////////////////////
-
-  if (timeOut > 0) {
-    //NOTE: SQLSetConnectAttr requires the thread to be locked
-    SQLSetConnectAttr(
-      self->m_hDBC,           //ConnectionHandle
-      SQL_ATTR_LOGIN_TIMEOUT, //Attribute
-      (SQLPOINTER)(intptr_t)timeOut,    //ValuePtr
-      sizeof(timeOut));       //StringLength
-  }
+   
   //Attempt to connect
   //NOTE: SQLDriverConnect requires the thread to be locked
   int ret = SQLDriverConnect(
@@ -293,7 +285,14 @@ void ODBCConnection::UV_Open(uv_work_t* req) {
   
   if (SQL_SUCCEEDED(ret)) {
     SQLHSTMT hStmt;
-    
+ 
+  //Enable SQL_INFX_ATTR_LO_AUTOMATIC for BLOB/CLOB usage
+    SQLSetConnectAttr(
+      self->m_hDBC,          
+      SQL_INFX_ATTR_LO_AUTOMATIC, 
+      (SQLPOINTER)SQL_TRUE,   
+      SQL_IS_UINTEGER);   
+	
     //allocate a temporary statment
     ret = SQLAllocHandle(SQL_HANDLE_STMT, self->m_hDBC, &hStmt);
     

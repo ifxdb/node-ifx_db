@@ -524,6 +524,12 @@ Handle<Value> ODBC::GetColumnValue( SQLHSTMT hStmt, Column column,
       int newbufflen = 0;
       int secondGetData = 0;
       len = 0;
+	  
+	  if (column.type == SQL_LONGVARBINARY) 
+	  {
+			 ctype = SQL_C_BINARY; 
+			 terCharLen = 0; // no null terminator;
+	  } 
       ret = SQLGetData( hStmt,
                         column.index,
                         ctype,
@@ -910,7 +916,7 @@ void ODBC::GetStringParam(Local<Value> value, Parameter * param, int num)
 
     if(param->c_type == SQL_C_BINARY || param->paramtype == FILE_PARAM)
     {
-        param->buffer_length = length;
+        param->buffer_length = length + 1; //null terminator added by WriteOneByte
         param->length        = length; 
     }
     param->size          = param->buffer_length;
