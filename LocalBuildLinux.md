@@ -20,9 +20,9 @@
 # rm /work/nodejs
 # cd /work/dev
 # if 64bit Linux on x86
-# wget https://nodejs.org/dist/v6.11.2/node-v6.11.2-linux-x64.tar.xz
-# tar -xvf node-v6.11.2-linux-x64.tar.xz
-# sudo ln -s  /work/dev/node-v6.11.2-linux-x64  /work/nodejs
+# wget https://nodejs.org/dist/v8.9.4/node-v8.9.4-linux-x64.tar.xz
+# tar -xvf node-v8.9.4-linux-x64.tar.xz
+# sudo ln -s  /work/dev/node-v8.9.4-linux-x64  /work/nodejs
 # export PATH=/work/nodejs/bin:$PATH
 
 # Remove old nodejs installation if any
@@ -30,7 +30,7 @@ sudo apt-get remove nodejs nodejs-legacy -y
 sudo apt-get remove npm  -y
 
 # Install 6x nodejs
-curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 sudo apt-get install -y nodejs
 ```
 #### Complile time environment
@@ -49,6 +49,7 @@ cd /work/t1/IfxNode
 npm update
 
 rm -rf ./build  
+npm install node-gyp
 node-gyp configure -v  
 node-gyp build -v 
 ```
@@ -93,7 +94,6 @@ cp /work/t1/IfxNode/test/SampleApp1.js .
 ```bash
 export INFORMIXDIR=/work/informix
 export LD_LIBRARY_PATH=${INFORMIXDIR}/lib:${INFORMIXDIR}/lib/esql:${INFORMIXDIR}/lib/cli
-export PATH=$INFORMIXDIR/bin:$PATH
 ```
 
 ##### Run the sample 

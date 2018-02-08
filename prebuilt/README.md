@@ -5,19 +5,23 @@
 | **Platform** | **NodeJS Version** | **MD5 hash**
 |:-------------|:-------------------|:----------------------------------------
 | `Arm`        | node-v6.11.2       | 
-| `Linux64`    | node-v6.11.2       | 6901472318b1b3173f8633b5f402daf4
+| `Linux64`    | node-v8.9.4        | 88571f4ade8359188892d2e517b6555b
 | `Win64`      | node-v6.11.2       | 685ef0f84d3954ba1c7a0377a36908c4
 
 
  
 #### Prepare Linux64 prebuild binary 
 ```bash
+cd /work/t1
+rm -rf IfxNode
 git clone https://github.com/OpenInformix/IfxNode.git
 
+# cd /work/t1/IfxNode
 cd IfxNode
 npm update
 
-rm -rf ./build  
+rm -rf ./build 
+# npm install node-gyp
 node-gyp configure -v  
 node-gyp build -v  
 
@@ -35,22 +39,38 @@ mv build.zip ./prebuilt/Linux64/build.zip
 ```
 
 ### Quick Test 
-```
+
+##### Set runtime environment to pick Informix Client SDK libraries.
+```bash
+export INFORMIXDIR=/work/informix
+export LD_LIBRARY_PATH=${INFORMIXDIR}/lib:${INFORMIXDIR}/lib/esql:${INFORMIXDIR}/lib/cli
+``
+
+```bash
 cd ..
+# cd /work/t1
+
 rm -rf node_modules
 mkdir  node_modules
 cd node_modules
 ln -s ../IfxNode ./ifxnjs
 cd ..
+
+# cd /work/t1
 cp IfxNode/test/SampleApp1.js .
+
+# edit connection string
+vi SampleApp1.js
+
 node SampleApp1.js
 ```
 
 ###  Checking Hash
-```
-cd cd IfxNode
+```bash
+# cd /work/t1/IfxNode
+cd IfxNode
 md5sum ./prebuilt/Linux64/build.zip
-6901472318b1b3173f8633b5f402daf4  ./prebuilt/Linux64/build.zip
+88571f4ade8359188892d2e517b6555b  ./prebuilt/Linux64/build.zip
 
 update the Hash and Checkin the repo
 ```
@@ -61,15 +81,13 @@ update the Hash and Checkin the repo
 * [PowerShell.Utility](https://docs.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Utility/Get-FileHash?view=powershell-5.1)
 
 * [certutil](https://technet.microsoft.com/library/cc732443.aspx)
-```
+```bat
 cd C:\work\IfxNode\prebuilt\Win64
 certutil -hashfile build.zip MD5
 685ef0f84d3954ba1c7a0377a36908c4
 ```
 
 ---
-
-
 ### The prebuilt install operations in nutshell 
 ```bash
 # Let us assume you plan to clone the driver code at /work/dev/t1
@@ -96,5 +114,9 @@ node installer/IfxDriverInstall.js
 
 cp /work/dev/t1/node_modules/ifxnjs/test/SampleApp1.js /work/dev/t1/.
 cd /work/dev/t1
+
+# edit Connection String
+vi SampleApp1.js
+
 node SampleApp1.js
 ```
