@@ -28,10 +28,12 @@ FYI: The node.lib can also be obtained from **node-gyp** too, it is up to you to
 
 #### Open VS 2015 x64 cmd
 ```bat
-# Say you have extracted NodeJS sourct at **C:\njs\Src6112**
-cd C:\njs\Src6112
+# Open VS 2015 x64 cmd
 
-SET NODE_SRC=C:\njs\Src6112
+# Say you have extracted NodeJS sourct at **C:\njs\Src894**
+cd C:\njs\Src894
+
+SET NODE_SRC=C:\njs\Src894
 vcbuild.bat nosign release x64
 
 FYI:
@@ -53,17 +55,17 @@ cd C:\work\IfxNode
 
 #### Set env for the build 
 * **c:\Informix** is the location where Informix CSDK installed 
-* **C:\njs\Src6112** is the nodejs source that you have completed the build 
+* **C:\njs\Src894** is the nodejs source that you have completed the build 
 ``` bat
 #Open VS 2015 x64 cmd
 
 #Switch NodeJS to picket from the newly build location
-SET PATH=C:\njs\Src6112\Debug;C:\njs\Src6112\deps\npm\bin\node-gyp-bin;%PATH%
+SET PATH=C:\njs\Src894\Debug;C:\njs\Src894\deps\npm\bin\node-gyp-bin;%PATH%
 or (depens on your nodejs build)
-SET PATH=C:\njs\Src6112\Release;C:\njs\Src6112\deps\npm\bin\node-gyp-bin;%PATH%
+SET PATH=C:\njs\Src894\Release;C:\njs\Src894\deps\npm\bin\node-gyp-bin;%PATH%
 
 SET CSDK_HOME=c:\Informix
-SET NODE_SRC=C:\njs\Src6112
+SET NODE_SRC=C:\njs\Src894
 ```
 
 #### Fire the driver build 
@@ -103,7 +105,19 @@ del C:\work\IfxNode\build\Release\ifx_njs_bind.pdb
 
 del /S /F /Q C:\work\IfxNode\build\Release\obj
 rd /S /Q C:\work\IfxNode\build\Release\obj
+
+
 ```
+
+### FYITo prepare prebuilt binaries 
+```bash
+# you may use 7zip to create a zip of C:\work\IfxNode\build
+# Then copy it to C:\work\IfxNode\prebuilt\Win64
+cd C:\work\IfxNode\prebuilt\Win64
+certutil -hashfile build.zip MD5
+# then update the hash value on the README for prebuilt
+```
+
 
 ### Quick test of the local build 
 ```bash
