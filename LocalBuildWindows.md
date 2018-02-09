@@ -109,7 +109,7 @@ rd /S /Q C:\work\IfxNode\build\Release\obj
 
 ```
 
-### FYITo prepare prebuilt binaries 
+### If you are preparing prebuilt binaries then 
 ```bash
 # you may use 7zip to create a zip of C:\work\IfxNode\build
 # Then copy it to C:\work\IfxNode\prebuilt\Win64
