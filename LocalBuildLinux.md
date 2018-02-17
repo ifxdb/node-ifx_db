@@ -61,7 +61,10 @@ cd /work/t1/IfxNode
 npm update
 
 rm -rf ./build  
-npm install node-gyp
+npm install -g node-gyp
+# Raspberry Pi 3
+# sudo npm install -g node-gyp
+
 node-gyp configure -v  
 node-gyp build -v 
 ```
