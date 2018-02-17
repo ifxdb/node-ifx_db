@@ -1,4 +1,6 @@
 
+package-lock.json
+
 #vs Code IDE configuration files
 .vscode
 .vs
@@ -11,5 +13,4 @@
 build
 try
 try/**
-
 

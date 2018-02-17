@@ -4,7 +4,7 @@
 
 | **Platform** | **NodeJS Version** | **MD5 hash**
 |:-------------|:-------------------|:----------------------------------------
-| `Arm`        | node-v6.11.2       | 
+| `Arm`        | node-v8.9.4        | e07d745fe4bf5c461cccdce07406859f
 | `Linux64`    | node-v8.9.4        | 88571f4ade8359188892d2e517b6555b
 | `Win64`      | node-v8.9.4        | 702bb0844e6a87fa0a96d4a8cbaf46c7
 
@@ -67,10 +67,12 @@ node SampleApp1.js
 
 ###  Checking Hash
 ```bash
-# cd /work/t1/IfxNode
-cd IfxNode
+cd /work/t1/IfxNode
 md5sum ./prebuilt/Linux64/build.zip
-88571f4ade8359188892d2e517b6555b  ./prebuilt/Linux64/build.zip
+# 88571f4ade8359188892d2e517b6555b  ./prebuilt/Linux64/build.zip
+
+md5sum ./prebuilt/Arm/build.zip
+# e07d745fe4bf5c461cccdce07406859f  ./prebuilt/Arm/build.zip
 
 update the Hash and Checkin the repo
 ```

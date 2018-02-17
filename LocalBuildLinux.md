@@ -74,7 +74,7 @@ node-gyp build -v
 ls -l ./build/Release/ifx_njs_bind.node
 ```
 
-#### Build Cleanup
+#### FYI only: Build Cleanup
 ```bash
 rm /work/t1/IfxNode/build/binding.Makefile
 rm /work/t1/IfxNode/build/config.gypi
@@ -86,10 +86,12 @@ rm -rf /work/t1/IfxNode/build/Release/.deps
 # apt-get update
 # apt-get install zip unzip
 
+#### preparing it for prebuilt
 cd /work/t1/IfxNode
 zip -r build.zip ./build
 # mv build.zip ./prebuilt/Linux64/build.zip
 # mv build.zip ./prebuilt/Arm/build.zip
+rm -rf ./build
 ```
 
 ### Quick test of the local build
@@ -109,14 +111,37 @@ cp /work/t1/IfxNode/test/SampleApp1.js .
 ```bash
 export INFORMIXDIR=/work/informix
 export LD_LIBRARY_PATH=${INFORMIXDIR}/lib:${INFORMIXDIR}/lib/esql:${INFORMIXDIR}/lib/cli
+# Set the INFORMIXSQLHOSTS too, say 
+# export INFORMIXSQLHOSTS=/work/dev/srv/ids0/sqlhosts
 ```
 
 ##### Run the sample 
 ```bash
-cd /work/try
-
+#cd /work/try
 vi SampleApp1.js
-# edit connection informaton and then run
+
+# edit Connection Informaton and then run
 node SampleApp1.js
 ```
+
+#### FYI: Run time error observed after upgrading to node.js v8x
+```bash
+node SampleApp1.js
+
+Error: Cannot find module 'q'
+    at Function.Module._resolveFilename (module.js:538:15)
+    at Function.Module._load (module.js:468:25)
+    at Module.require (module.js:587:17)
+    at require (internal/module.js:11:18)
+    at Object.<anonymous> (/work/t1/IfxNode/lib/odbc.js:37:9)
+    at Module._compile (module.js:643:30)
+    at Object.Module._extensions..js (module.js:654:10)
+    at Module.load (module.js:556:32)
+    at tryModuleLoad (module.js:499:12)
+    at Function.Module._load (module.js:491:3)
+
+###### Solution
+npm install -g q
+```
+
 
