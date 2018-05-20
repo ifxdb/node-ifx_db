@@ -17,7 +17,8 @@ npm install ifxnjs
 
 The driver has prebuilt binaries for **ARM**, **Linux x64** and **Win64**, and it is certified to work with **Raspberry Pi**; all other platforms you may perform a local build. The current version of Informix native node driver (ifxnjs@8.0.x) is being compiled with Node.js v8.9.4 LTS libraries. The driver is expected to work with all node.js version 8x.  
    
-FYI: **[Informix Client SDK](http://www-01.ibm.com/support/docview.wss?uid=swg27016673) 4.10 xC2 or above** is needed for the driver to make connection to the database. Make sure Informix Client SDK is installed and its environments are set prior to running application.
+FYI: **[Informix Client SDK](http://www-01.ibm.com/support/docview.wss?uid=swg27016673) 4.10 xC2 or above** is needed for the driver to make connection to the database. Make sure Informix Client SDK is installed and its environments are set prior to running application.  
+- [Download Informix Client SDK](http://www-01.ibm.com/support/docview.wss?uid=swg27016673)
 
 
 ### Runtime Environment
