@@ -175,14 +175,14 @@ require("ifxnjs").open(connectionString, function (err, conn){
 or by using the helper function:
 
 ```javascript
-var ibmdb = require("ifxnjs")();
+var dbobj = require("ifxnjs")();
 ``` 
 
 or by creating an instance with the constructor function:
 
 ```javascript
 var Database = require("ifxnjs").Database
-  , ibmdb = new Database();
+  , dbobj = new Database();
 ```
 
 #### .open(connectionString, [options,] callback)
@@ -195,9 +195,9 @@ Open a connection to a database.
 * **callback** - `callback (err, conn)`
 
 ```javascript
-var ibmdb = require("ifxnjs");
+var dbobj = require("ifxnjs");
 
-ibmdb.open(connectionString, function (err, connection) {
+dbobj.open(connectionString, function (err, connection) {
     if (err) 
     {
       console.log(err);
@@ -223,11 +223,11 @@ Synchronously open a connection to a database.
 * **connectionString** - The connection string for your database
 
 ```javascript
-var ibmdb = require("ifxnjs"),
+var dbobj = require("ifxnjs"),
   connString = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;UID=informix;PWD=xxxx;"
 
 try {
-  var conn = ibmdb.openSync(connString);
+  var conn = dbobj.openSync(connString);
   conn.query("select * from customers fetch first 10 rows only", function (err, rows, moreResultSets) {
     if (err) {
       console.log(err);
@@ -251,10 +251,10 @@ Issue an asynchronous SQL query to the database which is currently open.
 * **callback** - `callback (err, rows, moreResultSets)`
 
 ```javascript
-var ibmdb = require("ifxnjs"),
+var dbobj = require("ifxnjs"),
    cn = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;UID=informix;PWD=xxxx;"
 
-ibmdb.open(cn, function (err, conn) {
+dbobj.open(cn, function (err, conn) {
   if (err) {
     return console.log(err);
   }
@@ -284,10 +284,10 @@ Synchronously issue a SQL query to the database that is currently open.
     any '?' characters in `sqlQuery`.
 
 ```javascript
-var ibmdb = require("ifxnjs"),
+var dbobj = require("ifxnjs"),
    cn = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;UID=informix;PWD=xxxx;"
 
-ibmdb.open(cn, function(err, conn){
+dbobj.open(cn, function(err, conn){
 
     //blocks until the query is completed and all data has been acquired
     var rows = conn.querySync("select * from customers fetch first 10 rows only");
@@ -303,10 +303,10 @@ Close the currently opened database.
 * **callback** - `callback (err)`
 
 ```javascript
-var ibmdb = require("ifxnjs"),
+var dbobj = require("ifxnjs"),
    cn = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;UID=informix;PWD=xxxx;"
 
-ibmdb.open(cn, function (err, conn) {
+dbobj.open(cn, function (err, conn) {
   if (err) {
     return console.log(err);
   }
@@ -324,11 +324,11 @@ ibmdb.open(cn, function (err, conn) {
 Synchronously close the currently opened database.
 
 ```javascript
-var ibmdb = require("ifxnjs")(),
+var dbobj = require("ifxnjs")(),
    cn = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;UID=informix;PWD=xxxx;"
 
 //Blocks until the connection is open
-var conn = ibmdb.openSync(cn);
+var conn = dbobj.openSync(cn);
 
 //Blocks until the connection is closed
 conn.closeSync();
@@ -344,10 +344,10 @@ Prepare a statement for execution.
 Returns a `Statement` object via the callback
 
 ```javascript
-var ibmdb = require("ifxnjs"),
+var dbobj = require("ifxnjs"),
    cn = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;UID=informix;PWD=xxxx;"
 
-ibmdb.open(cn,function(err,conn){
+dbobj.open(cn,function(err,conn){
   conn.prepare("insert into hits (col1, col2) VALUES (?, ?)", function (err, stmt) {
     if (err) {
       //could not prepare for some reason
@@ -376,10 +376,10 @@ Synchronously prepare a statement for execution.
 Returns a `Statement` object
 
 ```javascript
-var ibmdb = require("ifxnjs"),
+var dbobj = require("ifxnjs"),
    cn = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;UID=informix;PWD=xxxx;"
 
-ibmdb.open(cn,function(err,conn){
+dbobj.open(cn,function(err,conn){
   var stmt = conn.prepareSync("insert into hits (col1, col2) VALUES (?, ?)");
 
   //Bind and Execute the statment asynchronously
@@ -409,10 +409,10 @@ Commit a transaction
 * **callback** - `callback (err)`
 
 ```javascript
-var ibmdb = require("ifxnjs"),
+var dbobj = require("ifxnjs"),
    cn = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;UID=informix;PWD=xxxx;"
 
-ibmdb.open(cn, function(err,conn) {
+dbobj.open(cn, function(err,conn) {
 
   conn.beginTransaction(function (err) {
     if (err) {
@@ -444,10 +444,10 @@ ibmdb.open(cn, function(err,conn) {
 Synchronously commit a transaction
 
 ```javascript
-var ibmdb = require("ifxnjs"),
+var dbobj = require("ifxnjs"),
    cn = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;UID=informix;PWD=xxxx;"
 
-ibmdb.open(cn, function(err,conn) {
+dbobj.open(cn, function(err,conn) {
 
   conn.beginTransaction(function (err) {
     if (err) {
@@ -475,10 +475,10 @@ Rollback a transaction
 * **callback** - `callback (err)`
 
 ```javascript
-var ibmdb = require("ifxnjs"),
+var dbobj = require("ifxnjs"),
    cn = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;UID=informix;PWD=xxxx;"
 
-ibmdb.open(cn, function(err,conn) {
+dbobj.open(cn, function(err,conn) {
 
   conn.beginTransaction(function (err) {
     if (err) {
@@ -510,10 +510,10 @@ ibmdb.open(cn, function(err,conn) {
 Synchronously rollback a transaction
 
 ```javascript
-var ibmdb = require("ifxnjs")
+var dbobj = require("ifxnjs")
    cn = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;UID=informix;PWD=xxxx;"
 
-ibmdb.open(cn, function(err,conn) {
+dbobj.open(cn, function(err,conn) {
 
   conn.beginTransaction(function (err) {
     if (err) {
