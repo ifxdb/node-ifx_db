@@ -2,21 +2,21 @@
 --------------
 **FYI:** Make sure bit architectures matches for all binary components; if you are using 64bit nodejs make sure you are using 64bit Informix Client-SDK as well.
 
-#### FYI: 
+#### FYI:
 * [Node.js breaking changes between v4 LTS and v6 LTS](https://github.com/nodejs/node/wiki/Breaking-changes-between-v4-LTS-and-v6-LTS)
 * [Node.js community wiki](https://github.com/nodejs/node/wiki)
 
 
 ### Prerequisite :
 * Informix Client SDK 410 xC2 or above
-* Git  
+* Git
 * NodeJS
 * Python     2.7
 * Node-gyp   (npm install -g node-gyp)
 * NAN        (npm install -g nan)
 
 #### Install Node.js
-```
+```bash
 # Remove old nodejs installation if any
 sudo apt-get remove nodejs nodejs-legacy -y
 sudo apt-get remove npm  -y
@@ -27,49 +27,50 @@ sudo apt-get install -y nodejs
 ```
 
 #### FYI: Make sure you have the right node.js
-```bash  
-# rm /work/nodejs
+```bash
+# rm /work/dev/nodejs
 # cd /work/dev
 
 ###### if 64bit Linux on x86
-# wget https://nodejs.org/dist/v8.9.4/node-v8.9.4-linux-x64.tar.xz
-# tar -xvf node-v8.9.4-linux-x64.tar.xz
-# sudo ln -s  /work/dev/node-v8.9.4-linux-x64  /work/nodejs
+wget https://nodejs.org/dist/v8.9.4/node-v8.9.4-linux-x64.tar.xz
+tar -xvf node-v8.9.4-linux-x64.tar.xz
+sudo ln -s  /work/dev/node-v8.9.4-linux-x64  /work/dev/nodejs
 
 ###### if ARM v7 (Raspberry Pi 3)
-# sudo wget https://nodejs.org/dist/v8.9.4/node-v8.9.4-linux-armv7l.tar.xz 
+# sudo wget https://nodejs.org/dist/v8.9.4/node-v8.9.4-linux-armv7l.tar.xz
 # sudo tar -xvf node-v8.9.4-linux-armv7l.tar.xz
-# sudo ln -s  /work/dev/node-v8.9.4-linux-armv7l  /work/nodejs
+# sudo ln -s  /work/dev/node-v8.9.4-linux-armv7l  /work/dev/nodejs
 
-# export PATH=/work/nodejs/bin:$PATH
+# export PATH=/work/dev/nodejs/bin:$PATH
 which node
 node -v
 ```
+
 #### Complile time environment
 ```bash
-# sudo ln -s /home/informix/1210UC9 /work/informix
-# Assuming 'CSDK' is installed at /work/informix
-export CSDK_HOME=/work/informix  
+# sudo ln -s /opt/csdk410FC12 /work/csdk
+# Assuming 'CSDK' is installed at /work/csdk
+export CSDK_HOME=/work/csdk
 ```
 
 ### Fire the build
-```bash 
+```bash
 cd /work/t1
 git clone https://github.com/OpenInformix/IfxNode.git
 
 cd /work/t1/IfxNode
 npm update
 
-rm -rf ./build  
+rm -rf ./build
 npm install -g node-gyp
 # Raspberry Pi 3
 # sudo npm install -g node-gyp
 
-node-gyp configure -v  
-node-gyp build -v 
+node-gyp configure -v
+node-gyp build -v
 ```
 
-#### check the build output, if all right then the driver binary is    
+#### check the build output, if all right then the driver binary is
 ```bash
 ls -l ./build/Release/ifx_njs_bind.node
 ```
@@ -97,7 +98,7 @@ rm -rf ./build
 ### Quick test of the local build
 ---------------------------------
 
-##### Get a sample code 
+##### Get a sample code
 ```bash
 cd /work/try
 rm -rf /work/try/node_modules
@@ -109,13 +110,13 @@ cp /work/t1/IfxNode/test/SampleApp1.js .
 
 ##### Set runtime environment to pick Informix Client SDK libraries.
 ```bash
-export INFORMIXDIR=/work/informix
+export INFORMIXDIR=/work/csdk
 export LD_LIBRARY_PATH=${INFORMIXDIR}/lib:${INFORMIXDIR}/lib/esql:${INFORMIXDIR}/lib/cli
-# Set the INFORMIXSQLHOSTS too, say 
+# Set the INFORMIXSQLHOSTS too, say
 # export INFORMIXSQLHOSTS=/work/dev/srv/ids0/sqlhosts
 ```
 
-##### Run the sample 
+##### Run the sample
 ```bash
 #cd /work/try
 vi SampleApp1.js
