@@ -12,7 +12,13 @@ The development activities of the driver are powered by passion, dedication and 
 ## Installing the driver
 ------------------------
 ```bash
+# local install for your project
+npm install q
 npm install ifxnjs
+
+# or for global install for the user
+npm install -g q
+npm install -g ifxnjs
 ```
 
 The driver has prebuilt binaries for **ARM**, **Linux x64** and **Win64**, and it is certified to work with **Raspberry Pi**; all other platforms you may perform a local build. The current version of Informix native node driver (ifxnjs@8.0.x) is being compiled with Node.js v8.9.4 LTS libraries. The driver is expected to work with all node.js version 8x.  
