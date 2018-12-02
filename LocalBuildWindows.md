@@ -83,8 +83,8 @@ node-gyp build
 node-gyp build  --debug
 node-gyp build  --release
 
-Alternative build: you may use the Visual Studio 2017 Solution to build from source
-C:\work\IfxNode\IfxNodeJsVS2017.sln
+Alternative build: you may use the Visual Studio 2015 Solution to build from source
+C:\work\IfxNode\IfxNodeJsVS2015.sln
 ```
 
 ### Driver binaries
