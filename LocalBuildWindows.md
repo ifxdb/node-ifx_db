@@ -26,15 +26,15 @@ The **node.lib** is needed for compiling C/C++ native addons, One of the ways to
 FYI: The node.lib can also be obtained from **node-gyp** too, it is up to you to choose one of the approach.  
 
 
-#### Open VS 2017 x64 cmd
+#### Open VS 2015 x64 cmd
 ```bash
-# Open VS 2017 x64 cmd
+# Open VS 2015 x64 cmd
 
 
-# Say you have extracted NodeJS sourct at **C:\njs\Src1014**
-cd C:\njs\Src1014
+# Say you have extracted NodeJS sourct at **C:\work\node-v8.9.4**
+cd C:\work\node-v8.9.4
 
-SET NODE_SRC=C:\njs\Src1014
+SET NODE_SRC=C:\work\node-v8.9.4
 vcbuild.bat nosign release x64
 # or if build without OpenSSL assembler modules 
 vcbuild.bat nosign openssl-no-asm release x64
@@ -58,17 +58,17 @@ cd C:\work\IfxNode
 
 #### Set env for the build 
 * **c:\Informix** is the location where Informix CSDK installed 
-* **C:\njs\Src1014** is the nodejs source that you have completed the build 
+* **C:\work\node-v8.9.4** is the nodejs source that you have completed the build 
 ``` bat
 #Open VS 2017 x64 cmd
 
 #Switch NodeJS to picket from the newly build location
-SET PATH=C:\njs\Src1014\Debug;C:\njs\Src1014\deps\npm\bin\node-gyp-bin;%PATH%
+SET PATH=C:\work\node-v8.9.4\Debug;C:\work\node-v8.9.4\deps\npm\bin\node-gyp-bin;%PATH%
 or (depens on your nodejs build)
-SET PATH=C:\njs\Src1014\Release;C:\njs\Src1014\deps\npm\bin\node-gyp-bin;%PATH%
+SET PATH=C:\work\node-v8.9.4\Release;C:\work\node-v8.9.4\deps\npm\bin\node-gyp-bin;%PATH%
 
 SET CSDK_HOME=c:\Informix
-SET NODE_SRC=C:\njs\Src1014
+SET NODE_SRC=C:\work\node-v8.9.4
 ```
 
 #### Fire the driver build 
