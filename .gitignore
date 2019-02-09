@@ -11,6 +11,18 @@ package-lock.json
 **/node_modules
 
 build
+build/*
 try
 try/**
 
+###
+Debug
+Debug/*
+Release
+Release/*
+*.user
+
+0.*
+1.*
+tmp.*
+*.tmp
