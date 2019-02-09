@@ -21,6 +21,7 @@ Debug/*
 Release
 Release/*
 *.user
+build.*
 
 0.*
 1.*

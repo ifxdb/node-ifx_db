@@ -108,17 +108,20 @@ del C:\work\IfxNode\build\Release\ifx_njs_bind.pdb
 
 del /S /F /Q C:\work\IfxNode\build\Release\obj
 rd /S /Q C:\work\IfxNode\build\Release\obj
-
-
 ```
+
 
 ### If you are preparing prebuilt binaries then 
 ```bash
 # you may use 7zip to create a zip of C:\work\IfxNode\build
 # Then copy it to C:\work\IfxNode\prebuilt\Win64
-cd C:\work\IfxNode\prebuilt\Win64
-certutil -hashfile build.zip MD5
-# then update the hash value on the README for prebuilt
+del C:\work\IfxNode\prebuilt\Win64\build.zip
+copy C:\work\IfxNode\build.zip C:\work\IfxNode\prebuilt\Win64\build.zip
+
+# Get the hash key of the build zip
+certutil -hashfile C:\work\IfxNode\prebuilt\Win64\build.zip MD5
+
+# then update the hash value on the prebuilt\README.md for prebuilt
 ```
 
 
