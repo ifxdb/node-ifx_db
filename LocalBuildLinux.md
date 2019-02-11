@@ -15,33 +15,40 @@
 * Node-gyp   (npm install -g node-gyp)
 * NAN        (npm install -g nan)
 
-#### Install Node.js
+### Install Node.js
 ```bash
 # Remove old nodejs installation if any
 sudo apt-get remove nodejs nodejs-legacy -y
 sudo apt-get remove npm  -y
 
 # Install 8x nodejs
-curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
 sudo apt-get install -y nodejs
 ```
 
-#### FYI: Make sure you have the right node.js
+### FYI: Make sure you have the right version of node.js installed
+
 ```bash
-# rm /work/dev/nodejs
-# cd /work/dev
+rm /work/dev/nodejs
+cd /work/dev
+```
 
-###### if 64bit Linux on x86
-wget https://nodejs.org/dist/v8.9.4/node-v8.9.4-linux-x64.tar.xz
-tar -xvf node-v8.9.4-linux-x64.tar.xz
-sudo ln -s  /work/dev/node-v8.9.4-linux-x64  /work/dev/nodejs
+#### If 64bit Linux on x86
+```bash
+wget https://nodejs.org/dist/v10.15.1/node-v10.15.1-linux-x64.tar.xz
+tar -xvf node-v10.15.1-linux-x64.tar.xz
+sudo ln -s  /work/dev/node-v10.15.1-linux-x64  /work/dev/nodejs
+```
 
-###### if ARM v7 (Raspberry Pi 3)
-# sudo wget https://nodejs.org/dist/v8.9.4/node-v8.9.4-linux-armv7l.tar.xz
-# sudo tar -xvf node-v8.9.4-linux-armv7l.tar.xz
-# sudo ln -s  /work/dev/node-v8.9.4-linux-armv7l  /work/dev/nodejs
+#### If ARM v7 (Raspberry Pi 3)
+```bash
+sudo wget https://nodejs.org/dist/v10.15.1/node-v10.15.1-linux-armv7l.tar.xz
+sudo tar -xvf node-v10.15.1-linux-armv7l.tar.xz
+sudo ln -s  /work/dev/node-v10.15.1-linux-armv7l  /work/dev/nodejs
+```
 
-# export PATH=/work/dev/nodejs/bin:$PATH
+```bash
+export PATH=/work/dev/nodejs/bin:$PATH
 which node
 node -v
 ```
