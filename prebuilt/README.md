@@ -5,7 +5,7 @@
 | **Platform** | **NodeJS Version** | **MD5 hash**
 |:-------------|:-------------------|:----------------------------------------
 | `Arm`        | node-v8.9.4        | e07d745fe4bf5c461cccdce07406859f
-| `Linux64`    | node-v8.9.4        | 88571f4ade8359188892d2e517b6555b
+| `Linux64`    | node-v10.15.1      | 1c8825df1a2058924684eeb426de58ec
 | `Win64`      | node-v10.15.1      | 64fec168cd1f51c0c49ea5e4d1211084
 
 
