@@ -55,7 +55,7 @@ node -v
 
 #### Complile time environment
 ```bash
-# sudo ln -s /opt/csdk410FC12 /work/csdk
+# sudo ln -s /opt/csdk450FC1 /work/csdk
 # Assuming 'CSDK' is installed at /work/csdk
 export CSDK_HOME=/work/csdk
 ```
@@ -130,26 +130,6 @@ vi SampleApp1.js
 
 # edit Connection Informaton and then run
 node SampleApp1.js
-```
-
-#### FYI: Run time error observed after upgrading to node.js v8x
-```bash
-node SampleApp1.js
-
-Error: Cannot find module 'q'
-    at Function.Module._resolveFilename (module.js:538:15)
-    at Function.Module._load (module.js:468:25)
-    at Module.require (module.js:587:17)
-    at require (internal/module.js:11:18)
-    at Object.<anonymous> (/work/t1/IfxNode/lib/odbc.js:37:9)
-    at Module._compile (module.js:643:30)
-    at Object.Module._extensions..js (module.js:654:10)
-    at Module.load (module.js:556:32)
-    at tryModuleLoad (module.js:499:12)
-    at Function.Module._load (module.js:491:3)
-
-###### Solution
-npm install -g q
 ```
 
 
