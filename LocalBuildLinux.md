@@ -82,8 +82,10 @@ node-gyp build -v
 ls -l ./build/Release/ifx_njs_bind.node
 ```
 
-#### FYI only: Build Cleanup
+### Preparing it for prebuilt
+Do this only if you plan to do a public release with the build binary.
 ```bash
+# Build Cleanup
 rm /work/t1/IfxNode/build/binding.Makefile
 rm /work/t1/IfxNode/build/config.gypi
 rm /work/t1/IfxNode/build/ifx_njs_bind.target.mk
@@ -97,8 +99,16 @@ rm -rf /work/t1/IfxNode/build/Release/.deps
 #### preparing it for prebuilt
 cd /work/t1/IfxNode
 zip -r build.zip ./build
-# mv build.zip ./prebuilt/Linux64/build.zip
+
+# if Linu x64 then
+mv build.zip ./prebuilt/Linux64/build.zip
+
+# ARM then only
 # mv build.zip ./prebuilt/Arm/build.zip
+
+#update  prebuilt/README.md with the has value of build.zip
+md5sum  ./build.zip
+
 rm -rf ./build
 ```
 
