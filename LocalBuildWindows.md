@@ -26,10 +26,8 @@ FYI: The node.lib can also be obtained from **node-gyp** too, it is up to you to
 
 
 #### Open VS 2017 x64 cmd
-The node.js v10 is being build by VS 2017
+The node.js v10 is being build by using VS 2017
 ```bash
-# Open VS 2017 x64 cmd
-
 # Say you have extracted NodeJS sourct at **C:\work\node-v10.15.1**
 cd C:\work\node-v10.15.1
 
@@ -56,7 +54,7 @@ The build has dependency on
 - node-gyp
 - node.lib
 
-#### clone the driver source code
+#### clone the driver source code and install build dependency
 ```bash
 cd C:\work
 git clone https://github.com/OpenInformix/IfxNode.git
@@ -67,19 +65,24 @@ npm install nan
 npm install node-gyp
 ```
 
-#### Set ENV and fire the driver build
+#### Set environment and fire the driver build
+Open VS 2017 x64 command window
 ```bash
 # Let us say
 # Informix Client SDK installed location is   C:\Informix
 # The nodejs source (with build) is at        C:\work\node-v10.15.1
+# The informix driver source code is at       C:\work\IfxNode
 
-# Open VS 2017 x64 cmd
-# cd C:\work\IfxNode
+# Switch "node.js" and "node-gyp" to picket from the newly build location
+# (if you are using debug build then use Debug)
+# SET PATH=C:\work\node-v10.15.1\Debug;C:\work\node-v10.15.1\deps\npm\bin\node-gyp-bin;%PATH%
 
+SET PATH=C:\work\node-v10.15.1\Release;C:\work\node-v10.15.1\deps\npm\bin\node-gyp-bin;%PATH%
 SET CSDK_HOME=c:\Informix
 SET NODE_SRC=C:\work\node-v10.15.1
 
 #### Fire the driver build ####
+cd C:\work\IfxNode
 node-gyp configure
 node-gyp build  --release
 # or for debug build then
