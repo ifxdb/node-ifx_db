@@ -1,24 +1,23 @@
 
 ## Windows Build
 ----------------
-* Build Nodejs from its source 
-* Build Informix Nodejs driver 
+- Build Nodejs from its source
+- Build Informix Nodejs driver
 
 FYI: make sure bit architecture matches for all binary components  
 If you are using 64bit nodejs make sure you are using 64bit Informix Client-SDK as well.  
 
-#### FYI: 
-* [Node.js breaking changes between v4 LTS and v6 LTS](https://github.com/nodejs/node/wiki/Breaking-changes-between-v4-LTS-and-v6-LTS)
-* [Node.js community wiki](https://github.com/nodejs/node/wiki)
-
+#### FYI:
+- [Node.js community wiki](https://github.com/nodejs/node/wiki)
+- [The latest node source code](https://github.com/nodejs/node)
 
 ### Prerequisite :
 * Informix Client SDK 410 xC2 or above
-* Git  
-* NodeJS
-* Python     (2.7.x (3.x is not supported yet))
-* Node-gyp   (npm install -g node-gyp)
-* NAN        (npm install -g nan)
+* git
+* node.js
+* python     (2.7.x (3.x is not supported yet))
+* node-gyp   (npm install -g node-gyp)
+* nan        (npm install -g nan)
 
 
 #### Build node.js from its source
@@ -27,16 +26,16 @@ FYI: The node.lib can also be obtained from **node-gyp** too, it is up to you to
 
 
 #### Open VS 2017 x64 cmd
+The node.js v10 is being build by VS 2017
 ```bash
 # Open VS 2017 x64 cmd
-
 
 # Say you have extracted NodeJS sourct at **C:\work\node-v10.15.1**
 cd C:\work\node-v10.15.1
 
 SET NODE_SRC=C:\work\node-v10.15.1
 vcbuild.bat nosign release x64
-# or if build without OpenSSL assembler modules 
+# or if build without OpenSSL assembler modules
 vcbuild.bat nosign openssl-no-asm release x64
 
 FYI:
@@ -44,57 +43,65 @@ vcbuild.bat nosign release x64 : Build in release mode in 64-bit computers
 vcbuild.bat nosign debug x64   : Build in debug mode for 64-bit computers
 vcbuild.bat nosign release     : Build in release mode in 32-bit computers
 vcbuild.bat clean              : Clean Project
+
+# if no build errors then
+# check whether "node.lib" has built
+dir node.lib /s /b
 ```
 
-
-### Build the Informix node.js driver 
+---
+### Build the Informix node.js driver
+The build has dependency on
+- nan
+- node-gyp
+- node.lib
 
 #### clone the driver source code
-```bat
+```bash
 cd C:\work
 git clone https://github.com/OpenInformix/IfxNode.git
 cd C:\work\IfxNode
+
+# install build dependency modules
+npm install nan
+npm install node-gyp
 ```
 
-#### Set env for the build 
-* **c:\Informix** is the location where Informix CSDK installed 
-* **C:\work\node-v10.15.1** is the nodejs source that you have completed the build 
-``` bat
-#Open VS 2017 x64 cmd
+#### Set ENV and fire the driver build
+```bash
+# Let us say
+# Informix Client SDK installed location is   C:\Informix
+# The nodejs source (with build) is at        C:\work\node-v10.15.1
 
-#Switch NodeJS to picket from the newly build location
-SET PATH=C:\work\node-v10.15.1\Debug;C:\work\node-v10.15.1\deps\npm\bin\node-gyp-bin;%PATH%
-or (depens on your nodejs build)
-SET PATH=C:\work\node-v10.15.1\Release;C:\work\node-v10.15.1\deps\npm\bin\node-gyp-bin;%PATH%
+# Open VS 2017 x64 cmd
+# cd C:\work\IfxNode
 
 SET CSDK_HOME=c:\Informix
 SET NODE_SRC=C:\work\node-v10.15.1
+
+#### Fire the driver build ####
+node-gyp configure
+node-gyp build  --release
+# or for debug build then
+node-gyp build  --debug
 ```
 
-#### Fire the driver build 
-```bat
-cd C:\work\IfxNode
-npm install nan
-
-node-gyp configure
-node-gyp build
-
-#FYI: 
-node-gyp build  --debug
-node-gyp build  --release
-
-Alternative build: you may use the Visual Studio 2015 Solution to build from source
-C:\work\IfxNode\IfxNodeJsVS2015.sln
+#### Alternative build
+```bash
+# you may use the Visual Studio 2017 Solution to build from source
+# FYI: you still need CSDK_HOME and NODE_SRC environment to be set
+C:\work\IfxNode\IfxNodeJsVS2017.sln
 ```
 
 ### Driver binaries
 ```bash
-#If no build error then the driver binaries will be at 
+# If no build error then the driver (ifx_njs_bind.node) binaries will be at
 C:\work\IfxNode\build\Debug
 # or
 C:\work\IfxNode\build\Release
 ```
-### Cleanup build files
+
+### Cleanup build for prebuilt zip
 ```bat
 del C:\work\IfxNode\build\binding.sln
 del C:\work\IfxNode\build\config.gypi
@@ -111,7 +118,7 @@ rd /S /Q C:\work\IfxNode\build\Release\obj
 ```
 
 
-### If you are preparing prebuilt binaries then 
+### If you are preparing prebuilt binaries then
 ```bash
 # you may use 7zip to create a zip of C:\work\IfxNode\build
 # Then copy it to C:\work\IfxNode\prebuilt\Win64
@@ -121,11 +128,11 @@ copy C:\work\IfxNode\build.zip C:\work\IfxNode\prebuilt\Win64\build.zip
 # Get the hash key of the build zip
 certutil -hashfile C:\work\IfxNode\prebuilt\Win64\build.zip MD5
 
-# then update the hash value on the prebuilt\README.md for prebuilt
+update "prebuilt\README.md" with the hash value.
 ```
 
 
-### Quick test of the local build 
+### Quick test of the local build
 ```bash
 md C:\work\t1
 cd C:\work\t1
