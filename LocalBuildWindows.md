@@ -16,8 +16,8 @@ If you are using 64bit nodejs make sure you are using 64bit Informix Client-SDK 
 * git
 * node.js
 * python     (2.7.x (3.x is not supported yet))
-* node-gyp   (npm install -g node-gyp)
-* nan        (npm install -g nan)
+* node-gyp
+* nan
 
 
 #### Build node.js from its source
