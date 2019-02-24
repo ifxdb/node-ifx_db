@@ -49,6 +49,9 @@ npm version patch
 
 ### 3) npm publish
 ```bash
+# you may have to add npm user on the system before publish.
+# npm adduser
 npm publish
 ```
+
 
