@@ -89,13 +89,6 @@ node-gyp build  --release
 node-gyp build  --debug
 ```
 
-#### Alternative build
-```bash
-# you may use the Visual Studio 2017 Solution to build from source
-# FYI: you still need CSDK_HOME and NODE_SRC environment to be set
-C:\work\IfxNode\IfxNodeJsVS2017.sln
-```
-
 ### Driver binaries
 ```bash
 # If no build error then the driver (ifx_njs_bind.node) binaries will be at
@@ -104,7 +97,48 @@ C:\work\IfxNode\build\Debug
 C:\work\IfxNode\build\Release
 ```
 
-### Cleanup build for prebuilt zip
+#### Alternative build
+```bash
+# you may use the Visual Studio 2017 Solution to build from source
+# FYI: you still need CSDK_HOME and NODE_SRC environment to be set
+C:\work\IfxNode\IfxNodeJsVS2017.sln
+```
+
+#### [FYI: node-gyp build helps](https://github.com/nodejs/node-gyp)
+```bash
+| **Command**   | **Description**
+|:--------------|:---------------------------------------------------------------
+| `help`        | Shows the help dialog
+| `build`       | Invokes `make`/`msbuild.exe` and builds the native addon
+| `clean`       | Removes the `build` directory if it exists
+| `configure`   | Generates project build files for the current platform
+| `rebuild`     | Runs `clean`, `configure` and `build` all in a row
+| `install`     | Installs node header files for the given version
+| `list`        | Lists the currently installed node header versions
+| `remove`      | Removes the node header files for the given version
+```
+
+### Quick test of the local build
+```bash
+md C:\work\t1
+cd C:\work\t1
+npm install bindings
+# FYI: Copy the entire IfxNode dir under C:\work\t1\node_modules\ and then rename it to ifxnjs
+xcopy C:\work\IfxNode C:\work\t1\node_modules\ifxnjs /s /I
+
+copy C:\work\IfxNode\examples\SampleApp1.js
+
+#edit the connection information of the application, then run
+node SampleApp1.js
+```
+
+
+
+---
+### Preparing prebuilt binaries
+This task is needed if you plan to use the binary for the next NPM release.
+
+#### Cleanup build for prebuilt zip
 ```bat
 del C:\work\IfxNode\build\binding.sln
 del C:\work\IfxNode\build\config.gypi
@@ -121,43 +155,17 @@ rd /S /Q C:\work\IfxNode\build\Release\obj
 ```
 
 
-### If you are preparing prebuilt binaries then
+#### Copy the ZIP to prebuilt folder
 ```bash
+# Create a ZIP and copy to prebuilt folder
 # you may use 7zip to create a zip of C:\work\IfxNode\build
 # Then copy it to C:\work\IfxNode\prebuilt\Win64
 del C:\work\IfxNode\prebuilt\Win64\build.zip
 copy C:\work\IfxNode\build.zip C:\work\IfxNode\prebuilt\Win64\build.zip
 
+### 2) Update the Hash value in the readme
 # Get the hash key of the build zip
 certutil -hashfile C:\work\IfxNode\prebuilt\Win64\build.zip MD5
 
 update "prebuilt\README.md" with the hash value.
 ```
-
-
-### Quick test of the local build
-```bash
-md C:\work\t1
-cd C:\work\t1
-npm install bindings
-# FYI: Copy the entire IfxNode dir under C:\work\t1\node_modules\ and then rename it to ifxnjs
-xcopy C:\work\IfxNode C:\work\t1\node_modules\ifxnjs /s /I
-
-copy C:\work\IfxNode\examples\SampleApp1.js
-
-#edit the connection information of the application, then run
-node SampleApp1.js
-```
-
-#### [FYI: node-gyp build helps](https://github.com/nodejs/node-gyp)
-| **Command**   | **Description**
-|:--------------|:---------------------------------------------------------------
-| `help`        | Shows the help dialog
-| `build`       | Invokes `make`/`msbuild.exe` and builds the native addon
-| `clean`       | Removes the `build` directory if it exists
-| `configure`   | Generates project build files for the current platform
-| `rebuild`     | Runs `clean`, `configure` and `build` all in a row
-| `install`     | Installs node header files for the given version
-| `list`        | Lists the currently installed node header versions
-| `remove`      | Removes the node header files for the given version
-

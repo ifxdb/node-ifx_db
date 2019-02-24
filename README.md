@@ -1,4 +1,4 @@
-##### Copyright 2018 OpenInformix
+##### Copyright 2019 OpenInformix
 
 ##### [Licensed under the MIT](https://opensource.org/licenses/MIT)
 
@@ -12,16 +12,14 @@ The development activities of the driver are powered by passion, dedication and 
 ## Installing the driver
 ------------------------
 ```bash
-# local install for your project
-npm install q
+# Local Install: just for the project.
 npm install ifxnjs
 
-# or for global install for the user
-npm install -g q
+# Global Install: on the system for the user
 npm install -g ifxnjs
 ```
 
-The driver has prebuilt binaries for **ARM**, **Linux x64** and **Win64**, and it is certified to work with **Raspberry Pi**; all other platforms you may perform a local build. The current version of Informix native node driver (ifxnjs@8.0.x) is being compiled with Node.js v8.9.4 LTS libraries. The driver is expected to work with all node.js version 8x.  
+The driver has prebuilt binaries for **ARM**, **Linux x64** and **Win64**, and it is certified to work with **Raspberry Pi**; all other platforms you may perform a local build. The current version of Informix native node driver (ifxnjs@10.0.x) is being compiled with Node.js v10.15.1 LTS libraries. The driver is expected to work with all node.js version 10x.  
    
 FYI: **[Informix Client SDK](http://www-01.ibm.com/support/docview.wss?uid=swg27016673) 4.10 xC2 or above** is needed for the driver to make connection to the database. Make sure Informix Client SDK is installed and its environments are set prior to running application.  
 - [Download Informix Client SDK](http://www-01.ibm.com/support/docview.wss?uid=swg27016673)
@@ -50,12 +48,22 @@ The driver source code is platform neutral; if needed you may build the driver o
 * [Linux Build](./LocalBuildLinux.md)
 
 
-## Connection String
---------------------
-
+## Connection
+-------------
 ```javascript
 var dbobj = require('ifxnjs');
 var ConStr = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;UID=informix;PWD=xxxx;";
+
+var conn = dbobj.openSync(ConStr);
+
+// FYI: for Asynchronous open then
+// dbobj.open( ConStr, (err, conn) => {} );
+
+// -- -- -- -- -- -- --
+// Do some DB work here
+// -- -- -- -- -- -- --
+
+conn.closeSync();
 ```
 
 
@@ -542,59 +550,9 @@ dbobj.open(cn, function(err,conn) {
 
 ----------
 
-### Pool
+### Connection Pool
+Work in progress...... 
 
-Rudimentary support, rework in progress...... 
-
-
-#### .open(connectionString, callback)
-
-Get a `Database` instance which is already connected to `connectionString`
-
-* **connectionString** - The connection string for your database
-* **callback** - `callback (err, db)`
-
-```javascript
-var Pool = require("ifxnjs").Pool
-  , pool = new Pool()
-    , cn = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;UID=informix;PWD=xxxx;"
-
-pool.open(cn, function (err, db) {
-  if (err) {
-    return console.log(err);
-  }
-
-  //db is now an open database connection and can be used like normal
-  //if we run some queries with db.query(...) and then call db.close();
-  //a connection to `cn` will be re-opened silently behind the scense
-  //and will be ready the next time we do `pool.open(cn)`
-});
-```
-
-#### .close(callback)
-
-Close all connections in the `Pool` instance
-
-* **callback** - `callback (err)`
-
-```javascript
-var Pool = require("ifxnjs").Pool
-  , pool = new Pool()
-    , cn = "SERVER=ids0;DATABASE=db1;HOST=127.0.0.1;SERVICE=9088;UID=informix;PWD=xxxx;"
-
-pool.open(cn, function (err, db) {
-  if (err) {
-    return console.log(err);
-  }
-
-  //db is now an open database connection and can be used like normal
-  //but all we will do now is close the whole pool
-  
-  pool.close(function () {
-    console.log("all connections in the pool are closed");
-  });
-});
-```
 
 contributors
 ------------
