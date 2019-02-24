@@ -163,7 +163,7 @@ rd /S /Q C:\work\IfxNode\build\Release\obj
 del C:\work\IfxNode\prebuilt\Win64\build.zip
 copy C:\work\IfxNode\build.zip C:\work\IfxNode\prebuilt\Win64\build.zip
 
-### 2) Update the Hash value in the readme
+### Update the Hash value in the readme
 # Get the hash key of the build zip
 certutil -hashfile C:\work\IfxNode\prebuilt\Win64\build.zip MD5
 

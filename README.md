@@ -42,7 +42,7 @@ SET PATH=%INFORMIXDIR%\bin;%PATH%
 
 ## Build the driver from its source code
 ----------------------------------------
-The driver source code is platform neutral; if needed you may build the driver on any platforms. If you face any difficulty feel free to reach out to us, we are happy to help you. The following URL has instruction to build it on Windows and Linux. 
+The driver has prebuilt native module available for ARM, Linux x64 and Win64, that mean if you are on this platforms in a normal scenario you don’t need to build the driver from its source; just follow the install step mention above and you are good to go. By any chance if you have to build the driver from the source then please follow the step. The driver source code is platform neutral; if needed you may build the driver on any platforms. If you face any difficulty feel free to reach out to us, we are happy to help you. The following URL has instruction to build it on Windows and Linux. 
 
 * [Windows Build](./LocalBuildWindows.md)
 * [Linux Build](./LocalBuildLinux.md)
