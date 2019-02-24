@@ -4,13 +4,13 @@
 
 | **Platform** | **NodeJS Version** | **MD5 hash**
 |:-------------|:-------------------|:----------------------------------------
-| `Arm`        | node-v8.9.4        | e07d745fe4bf5c461cccdce07406859f
+| `Arm`        | node-v10.15.1      | 32fe1db63678160d1e6b2a9d50c73c43
 | `Linux64`    | node-v10.15.1      | 1c8825df1a2058924684eeb426de58ec
 | `Win64`      | node-v10.15.1      | 64fec168cd1f51c0c49ea5e4d1211084
 
 
- 
-#### Prepare Linux64 prebuild binary 
+
+#### Prepare Linux64 prebuild binary
 ```bash
 cd /work/t1
 rm -rf IfxNode
@@ -20,15 +20,15 @@ git clone https://github.com/OpenInformix/IfxNode.git
 cd IfxNode
 npm update
 
-rm -rf ./build 
+rm -rf ./build
 # npm install node-gyp
-node-gyp configure -v  
-node-gyp build -v  
+node-gyp configure -v
+node-gyp build -v
 
-rm ./build/binding.Makefile  
-rm ./build/config.gypi  
-rm ./build/ifx_njs_bind.target.mk  
-rm ./build/Makefile 
+rm ./build/binding.Makefile
+rm ./build/config.gypi
+rm ./build/ifx_njs_bind.target.mk
+rm ./build/Makefile
 rm -rf ./build/Release/.deps
 rm -rf ./build/Release/obj.target
 
@@ -38,7 +38,7 @@ rm ./prebuilt/Linux64/build.zip
 mv build.zip ./prebuilt/Linux64/build.zip
 ```
 
-### Quick Test 
+### Quick Test
 
 ##### Set runtime environment to pick Informix Client SDK libraries.
 ```bash
@@ -90,7 +90,7 @@ certutil -hashfile build.zip MD5
 ```
 
 ---
-### The prebuilt install operations in nutshell 
+### The prebuilt install operations in nutshell
 ```bash
 # Let us assume you plan to clone the driver code at /work/dev/t1
 # rm -rf /work/dev/t1

@@ -15,13 +15,20 @@
 * Node-gyp   (npm install -g node-gyp)
 * NAN        (npm install -g nan)
 
+### Update Packages
+```bash
+sudo apt-get update
+sudo apt-get dist-upgrade
+```
+
+
 ### Install Node.js
 ```bash
 # Remove old nodejs installation if any
 sudo apt-get remove nodejs nodejs-legacy -y
 sudo apt-get remove npm  -y
 
-# Install 8x nodejs
+# Install nodejs
 curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
 sudo apt-get install -y nodejs
 ```
@@ -82,35 +89,7 @@ node-gyp build -v
 ls -l ./build/Release/ifx_njs_bind.node
 ```
 
-### Preparing it for prebuilt
-Do this only if you plan to do a public release with the build binary.
-```bash
-# Build Cleanup
-rm /work/t1/IfxNode/build/binding.Makefile
-rm /work/t1/IfxNode/build/config.gypi
-rm /work/t1/IfxNode/build/ifx_njs_bind.target.mk
-rm /work/t1/IfxNode/build/Makefile
-rm -rf /work/t1/IfxNode/build/Release/obj.target
-rm -rf /work/t1/IfxNode/build/Release/.deps
 
-# apt-get update
-# apt-get install zip unzip
-
-#### preparing it for prebuilt
-cd /work/t1/IfxNode
-zip -r build.zip ./build
-
-# if Linu x64 then
-mv build.zip ./prebuilt/Linux64/build.zip
-
-# ARM then only
-# mv build.zip ./prebuilt/Arm/build.zip
-
-#update  prebuilt/README.md with the has value of build.zip
-md5sum  ./build.zip
-
-rm -rf ./build
-```
 
 ### Quick test of the local build
 ---------------------------------
@@ -143,3 +122,34 @@ node SampleApp1.js
 ```
 
 
+---
+### Preparing it for prebuilt
+Do this only if you plan to do a public release with the build binary.
+```bash
+# Build Cleanup
+rm /work/t1/IfxNode/build/binding.Makefile
+rm /work/t1/IfxNode/build/config.gypi
+rm /work/t1/IfxNode/build/ifx_njs_bind.target.mk
+rm /work/t1/IfxNode/build/Makefile
+rm -rf /work/t1/IfxNode/build/Release/obj.target
+rm -rf /work/t1/IfxNode/build/Release/.deps
+
+# apt-get update
+# apt-get install zip unzip
+
+#### preparing it for prebuilt
+cd /work/t1/IfxNode
+zip -r build.zip ./build
+
+# if Linu x64 then
+mv build.zip ./prebuilt/Linux64/build.zip
+
+# ARM then only
+# mv build.zip ./prebuilt/Arm/build.zip
+
+# get the md5hash
+md5sum    build.zip
+# update prebuilt/README.md with the hash value.
+
+# Check-in the changes.
+```
