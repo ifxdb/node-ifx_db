@@ -1,7 +1,7 @@
 {
   "name": "ifxnjs",
   "description": "Informix native node.js driver",
-  "version": "10.0.2",
+  "version": "10.0.3",
   "main": "lib/odbc.js",
   "homepage": "https://github.com/OpenInformix/IfxNode",
   "repository": {
