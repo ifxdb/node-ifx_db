@@ -1,6 +1,3 @@
-##### Copyright 2019 OpenInformix
-
-##### [Licensed under the MIT](https://opensource.org/licenses/MIT)
 
 ## [Informix native node.js driver](https://openinformix.github.io/IfxNode/)
 ---------------------------------
