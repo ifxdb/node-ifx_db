@@ -5,7 +5,7 @@
 | **Platform** | **NodeJS Version** | **MD5 hash**
 |:-------------|:-------------------|:----------------------------------------
 | `Arm`        | node-v10.15.1      | 32fe1db63678160d1e6b2a9d50c73c43
-| `Linux64`    | node-v10.15.1      | 1c8825df1a2058924684eeb426de58ec
+| `Linux64`    | node-v10.16.3      | 1c8825df1a2058924684eeb426de58ec
 | `Win64`      | node-v10.15.1      | 64fec168cd1f51c0c49ea5e4d1211084
 
 
@@ -69,7 +69,7 @@ node SampleApp1.js
 ```bash
 cd /work/t1/IfxNode
 md5sum ./prebuilt/Linux64/build.zip
-# 88571f4ade8359188892d2e517b6555b  ./prebuilt/Linux64/build.zip
+# b0566023e18859d026220249e6f8d446  ./prebuilt/Linux64/build.zip
 
 md5sum ./prebuilt/Arm/build.zip
 # e07d745fe4bf5c461cccdce07406859f  ./prebuilt/Arm/build.zip

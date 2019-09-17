@@ -42,16 +42,16 @@ cd /work/dev
 
 #### If 64bit Linux on x86
 ```bash
-wget https://nodejs.org/dist/v10.15.1/node-v10.15.1-linux-x64.tar.xz
-tar -xvf node-v10.15.1-linux-x64.tar.xz
-sudo ln -s  /work/dev/node-v10.15.1-linux-x64  /work/dev/nodejs
+wget https://nodejs.org/dist/v10.16.3/node-v10.16.3-linux-x64.tar.xz
+tar -xvf node-v10.16.3-linux-x64.tar.xz
+sudo ln -s  /work/dev/node-v10.16.3-linux-x64  /work/dev/nodejs
 ```
 
 #### If ARM v7 (Raspberry Pi 3)
 ```bash
-sudo wget https://nodejs.org/dist/v10.15.1/node-v10.15.1-linux-armv7l.tar.xz
-sudo tar -xvf node-v10.15.1-linux-armv7l.tar.xz
-sudo ln -s  /work/dev/node-v10.15.1-linux-armv7l  /work/dev/nodejs
+sudo wget https://nodejs.org/dist/v10.16.3/node-v10.16.3-linux-armv7l.tar.xz
+sudo tar -xvf node-v10.16.3-linux-armv7l.tar.xz
+sudo ln -s  /work/dev/node-v10.16.3-linux-armv7l  /work/dev/nodejs
 ```
 
 ```bash
@@ -143,6 +143,7 @@ zip -r build.zip ./build
 
 # if Linu x64 then
 mv build.zip ./prebuilt/Linux64/build.zip
+md5sum       ./prebuilt/Linux64/build.zip
 
 # ARM then only
 # mv build.zip ./prebuilt/Arm/build.zip
